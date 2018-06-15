@@ -1,0 +1,678 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Concurrency - Rust Cookbook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Collection of useful Rust code examples">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/custom.css">
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong aria-hidden="true">1.</strong> Basics</a></li><li><a href="encoding.html"><strong aria-hidden="true">2.</strong> Encoding</a></li><li><a href="concurrency.html" class="active"><strong aria-hidden="true">3.</strong> Concurrency</a></li><li><a href="net.html"><strong aria-hidden="true">4.</strong> Networking</a></li><li><a href="app.html"><strong aria-hidden="true">5.</strong> Application development</a></li><li><a href="logging.html"><strong aria-hidden="true">6.</strong> Logging</a></li><li><a href="build_tools.html"><strong aria-hidden="true">7.</strong> Build Time Tooling</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <!-- START - Rust Cookbook customization -->
+                            <button id="edit-button" class="icon-button" type="button" title="Fork and edit" aria-label="Fork and edit" aria-haspopup="true" aria-expanded="false" aria-controls="edit">
+                                <i class="fa fa-edit">Edit</i>
+                            </button>
+                            <!-- END - Rust Cookbook customization -->
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Cookbook</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+
+                   // START - Rust Cookbook customization
+                   document.getElementById("edit-button").addEventListener("click", function(){
+                       var editWindow = window.open("https://github.com/rust-lang-nursery/rust-cookbook/edit/master/src/concurrency.md");
+                   });
+                   // END - Rust Cookbook customization
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="concurrency.html#concurrency" id="concurrency"><h1>Concurrency</h1></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="concurrency.html#ex-rayon-iter-mut">Mutate the elements of an array in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-any-all">Test in parallel if any or all elements of a collection match a given predicate</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-parallel-search">Search items using given predicate in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-parallel-sort">Sort a vector in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-map-reduce">Map-reduce in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-thumbnails">Generate jpg thumbnails in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> <a href="https://docs.rs/image/"><img src="https://badge-cache.kominick.com/crates/v/image.svg?label=image" alt="image-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-crossbeam-spawn">Spawn a short-lived thread</a> </td><td> <a href="https://docs.rs/crossbeam/"><img src="https://badge-cache.kominick.com/crates/v/crossbeam.svg?label=crossbeam" alt="crossbeam-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-threadpool-fractal">Draw fractal dispatching work to a thread pool</a> </td><td> <a href="https://docs.rs/threadpool/"><img src="https://badge-cache.kominick.com/crates/v/threadpool.svg?label=threadpool" alt="threadpool-badge" /></a> <a href="https://docs.rs/num/"><img src="https://badge-cache.kominick.com/crates/v/num.svg?label=num" alt="num-badge" /></a> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> <a href="https://docs.rs/image/"><img src="https://badge-cache.kominick.com/crates/v/image.svg?label=image" alt="image-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a><a href="https://crates.io/categories/rendering"><img src="https://badge-cache.kominick.com/badge/rendering--x.svg?style=social" alt="cat-rendering-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-threadpool-walk">Calculate SHA1 sum of *.iso files concurrently</a>  </td><td> <a href="https://docs.rs/threadpool/"><img src="https://badge-cache.kominick.com/crates/v/threadpool.svg?label=threadpool" alt="threadpool-badge" /></a> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+</tbody></table>
+<p><a name="ex-rayon-iter-mut"></a></p>
+<a class="header" href="concurrency.html#mutate-the-elements-of-an-array-in-parallel" id="mutate-the-elements-of-an-array-in-parallel"><h2>Mutate the elements of an array in parallel</h2></a>
+<p><a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a></p>
+<p>The example uses the <code>rayon</code> crate, which is a data parallelism library for Rust.
+<code>rayon</code> provides the <a href="https://docs.rs/rayon/*/rayon/iter/trait.IntoParallelRefMutIterator.html#tymethod.par_iter_mut"><code>par_iter_mut</code></a> method for any parallel iterable data type.
+It lets us write iterator-like chains that execute in parallel.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rayon;
+
+use rayon::prelude::*;
+
+fn main() {
+    let mut arr = [0, 7, 9, 11];
+
+    arr.par_iter_mut().for_each(|p| *p -= 1);
+
+    println!(&quot;{:?}&quot;, arr);
+}
+</code></pre></pre>
+<p><a name="ex-rayon-any-all"></a></p>
+<a class="header" href="concurrency.html#test-in-parallel-if-any-or-all-elements-of-a-collection-match-a-given-predicate" id="test-in-parallel-if-any-or-all-elements-of-a-collection-match-a-given-predicate"><h2>Test in parallel if any or all elements of a collection match a given predicate</h2></a>
+<p><a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a></p>
+<p>This example demonstrates using the <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.any"><code>rayon::any</code></a> and <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.all"><code>rayon::all</code></a> methods, which are parallelized counterparts to <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.any"><code>std::any</code></a> and <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.all"><code>std::all</code></a>. <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.any"><code>rayon::any</code></a> checks in parallel whether any element of the iterator matches the predicate, and returns as soon as one is found. <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.all"><code>rayon::all</code></a> checks in parallel whether all elements of the iterator match the predicate, and returns as soon as a non-matching element is found.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rayon;
+
+use rayon::prelude::*;
+
+fn main() {
+    let mut vec = vec![2, 4, 6, 8];
+
+    assert!(!vec.par_iter().any(|n| (*n % 2) != 0)); // None are odd.
+    assert!(vec.par_iter().all(|n| (*n % 2) == 0)); // All are even.
+    assert!(!vec.par_iter().any(|n| *n &gt; 8 )); // None are greater than 8.
+    assert!(vec.par_iter().all(|n| *n &lt;= 8 )); // All are less than or equal to 8.
+
+    vec.push(9);
+
+    assert!(vec.par_iter().any(|n| (*n % 2) != 0)); // At least 1 is odd.
+    assert!(!vec.par_iter().all(|n| (*n % 2) == 0)); // Not all are even.
+    assert!(vec.par_iter().any(|n| *n &gt; 8 )); // At least 1 is greater than 8.
+    assert!(!vec.par_iter().all(|n| *n &lt;= 8 )); // Not all are less than or equal to 8.
+}
+</code></pre></pre>
+<p><a name="ex-rayon-parallel-sort"></a></p>
+<a class="header" href="concurrency.html#sort-a-vector-in-parallel" id="sort-a-vector-in-parallel"><h2>Sort a vector in parallel</h2></a>
+<p><a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a></p>
+<p>This example will sort in parallel a vector of Strings.</p>
+<p>[1] We start by preallocating a vector of empty Strings, so we can mutate the information in parallel later,
+to populate the vector with random Strings.</p>
+<p>[2] <code>par_iter_mut().for_each</code> takes a closure and applies it in parallel on all the elements of the vector.<br/>
+[3] Inside the passed closure we modify the element in the vector with a 5 character-long String, random generated.</p>
+<p>[4] We have <a href="https://docs.rs/rayon/*/rayon/slice/trait.ParallelSliceMut.html"><code>multiple options</code></a> to sort an Iterable data type, we chose here to use <a href="https://docs.rs/rayon/*/rayon/slice/trait.ParallelSliceMut.html#method.par_sort_unstable"><code>par_sort_unstable</code></a>
+because it is usually faster than <a href="https://docs.rs/rayon/*/rayon/slice/trait.ParallelSliceMut.html#method.par_sort"><code>stable sorting</code></a> algorithms which <code>rayon</code> also supports.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+extern crate rayon;
+
+use rand::{Rng, thread_rng};
+use rand::distributions::Alphanumeric;
+use rayon::prelude::*;
+
+fn main() {
+    // [1]
+    let mut vec = vec![String::new(); 100_000];
+
+    // [2]
+    vec.par_iter_mut().for_each(|p| {
+        // [3]
+        let mut rng = thread_rng();
+        *p = (0..5).map(|_| rng.sample(&amp;Alphanumeric)).collect()
+    });
+
+    // [4]
+    vec.par_sort_unstable();
+}
+</code></pre></pre>
+<p><a name="ex-rayon-map-reduce"></a></p>
+<a class="header" href="concurrency.html#map-reduce-in-parallel" id="map-reduce-in-parallel"><h2>Map-reduce in parallel</h2></a>
+<p><a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a></p>
+<p>This example uses <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.filter"><code>rayon::filter</code></a>, <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.map"><code>rayon::map</code></a>, and <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.reduce"><code>rayon::reduce</code></a>
+to calculate the conditional average age of a vector of <code>Person</code> objects.</p>
+<p><a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.filter"><code>rayon::filter</code></a> allows us to (in parallel) conditionally include elements from
+a collection that satisfy the given predicate.  Similarly, <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.map"><code>rayon::map</code></a> and
+<a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.reduce"><code>rayon::reduce</code></a> allow us to transform the filtered elements via a unary
+operation and reduce them to a single value via a given binary operation,
+respectively. We also show use of <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.sum"><code>rayon::sum</code></a>, which has the same result as
+the reduce operation in this example.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rayon;
+
+use rayon::prelude::*;
+
+struct Person {
+    age: u32,
+}
+
+fn main() {
+    let v: Vec&lt;Person&gt; = vec![
+        Person { age: 23 },
+        Person { age: 19 },
+        Person { age: 42 },
+        Person { age: 17 },
+        Person { age: 17 },
+        Person { age: 31 },
+        Person { age: 30 },
+    ];
+
+    let num_over_30 = v.par_iter().filter(|&amp;x| x.age &gt; 30).count() as f32;
+    let sum_over_30 = v.par_iter()
+        .map(|x| x.age)
+        .filter(|&amp;x| x &gt; 30)
+        .reduce(|| 0, |x, y| x + y);
+
+    let alt_sum_30: u32 = v.par_iter()
+        .map(|x| x.age)
+        .filter(|&amp;x| x &gt; 30)
+        .sum();
+
+    let avg_over_30 = sum_over_30 as f32 / num_over_30;
+    let alt_avg_over_30 = alt_sum_30 as f32/ num_over_30;
+
+    assert!((avg_over_30 - alt_avg_over_30).abs() &lt; std::f32::EPSILON);
+    println!(&quot;The average age of people older than 30 is {}&quot;, avg_over_30);
+}
+</code></pre></pre>
+<p><a name="ex-rayon-parallel-search"></a></p>
+<a class="header" href="concurrency.html#search-items-using-given-predicate-in-parallel" id="search-items-using-given-predicate-in-parallel"><h2>Search items using given predicate in parallel</h2></a>
+<p><a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a></p>
+<p>This example uses <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.find_any"><code>rayon::find_any</code></a> and <a href="https://docs.rs/rayon/*/rayon/iter/trait.IntoParallelRefIterator.html#tymethod.par_iter"><code>par_iter</code></a> to search a vector in
+parallel for an element satisfying the predicate in the given closure.</p>
+<p>If there are multiple elements satisfying the predicate defined in the closure
+argument of <a href="https://docs.rs/rayon/*/rayon/iter/trait.ParallelIterator.html#method.find_any"><code>rayon::find_any</code></a>, we are only guaranteed that one of them will be
+found, but not necessarily that the first will be found.</p>
+<p>Also note that the argument to the closure is a reference to a reference
+(<code>&amp;&amp;x</code>). Please see the discussion on <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find"><code>std::find</code></a> for additional details.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rayon;
+
+use rayon::prelude::*;
+
+fn main() {
+    let v = vec![6, 2, 1, 9, 3, 8, 11];
+
+    let f1 = v.par_iter().find_any(|&amp;&amp;x| x == 9);
+    let f2 = v.par_iter().find_any(|&amp;&amp;x| x % 2 == 0 &amp;&amp; x &gt; 6);
+    let f3 = v.par_iter().find_any(|&amp;&amp;x| x &gt; 8);
+
+    assert_eq!(f1, Some(&amp;9));
+    assert_eq!(f2, Some(&amp;8));
+    assert!(f3 &gt; Some(&amp;8));
+}
+</code></pre></pre>
+<p><a name="ex-rayon-thumbnails"></a></p>
+<a class="header" href="concurrency.html#generate-jpg-thumbnails-in-parallel" id="generate-jpg-thumbnails-in-parallel"><h2>Generate jpg thumbnails in parallel</h2></a>
+<p><a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> <a href="https://docs.rs/image/"><img src="https://badge-cache.kominick.com/crates/v/image.svg?label=image" alt="image-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>This example generates thumbnails for all .jpg in the current directory and saves them in a new folder called <code>thumbnails</code>.</p>
+<p>Files are found using <a href="https://docs.rs/glob/*/glob/fn.glob_with.html"><code>glob::glob_with</code></a> to match case insensitively on both <code>.jpg</code> and <code>.JPG</code>. <code>rayon</code> is then used to resize images in parallel using <a href="https://docs.rs/rayon/*/rayon/iter/trait.IntoParallelRefIterator.html#tymethod.par_iter"><code>par_iter</code></a> along with the <code>make_thumbnail()</code> helper function which internally uses <a href="https://docs.rs/image/*/image/enum.DynamicImage.html#method.resize"><code>DynamicImage::resize</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate glob;
+extern crate image;
+extern crate rayon;
+
+use std::path::Path;
+use std::fs::create_dir_all;
+
+# use error_chain::ChainedError;
+use glob::{glob_with, MatchOptions};
+use image::{FilterType, ImageError};
+use rayon::prelude::*;
+
+# error_chain! {
+#     foreign_links {
+#         Image(ImageError);
+#         Io(std::io::Error);
+#         Glob(glob::PatternError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    // find all files in current directory that have a .jpg extension
+    // use the default MatchOptions so the search is case insensitive
+    let options: MatchOptions = Default::default();
+    let files: Vec&lt;_&gt; = glob_with(&quot;*.jpg&quot;, &amp;options)?
+        .filter_map(|x| x.ok())
+        .collect();
+
+    if files.len() == 0 {
+        bail!(&quot;No .jpg files found in current directory&quot;);
+    }
+
+    let thumb_dir = &quot;thumbnails&quot;;
+    create_dir_all(thumb_dir)?;
+
+    println!(&quot;Saving {} thumbnails into '{}'...&quot;, files.len(), thumb_dir);
+
+    let image_failures: Vec&lt;_&gt; = files
+        .par_iter()
+        .map(|path| {
+            make_thumbnail(path, thumb_dir, 300)
+                .map_err(|e| e.chain_err(|| path.display().to_string()))
+        })
+        .filter_map(|x| x.err())
+        .collect();
+
+    image_failures.iter().for_each(|x| println!(&quot;{}&quot;, x.display_chain()));
+
+    println!(&quot;{} thumbnails saved successfully&quot;, files.len() - image_failures.len());
+    Ok(())
+}
+
+/// Resize `original` to have a maximum dimension of `longest_edge` and save the
+/// resized image to the `thumb_dir` folder
+fn make_thumbnail&lt;PA, PB&gt;(original: PA, thumb_dir: PB, longest_edge: u32) -&gt; Result&lt;()&gt;
+where
+    PA: AsRef&lt;Path&gt;,
+    PB: AsRef&lt;Path&gt;,
+{
+    let img = image::open(original.as_ref())?;
+    let file_path = thumb_dir.as_ref().join(original);
+
+    Ok(img.resize(longest_edge, longest_edge, FilterType::Nearest)
+          .save(file_path)?)
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-crossbeam-spawn"></a></p>
+<a class="header" href="concurrency.html#spawn-a-short-lived-thread" id="spawn-a-short-lived-thread"><h2>Spawn a short-lived thread</h2></a>
+<p><a href="https://docs.rs/crossbeam/"><img src="https://badge-cache.kominick.com/crates/v/crossbeam.svg?label=crossbeam" alt="crossbeam-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a></p>
+<p>The example uses the <code>crossbeam</code> crate, which provides data structures and functions
+for concurrent and parallel programming. <a href="https://docs.rs/crossbeam/*/crossbeam/struct.Scope.html#method.spawn"><code>Scope::spawn</code></a> spawns a new scoped thread that is guaranteed
+to terminate before returning from the closure that passed into <a href="https://docs.rs/crossbeam/*/crossbeam/fn.scope.html"><code>crossbeam::scope</code></a> function, meaning that
+you can reference data from the calling function.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate crossbeam;
+
+use std::cmp;
+
+fn main() {
+    let arr = &amp;[-4, 1, 10, 25];
+    let max = find_max(arr, 0, arr.len());
+    assert_eq!(25, max);
+}
+
+fn find_max(arr: &amp;[i32], start: usize, end: usize) -&gt; i32 {
+    // Perform sequential computation if there are only a few elements.
+    const THRESHOLD: usize = 2;
+    if end - start &lt;= THRESHOLD {
+        return *arr.iter().max().unwrap();
+    }
+
+    let mid = start + (end - start) / 2;
+    crossbeam::scope(|scope| {
+        let left = scope.spawn(|| find_max(arr, start, mid));
+        let right = scope.spawn(|| find_max(arr, mid, end));
+
+        cmp::max(left.join(), right.join())
+    })
+}
+</code></pre></pre>
+<p><a name="ex-threadpool-fractal"></a></p>
+<a class="header" href="concurrency.html#draw-fractal-dispatching-work-to-a-thread-pool" id="draw-fractal-dispatching-work-to-a-thread-pool"><h2>Draw fractal dispatching work to a thread pool</h2></a>
+<p><a href="https://docs.rs/threadpool/"><img src="https://badge-cache.kominick.com/crates/v/threadpool.svg?label=threadpool" alt="threadpool-badge" /></a> <a href="https://docs.rs/num/"><img src="https://badge-cache.kominick.com/crates/v/num.svg?label=num" alt="num-badge" /></a> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> <a href="https://docs.rs/image/"><img src="https://badge-cache.kominick.com/crates/v/image.svg?label=image" alt="image-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a><a href="https://crates.io/categories/rendering"><img src="https://badge-cache.kominick.com/badge/rendering--x.svg?style=social" alt="cat-rendering-badge" /></a></p>
+<p>This example draws a fractal from <a href="https://en.wikipedia.org/wiki/Julia_set">Julia set</a> to an image utilizing a thread pool for computation.</p>
+<p><a href="https://cloud.githubusercontent.com/assets/221000/26546700/9be34e80-446b-11e7-81dc-dd9871614ea1.png"><img src="https://cloud.githubusercontent.com/assets/221000/26546700/9be34e80-446b-11e7-81dc-dd9871614ea1.png" width="150" /></a></p>
+<p>Firstly, the example allocates memory for output image of given width and height with <a href="https://docs.rs/image/*/image/struct.ImageBuffer.html#method.new"><code>ImageBuffer::new</code></a>
+and pre-calculates all possible RGB pixel values using <a href="https://docs.rs/image/*/image/struct.Rgb.html#method.from_channels"><code>Rgb::from_channels</code></a>.
+Secondly, creates a new <a href="https://docs.rs/threadpool/*/threadpool/struct.ThreadPool.html"><code>ThreadPool</code></a> with thread count equal to number of
+logical cores in CPU obtained with <a href="https://docs.rs/num_cpus/*/num_cpus/fn.get.html"><code>num_cpus::get</code></a>.
+Subsequently, dispatches calculation to thread pool <a href="https://docs.rs/threadpool/*/threadpool/struct.ThreadPool.html#method.execute"><code>ThreadPool::execute</code></a>.</p>
+<p>Lastly, collects calculation results via <a href="https://doc.rust-lang.org/std/sync/mpsc/fn.channel.html"><code>mpsc::channel</code></a> with <a href="https://doc.rust-lang.org/std/sync/mpsc/struct.Receiver.html#method.recv"><code>Receiver::recv</code></a>, draws them with <a href="https://docs.rs/image/*/image/struct.ImageBuffer.html#method.put_pixel"><code>ImageBuffer::put_pixel</code></a> and encodes the final image into <code>output.png</code> using <a href="https://docs.rs/image/*/image/struct.ImageBuffer.html#method.save"><code>ImageBuffer::save</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate threadpool;
+extern crate num;
+extern crate num_cpus;
+extern crate image;
+
+use std::sync::mpsc::{channel, RecvError};
+use threadpool::ThreadPool;
+use num::complex::Complex;
+use image::{ImageBuffer, Pixel, Rgb};
+#
+# error_chain! {
+#     foreign_links {
+#         MpscRecv(RecvError);
+#         Io(std::io::Error);
+#     }
+# }
+#
+# // Function converting intensity values to RGB
+# // Based on http://www.efg2.com/Lab/ScienceAndEngineering/Spectra.htm
+# fn wavelength_to_rgb(wavelength: u32) -&gt; Rgb&lt;u8&gt; {
+#     let wave = wavelength as f32;
+#
+#     let (r, g, b) = match wavelength {
+#         380...439 =&gt; ((440. - wave) / (440. - 380.), 0.0, 1.0),
+#         440...489 =&gt; (0.0, (wave - 440.) / (490. - 440.), 1.0),
+#         490...509 =&gt; (0.0, 1.0, (510. - wave) / (510. - 490.)),
+#         510...579 =&gt; ((wave - 510.) / (580. - 510.), 1.0, 0.0),
+#         580...644 =&gt; (1.0, (645. - wave) / (645. - 580.), 0.0),
+#         645...780 =&gt; (1.0, 0.0, 0.0),
+#         _ =&gt; (0.0, 0.0, 0.0),
+#     };
+#
+#     let factor = match wavelength {
+#         380...419 =&gt; 0.3 + 0.7 * (wave - 380.) / (420. - 380.),
+#         701...780 =&gt; 0.3 + 0.7 * (780. - wave) / (780. - 700.),
+#         _ =&gt; 1.0,
+#     };
+#
+#     let (r, g, b) = (normalize(r, factor), normalize(g, factor), normalize(b, factor));
+#     Rgb::from_channels(r, g, b, 0)
+# }
+#
+# // Maps Julia set distance estimation to intensity values
+# fn julia(c: Complex&lt;f32&gt;, x: u32, y: u32, width: u32, height: u32, max_iter: u32) -&gt; u32 {
+#     let width = width as f32;
+#     let height = height as f32;
+#
+#     let mut z = Complex {
+#         // scale and translate the point to image coordinates
+#         re: 3.0 * (x as f32 - 0.5 * width) / width,
+#         im: 2.0 * (y as f32 - 0.5 * height) / height,
+#     };
+#
+#     let mut i = 0;
+#     for t in 0..max_iter {
+#         if z.norm() &gt;= 2.0 {
+#             break;
+#         }
+#         z = z * z + c;
+#         i = t;
+#     }
+#     i
+# }
+#
+# // Normalizes color intensity values within RGB range
+# fn normalize(color: f32, factor: f32) -&gt; u8 {
+#     ((color * factor).powf(0.8) * 255.) as u8
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let (width, height) = (1920, 1080);
+    let mut img = ImageBuffer::new(width, height);
+    let iterations = 300;
+
+    // constants to tweak for appearance
+    let c = Complex::new(-0.8, 0.156);
+
+    let pool = ThreadPool::new(num_cpus::get());
+    let (tx, rx) = channel();
+
+    for y in 0..height {
+        let tx = tx.clone();
+        pool.execute(move || for x in 0..width {
+                         let i = julia(c, x, y, width, height, iterations);
+                         let pixel = wavelength_to_rgb(380 + i * 400 / iterations);
+                         tx.send((x, y, pixel)).expect(&quot;Could not send data!&quot;);
+                     });
+    }
+
+    for _ in 0..(width * height) {
+        let (x, y, pixel) = rx.recv()?;
+        img.put_pixel(x, y, pixel);
+    }
+    let _ = img.save(&quot;output.png&quot;)?;
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-threadpool-walk"></a></p>
+<a class="header" href="concurrency.html#calculate-sha1-sum-of-iso-files-concurrently" id="calculate-sha1-sum-of-iso-files-concurrently"><h2>Calculate SHA1 sum of *.iso files concurrently</h2></a>
+<p><a href="https://docs.rs/threadpool/"><img src="https://badge-cache.kominick.com/crates/v/threadpool.svg?label=threadpool" alt="threadpool-badge" /></a> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>This example calculates the SHA1 for every file present in the current directory. A threadpool is created using the number of cpus present in the system with <a href="https://docs.rs/num_cpus/*/num_cpus/fn.get.html"><code>num_cpus::get</code></a>. Then every returned by <a href="https://docs.rs/walkdir/*/walkdir/struct.WalkDir.html#method.new"><code>Walkdir::new</code></a> is passed into this pool to perform the operations of reading and computing SHA1. At the end the program waits for all jobs to finish. To get better results, compile this program in release mode.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate walkdir;
+extern crate ring;
+extern crate num_cpus;
+extern crate threadpool;
+
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+#
+use walkdir::WalkDir;
+use std::fs::File;
+use std::io::{BufReader, Read};
+use std::path::Path;
+use threadpool::ThreadPool;
+use std::sync::mpsc::channel;
+use ring::digest::{Context, Digest, SHA1};
+
+# // Verify the iso extension
+# fn is_iso(entry: &amp;Path) -&gt; bool {
+#     match entry.extension() {
+#         Some(e) if e.to_string_lossy().to_lowercase() == &quot;iso&quot; =&gt; true,
+#         _ =&gt; false,
+#     }
+# }
+#
+fn compute_digest&lt;P: AsRef&lt;Path&gt;&gt;(filepath: P) -&gt; Result&lt;(Digest, P)&gt; {
+    let mut buf_reader = BufReader::new(File::open(&amp;filepath)?);
+    let mut context = Context::new(&amp;SHA1);
+    let mut buffer = [0; 1024];
+
+    loop {
+        let count = buf_reader.read(&amp;mut buffer)?;
+        if count == 0 {
+            break;
+        }
+        context.update(&amp;buffer[..count]);
+    }
+
+    Ok((context.finish(), filepath))
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let pool = ThreadPool::new(num_cpus::get());
+
+    let (tx, rx) = channel();
+
+    // Look in the current directory.
+    for entry in WalkDir::new(&quot;/home/user/Downloads&quot;)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| !e.path().is_dir() &amp;&amp; is_iso(e.path())) {
+            let path = entry.path().to_owned();
+            let tx = tx.clone();
+            pool.execute(move || {
+                let digest = compute_digest(path);
+                tx.send(digest).expect(&quot;Could not send data!&quot;);
+            });
+        }
+
+    drop(tx);
+    for t in rx.iter() {
+        let (sha, path) = t?;
+        println!(&quot;{:?} {:?}&quot;, sha, path);
+    }
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<!--
+Links, in a few categories. Follow the existing structure.
+Keep lines sorted.
+-->
+<!-- Categories -->
+<!-- Crates -->
+<!-- API Reference -->
+<!-- Other Reference -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="encoding.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="net.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="encoding.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="net.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>

@@ -1,0 +1,1336 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Networking - Rust Cookbook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Collection of useful Rust code examples">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/custom.css">
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong aria-hidden="true">1.</strong> Basics</a></li><li><a href="encoding.html"><strong aria-hidden="true">2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong aria-hidden="true">3.</strong> Concurrency</a></li><li><a href="net.html" class="active"><strong aria-hidden="true">4.</strong> Networking</a></li><li><a href="app.html"><strong aria-hidden="true">5.</strong> Application development</a></li><li><a href="logging.html"><strong aria-hidden="true">6.</strong> Logging</a></li><li><a href="build_tools.html"><strong aria-hidden="true">7.</strong> Build Time Tooling</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <!-- START - Rust Cookbook customization -->
+                            <button id="edit-button" class="icon-button" type="button" title="Fork and edit" aria-label="Fork and edit" aria-haspopup="true" aria-expanded="false" aria-controls="edit">
+                                <i class="fa fa-edit">Edit</i>
+                            </button>
+                            <!-- END - Rust Cookbook customization -->
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Cookbook</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+
+                   // START - Rust Cookbook customization
+                   document.getElementById("edit-button").addEventListener("click", function(){
+                       var editWindow = window.open("https://github.com/rust-lang-nursery/rust-cookbook/edit/master/src/net.md");
+                   });
+                   // END - Rust Cookbook customization
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="net.html#networking" id="networking"><h1>Networking</h1></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="net.html#ex-url-parse">Parse a URL from a string to a <code>Url</code> type</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-base">Create a base URL by removing path segments</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-new-from-base">Create new URLs from a base URL</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-origin">Extract the URL origin (scheme / host / port)</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-rm-frag">Remove fragment identifiers and query pairs from a URL</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-basic">Make a HTTP GET request</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-download">Download a file to a temporary directory</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/tempdir/"><img src="https://badge-cache.kominick.com/crates/v/tempdir.svg?label=tempdir" alt="tempdir-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-get">Query the GitHub API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-paginated-api">Consume a paginated RESTful API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-head">Check if an API resource exists</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-custom-params">Set custom headers and URL parameters for a REST request</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/hyper/"><img src="https://badge-cache.kominick.com/crates/v/hyper.svg?label=hyper" alt="hyper-badge" /></a> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-post">Create and delete Gist with GitHub API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-file-post">POST a file to paste-rs</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-random-port-tcp">Listen on unused port TCP/IP</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-extract-links-webpage">Extract all links from a webpage HTML</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/select/"><img src="https://badge-cache.kominick.com/crates/v/select.svg?label=select" alt="select-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-check-broken-links">Check webpage for broken links</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/select/"><img src="https://badge-cache.kominick.com/crates/v/select.svg?label=select" alt="select-badge" /></a> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-extract-mediawiki-links">Extract all unique links from a MediaWiki markup</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-progress-with-range">Make a partial download with HTTP range headers</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-handle-rate-limited-api">Handle a rate-limited API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/hyper/"><img src="https://badge-cache.kominick.com/crates/v/hyper.svg?label=hyper" alt="hyper-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-http-response-mime-type">Parse the MIME type of a HTTP response</a> </td><td> <a href="https://docs.rs/mime/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=mime" alt="mime-badge" /></a> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+</tbody></table>
+<p><a name="ex-url-parse"/></p>
+<a class="header" href="net.html#parse-a-url-from-a-string-to-a-url-type" id="parse-a-url-from-a-string-to-a-url-type"><h2>Parse a URL from a string to a <code>Url</code> type</h2></a>
+<p><a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>The <a href="https://docs.rs/url/*/url/struct.Url.html#method.parse"><code>parse</code></a> method from the <code>url</code> crate validates and parses a <code>&amp;str</code> into a
+<a href="https://docs.rs/url/*/url/struct.Url.html"><code>Url</code></a> struct. The input string may be malformed so this method returns
+<code>Result&lt;Url, ParseError&gt;</code>.</p>
+<p>Once the URL has been parsed, it can be used with all of the methods on the
+<code>Url</code> type.</p>
+<p>The URL in this code parses successfully, but swapping it out for a malformed
+URL will print a message containing an explanation of what went wrong.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate url;
+
+use url::Url;
+#
+# error_chain! {
+#     foreign_links {
+#         UrlParse(url::ParseError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let s = &quot;https://github.com/rust-lang/rust/issues?labels=E-easy&amp;state=open&quot;;
+
+    let parsed = Url::parse(s)?;
+    println!(&quot;The path part of the URL is: {}&quot;, parsed.path());
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-url-base"></a></p>
+<a class="header" href="net.html#create-a-base-url-by-removing-path-segments" id="create-a-base-url-by-removing-path-segments"><h2>Create a base URL by removing path segments</h2></a>
+<p><a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate url;
+
+use url::Url;
+#
+# error_chain! {
+#     foreign_links {
+#         UrlParse(url::ParseError);
+#     }
+#     errors {
+#         CannotBeABase
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let full = &quot;https://github.com/rust-lang/cargo?asdf&quot;;
+
+    let url = Url::parse(full)?;
+    let base = base_url(url)?;
+
+    assert_eq!(base.as_str(), &quot;https://github.com/&quot;);
+    println!(&quot;The base of the URL is: {}&quot;, base);
+
+    Ok(())
+}
+
+/// Returns the base of the given URL - the part not including any path segments
+/// and query parameters.
+fn base_url(mut url: Url) -&gt; Result&lt;Url&gt; {
+    // Clear path segments.
+    match url.path_segments_mut() {
+        Ok(mut path) =&gt; {
+            path.clear();
+        }
+        Err(_) =&gt; {
+            // Certain URLs cannot be turned into a base URL.
+            return Err(Error::from_kind(ErrorKind::CannotBeABase));
+        }
+    }
+
+    // Clear query parameters.
+    url.set_query(None);
+
+    Ok(url)
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-url-new-from-base"></a></p>
+<a class="header" href="net.html#create-new-urls-from-a-base-url" id="create-new-urls-from-a-base-url"><h2>Create new URLs from a base URL</h2></a>
+<p><a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>The <a href="https://docs.rs/url/*/url/struct.Url.html#method.join"><code>join</code></a> method creates a new URL from a base and relative path.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate url;
+
+use url::Url;
+#
+# error_chain! {
+#     foreign_links {
+#         UrlParse(url::ParseError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let path = &quot;/rust-lang/cargo&quot;;
+
+    let gh = build_github_url(path)?;
+
+    assert_eq!(gh.as_str(), &quot;https://github.com/rust-lang/cargo&quot;);
+    println!(&quot;The joined URL is: {}&quot;, gh);
+
+    Ok(())
+}
+
+fn build_github_url(path: &amp;str) -&gt; Result&lt;Url&gt; {
+    // Hardcoded in our program. Caller's path will be joined to this.
+    const GITHUB: &amp;'static str = &quot;https://github.com&quot;;
+
+    let base = Url::parse(GITHUB).expect(&quot;hardcoded URL is known to be valid&quot;);
+    let joined = base.join(path)?;
+
+    Ok(joined)
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-url-origin"></a></p>
+<a class="header" href="net.html#extract-the-url-origin-scheme--host--port" id="extract-the-url-origin-scheme--host--port"><h2>Extract the URL origin (scheme / host / port)</h2></a>
+<p><a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>The <a href="https://docs.rs/url/*/url/struct.Url.html"><code>Url</code></a> struct exposes various methods to extract information about the URL
+it represents.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate url;
+
+use url::{Url, Host};
+
+# error_chain! {
+#     foreign_links {
+#         UrlParse(url::ParseError);
+#     }
+# }
+#
+fn run() -&gt; Result&lt;()&gt; {
+    let s = &quot;ftp://rust-lang.org/examples&quot;;
+
+    let url = Url::parse(s)?;
+
+    assert_eq!(url.scheme(), &quot;ftp&quot;);
+    assert_eq!(url.host(), Some(Host::Domain(&quot;rust-lang.org&quot;)));
+    assert_eq!(url.port_or_known_default(), Some(21));
+    println!(&quot;The origin is as expected!&quot;);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p>The same result can be obtained using the <a href="https://docs.rs/url/*/url/struct.Url.html#method.origin"><code>origin</code></a> method as well.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate url;
+
+use url::{Url, Origin, Host};
+
+# error_chain! {
+#     foreign_links {
+#         UrlParse(url::ParseError);
+#     }
+# }
+#
+fn run() -&gt; Result&lt;()&gt; {
+    let s = &quot;ftp://rust-lang.org/examples&quot;;
+
+    let url = Url::parse(s)?;
+
+    let expected_scheme = &quot;ftp&quot;.to_owned();
+    let expected_host = Host::Domain(&quot;rust-lang.org&quot;.to_owned());
+    let expected_port = 21;
+    let expected = Origin::Tuple(expected_scheme, expected_host, expected_port);
+
+    let origin = url.origin();
+    assert_eq!(origin, expected);
+    println!(&quot;The origin is as expected!&quot;);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-url-rm-frag"></a></p>
+<a class="header" href="net.html#remove-fragment-identifiers-and-query-pairs-from-a-url" id="remove-fragment-identifiers-and-query-pairs-from-a-url"><h2>Remove fragment identifiers and query pairs from a URL</h2></a>
+<p><a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>Parses <a href="https://docs.rs/url/*/url/struct.Url.html"><code>Url</code></a> and slices it with <a href="https://docs.rs/url/*/url/enum.Position.html"><code>url::Position</code></a> to strip unneeded URL parts.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate url;
+
+use url::{Url, Position};
+#
+# error_chain! {
+#     foreign_links {
+#         UrlParse(url::ParseError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let parsed = Url::parse(&quot;https://github.com/rust-lang/rust/issues?labels=E-easy&amp;state=open&quot;)?;
+    let cleaned: &amp;str = &amp;parsed[..Position::AfterPath];
+    println!(&quot;cleaned: {}&quot;, cleaned);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-url-basic"></a></p>
+<a class="header" href="net.html#make-a-http-get-request" id="make-a-http-get-request"><h2>Make a HTTP GET request</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>Parses the supplied URL and makes a synchronous HTTP GET request
+with <a href="https://docs.rs/reqwest/*/reqwest/fn.get.html"><code>reqwest::get</code></a>. Prints obtained <a href="https://docs.rs/reqwest/*/reqwest/struct.Response.html"><code>reqwest::Response</code></a>
+status and headers subsequently reading HTTP response body into an allocated <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> via <a href="https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_string"><code>read_to_string</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate reqwest;
+
+use std::io::Read;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         HttpRequest(reqwest::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let mut res = reqwest::get(&quot;http://httpbin.org/get&quot;)?;
+    let mut body = String::new();
+    res.read_to_string(&amp;mut body)?;
+
+    println!(&quot;Status: {}&quot;, res.status());
+    println!(&quot;Headers:\n{}&quot;, res.headers());
+    println!(&quot;Body:\n{}&quot;, body);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-url-download"></a></p>
+<a class="header" href="net.html#download-a-file-to-a-temporary-directory" id="download-a-file-to-a-temporary-directory"><h2>Download a file to a temporary directory</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/tempdir/"><img src="https://badge-cache.kominick.com/crates/v/tempdir.svg?label=tempdir" alt="tempdir-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Creates a temporary directory with <a href="https://docs.rs/tempdir/*/tempdir/struct.TempDir.html#method.new"><code>TempDir::new</code></a> and  synchronously downloads
+a file over HTTP using <a href="https://docs.rs/reqwest/*/reqwest/fn.get.html"><code>reqwest::get</code></a>.
+Creates a target <a href="https://doc.rust-lang.org/std/fs/struct.File.html"><code>File</code></a> with name obtained from <a href="https://docs.rs/reqwest/*/reqwest/struct.Response.html#method.url"><code>Response::url</code></a> within <a href="https://docs.rs/tempdir/*/tempdir/struct.TempDir.html#method.path"><code>TempDir::path</code></a>
+and copies downloaded data into it with <a href="https://doc.rust-lang.org/std/io/fn.copy.html"><code>io::copy</code></a>.
+The temporary directory is automatically removed on <code>run</code> function return.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate reqwest;
+extern crate tempdir;
+
+use std::io::copy;
+use std::fs::File;
+use tempdir::TempDir;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         HttpRequest(reqwest::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    // create a temp dir with prefix &quot;example&quot;
+    let tmp_dir = TempDir::new(&quot;example&quot;)?;
+    // make HTTP request for remote content
+    let target = &quot;https://www.rust-lang.org/logos/rust-logo-512x512.png&quot;;
+    let mut response = reqwest::get(target)?;
+
+    let mut dest = {
+        // extract target filename from URL
+        let fname = response
+            .url()
+            .path_segments()
+            .and_then(|segments| segments.last())
+            .and_then(|name| if name.is_empty() { None } else { Some(name) })
+            .unwrap_or(&quot;tmp.bin&quot;);
+
+        println!(&quot;file to download: '{}'&quot;, fname);
+        let fname = tmp_dir.path().join(fname);
+        println!(&quot;will be located under: '{:?}'&quot;, fname);
+        // create file with given name inside the temp dir
+        File::create(fname)?
+    };
+    // data is copied into the target file
+    copy(&amp;mut response, &amp;mut dest)?;
+    // tmp_dir is implicitly removed
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-rest-get"/></p>
+<a class="header" href="net.html#query-the-github-api" id="query-the-github-api"><h2>Query the GitHub API</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a></p>
+<p>Queries GitHub <a href="https://developer.github.com/v3/activity/starring/#list-stargazers">stargazers API v3</a>
+with <a href="https://docs.rs/reqwest/*/reqwest/fn.get.html"><code>reqwest::get</code></a> to get list of all users who have marked a GitHub project with a star. <a href="https://docs.rs/reqwest/*/reqwest/struct.Response.html"><code>reqwest::Response</code></a> is deserialized with <a href="https://docs.rs/reqwest/*/reqwest/struct.Response.html#method.json"><code>Response::json</code></a> into <code>User</code> objects implementing <a href="https://docs.rs/serde/*/serde/trait.Deserialize.html"><code>serde::Deserialize</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate serde_derive;
+extern crate reqwest;
+
+#[derive(Deserialize, Debug)]
+struct User {
+    login: String,
+    id: u32,
+    // remaining fields not deserialized for brevity
+}
+#
+# error_chain! {
+#     foreign_links {
+#         Reqwest(reqwest::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let request_url = format!(&quot;https://api.github.com/repos/{owner}/{repo}/stargazers&quot;,
+                              owner = &quot;rust-lang-nursery&quot;,
+                              repo = &quot;rust-cookbook&quot;);
+    println!(&quot;{}&quot;, request_url);
+    let mut response = reqwest::get(&amp;request_url)?;
+
+    let users: Vec&lt;User&gt; = response.json()?;
+    println!(&quot;{:?}&quot;, users);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-rest-head"/></p>
+<a class="header" href="net.html#check-if-an-api-resource-exists" id="check-if-an-api-resource-exists"><h2>Check if an API resource exists</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>Query the <a href="https://api.github.com/users">GitHub Users Endpoint</a> using a HEAD request (<a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html#method.head"><code>Client::head</code></a>) and then inspect the
+response code to determine success. This is a quick way to query a rest resource without
+needing to receive a body. You can also configure the <a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html"><code>reqwest::Client</code></a> with <a href="https://docs.rs/reqwest/*/reqwest/struct.ClientBuilder.html#method.timeout"><code>ClientBuilder::timeout</code></a>
+which ensures that a request will not last longer than what is passed to the timeout function.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate reqwest;
+
+use std::time::Duration;
+use reqwest::ClientBuilder;
+#
+# error_chain! {
+#     foreign_links {
+#         Reqwest(reqwest::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let user = &quot;ferris-the-crab&quot;;
+    let request_url = format!(&quot;https://api.github.com/users/{}&quot;, user);
+    println!(&quot;{}&quot;, request_url);
+
+    // The timeout for the request is set to 5 seconds.
+    let timeout = Duration::new(5, 0);
+
+    let client = ClientBuilder::new().timeout(timeout).build()?;
+    let response = client.head(&amp;request_url).send()?;
+
+    if response.status().is_success() {
+        println!(&quot;{} is a user!&quot;, user);
+    } else {
+        println!(&quot;{} is not a user!&quot;, user);
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-rest-custom-params"/></p>
+<a class="header" href="net.html#set-custom-headers-and-url-parameters-for-a-rest-request" id="set-custom-headers-and-url-parameters-for-a-rest-request"><h2>Set custom headers and URL parameters for a REST request</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/hyper/"><img src="https://badge-cache.kominick.com/crates/v/hyper.svg?label=hyper" alt="hyper-badge" /></a> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>Sets both standard and custom HTTP headers as well as URL parameters
+for HTTP GET request. Firstly creates a custom header of type <code>XPoweredBy</code>
+with <a href="https://docs.rs/hyper/*/hyper/macro.header.html"><code>hyper::header!</code></a> macro. Secondly calls <a href="https://docs.rs/url/*/url/struct.Url.html#method.parse_with_params"><code>Url::parse_with_params</code></a>
+in order to build a complex URL with specified key value pairs.
+Lastly sets standard headers <a href="https://docs.rs/hyper/*/hyper/header/struct.UserAgent.html"><code>header::UserAgent</code></a> and <a href="https://docs.rs/hyper/*/hyper/header/struct.Authorization.html"><code>header::Authorization</code></a>
+as well as custom one <code>XPoweredBy</code> with <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html#method.header"><code>RequestBuilder::header</code></a> prior to making
+the request with <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html#method.send"><code>RequestBuilder::send</code></a>.</p>
+<p>The code is run against <a href="http://httpbin.org/headers">http://httpbin.org/headers</a> service which responds with
+a JSON dict containing all request headers for easy verification.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate url;
+extern crate reqwest;
+#[macro_use]
+extern crate hyper;
+#[macro_use]
+extern crate serde_derive;
+
+use std::collections::HashMap;
+use url::Url;
+use reqwest::Client;
+use reqwest::header::{UserAgent, Authorization, Bearer};
+
+// Custom header type
+header! { (XPoweredBy, &quot;X-Powered-By&quot;) =&gt; [String] }
+
+// Helper for verification
+#[derive(Deserialize, Debug)]
+pub struct HeadersEcho {
+    pub headers: HashMap&lt;String, String&gt;,
+}
+#
+# error_chain! {
+#     foreign_links {
+#         Reqwest(reqwest::Error);
+#         UrlParse(url::ParseError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    // Make request to webservice that will respond with JSON dict containing
+    // the headders set on HTTP GET request.
+    let url = Url::parse_with_params(&quot;http://httpbin.org/headers&quot;,
+                                     &amp;[(&quot;lang&quot;, &quot;rust&quot;), (&quot;browser&quot;, &quot;servo&quot;)])?;
+
+    let mut response = Client::new()
+        .get(url)
+        .header(UserAgent::new(&quot;Rust-test&quot;))
+        .header(Authorization(Bearer { token: &quot;DEadBEEfc001cAFeEDEcafBAd&quot;.to_owned() }))
+        .header(XPoweredBy(&quot;Guybrush Threepwood&quot;.to_owned()))
+        .send()?;
+
+    // JSON response should match the headers set on request
+    let out: HeadersEcho = response.json()?;
+    assert_eq!(out.headers[&quot;Authorization&quot;],
+               &quot;Bearer DEadBEEfc001cAFeEDEcafBAd&quot;);
+    assert_eq!(out.headers[&quot;User-Agent&quot;], &quot;Rust-test&quot;);
+    assert_eq!(out.headers[&quot;X-Powered-By&quot;], &quot;Guybrush Threepwood&quot;);
+    // Response contains full URL used to make the request
+    assert_eq!(response.url().as_str(),
+               &quot;http://httpbin.org/headers?lang=rust&amp;browser=servo&quot;);
+
+    println!(&quot;{:?}&quot;, out);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-rest-post"/></p>
+<a class="header" href="net.html#create-and-delete-gist-with-github-api" id="create-and-delete-gist-with-github-api"><h2>Create and delete Gist with GitHub API</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a></p>
+<p>Creates a gist with POST request to GitHub <a href="https://developer.github.com/v3/gists/">gists API v3</a> using <a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html#method.post"><code>Client::post</code></a> and subsequently removes it with DELETE request using <a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html#method.delete"><code>Client::delete</code></a>.</p>
+<p>The <a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html"><code>reqwest::Client</code></a> is responsible for details of both requests including
+URL, body and authentication. POST body comes from <a href="https://docs.rs/serde_json/*/serde_json/macro.json.html"><code>serde_json::json!</code></a> macro
+which provides a way to pass an arbitrary JSON body. Call to <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html#method.json"><code>RequestBuilder::json</code></a> sets the request body while <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html#method.basic_auth"><code>RequestBuilder::basic_auth</code></a> handles authentication.
+Finally the call to <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html#method.send"><code>RequestBuilder::send</code></a> synchronously executes the requests.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate reqwest;
+#[macro_use]
+extern crate serde_derive;
+#[macro_use]
+extern crate serde_json;
+
+use std::env;
+use reqwest::Client;
+#
+# error_chain! {
+#     foreign_links {
+#         EnvVar(env::VarError);
+#         HttpRequest(reqwest::Error);
+#     }
+# }
+
+#[derive(Deserialize, Debug)]
+struct Gist {
+    id: String,
+    html_url: String,
+    // remaining fields not deserialized for brevity
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let gh_user = env::var(&quot;GH_USER&quot;)?;
+    let gh_pass = env::var(&quot;GH_PASS&quot;)?;
+
+    // The type `gist_body` is `serde_json::Value`
+    let gist_body = json!({
+        &quot;description&quot;: &quot;the description for this gist&quot;,
+        &quot;public&quot;: true,
+        &quot;files&quot;: {
+             &quot;main.rs&quot;: {
+             &quot;content&quot;: r#&quot;fn main() { println!(&quot;hello world!&quot;);}&quot;#
+            }
+        }});
+
+    // create the gist
+    let request_url = &quot;https://api.github.com/gists&quot;;
+    let mut response = Client::new()
+        .post(request_url)
+        .basic_auth(gh_user.clone(), Some(gh_pass.clone()))
+        .json(&amp;gist_body)
+        .send()?;
+
+    let gist: Gist = response.json()?;
+    println!(&quot;Created {:?}&quot;, gist);
+
+    // delete the gist
+    let request_url = format!(&quot;{}/{}&quot;,request_url, gist.id);
+    let response = Client::new()
+        .delete(&amp;request_url)
+        .basic_auth(gh_user, Some(gh_pass))
+        .send()?;
+
+    println!(&quot;Gist {} deleted! Status code: {}&quot;,gist.id, response.status());
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p>For the sake of simplicity the example uses <a href="https://tools.ietf.org/html/rfc2617">HTTP Basic Auth</a> in order to
+authorize access to <a href="https://developer.github.com/v3/auth/">GitHub API</a>. A more typical use case would be to
+employ one of the much more complex <a href="https://oauth.net/getting-started/">OAuth</a> authorization flows.</p>
+<p><a name="ex-paginated-api"></a></p>
+<a class="header" href="net.html#consume-a-paginated-restful-api" id="consume-a-paginated-restful-api"><h2>Consume a paginated RESTful API</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a></p>
+<p>Wraps a paginated web API in a convenient Rust iterator. The iterator lazily
+fetches the next page of results from the remote server as it arrives at the end
+of each page.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate serde_derive;
+extern crate reqwest;
+#
+# error_chain! {
+#     foreign_links {
+#         Reqwest(reqwest::Error);
+#     }
+# }
+
+#[derive(Deserialize)]
+struct ApiResponse {
+    dependencies: Vec&lt;Dependency&gt;,
+    meta: Meta,
+}
+
+// Could capture more fields here if needed
+#[derive(Deserialize)]
+struct Dependency {
+    crate_id: String,
+}
+
+#[derive(Deserialize)]
+struct Meta {
+    total: u32,
+}
+
+struct ReverseDependencies {
+    crate_id: String,
+    dependencies: &lt;Vec&lt;Dependency&gt; as IntoIterator&gt;::IntoIter,
+    client: reqwest::Client,
+    page: u32,
+    per_page: u32,
+    total: u32,
+}
+
+impl ReverseDependencies {
+    fn of(crate_id: &amp;str) -&gt; Result&lt;Self&gt; {
+        Ok(ReverseDependencies {
+               crate_id: crate_id.to_owned(),
+               dependencies: vec![].into_iter(),
+               client: reqwest::Client::new(),
+               page: 0,
+               per_page: 100,
+               total: 0,
+           })
+    }
+
+    fn try_next(&amp;mut self) -&gt; Result&lt;Option&lt;Dependency&gt;&gt; {
+        // If the previous page has a dependency that hasn't been looked at.
+        if let Some(dep) = self.dependencies.next() {
+            return Ok(Some(dep));
+        }
+
+        // If there are no more reverse dependencies.
+        if self.page &gt; 0 &amp;&amp; self.page * self.per_page &gt;= self.total {
+            return Ok(None);
+        }
+
+        // Fetch the next page.
+        self.page += 1;
+        let url = format!(&quot;https://crates.io/api/v1/crates/{}/reverse_dependencies?page={}&amp;per_page={}&quot;,
+                          self.crate_id,
+                          self.page,
+                          self.per_page);
+
+        let response = self.client.get(&amp;url).send()?.json::&lt;ApiResponse&gt;()?;
+        self.dependencies = response.dependencies.into_iter();
+        self.total = response.meta.total;
+        Ok(self.dependencies.next())
+    }
+}
+
+impl Iterator for ReverseDependencies {
+    type Item = Result&lt;Dependency&gt;;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        // Some juggling required here because `try_next` returns a result
+        // containing an option, while `next` is supposed to return an option
+        // containing a result.
+        match self.try_next() {
+            Ok(Some(dep)) =&gt; Some(Ok(dep)),
+            Ok(None) =&gt; None,
+            Err(err) =&gt; Some(Err(err)),
+        }
+    }
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    for dep in ReverseDependencies::of(&quot;serde&quot;)? {
+        println!(&quot;reverse dependency: {}&quot;, dep?.crate_id);
+    }
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-file-post"/></p>
+<a class="header" href="net.html#post-a-file-to-paste-rs" id="post-a-file-to-paste-rs"><h2>POST a file to paste-rs.</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>A connection is established to https://paste.rs using <a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html"><code>reqwest::Client</code></a>,
+following the <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html"><code>reqwest::RequestBuilder</code></a> pattern.  Calling <a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html#method.post"><code>Client::post</code></a>
+with a URL establishes the destination, <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html#method.body"><code>RequestBuilder::body</code></a> sets the
+content to send by reading the file, and <a href="https://docs.rs/reqwest/*/reqwest/struct.RequestBuilder.html#method.send"><code>RequestBuilder::send</code></a> blocks until
+the file uploads and the response is received.  The response is read with
+<a href="https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_string"><code>read_to_string</code></a>, and finally displayed in the console.</p>
+<pre><pre class="playpen"><code class="language-rust no_run">extern crate reqwest;
+
+# #[macro_use]
+# extern crate error_chain;
+#
+use std::fs::File;
+use std::io::Read;
+use reqwest::Client;
+#
+# error_chain! {
+#     foreign_links {
+#         HttpRequest(reqwest::Error);
+#         IoError(::std::io::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let paste_api = &quot;https://paste.rs&quot;;
+    let file = File::open(&quot;message&quot;)?;
+
+    // blocks until paste.rs returns a response
+    let mut response = Client::new().post(paste_api).body(file).send()?;
+    let mut response_body = String::new();
+    response.read_to_string(&amp;mut response_body)?;
+    println!(&quot;Your paste is located at: {}&quot;, response_body);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-random-port-tcp"></a></p>
+<a class="header" href="net.html#listen-on-unused-port-tcpip" id="listen-on-unused-port-tcpip"><h2>Listen on unused port TCP/IP</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>In this example, the port is displayed on the console, and the program will
+listen until a request is made.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#
+use std::net::{SocketAddrV4, Ipv4Addr, TcpListener};
+use std::io::Read;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(::std::io::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let loopback = Ipv4Addr::new(127, 0, 0, 1);
+    // Assigning port 0 requests the OS to assign a free port
+    let socket = SocketAddrV4::new(loopback, 0);
+    let listener = TcpListener::bind(socket)?;
+    let port = listener.local_addr()?;
+    println!(&quot;Listening on {}, access this port to end the program&quot;, port);
+    let (mut tcp_stream, addr) = listener.accept()?; //block  until requested
+    println!(&quot;Connection received! {:?} is sending data.&quot;, addr);
+    let mut input = String::new();
+    // read from the socket until connection closed by client, discard byte count.
+    let _ = tcp_stream.read_to_string(&amp;mut input)?;
+    println!(&quot;{:?} says {}&quot;, addr, input);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p>The <code>std</code> library is leveraged to make a well formed IP/port with the
+<a href="https://doc.rust-lang.org/std/net/struct.SocketAddrV4.html"><code>SocketAddrV4</code></a> and <a href="https://doc.rust-lang.org/std/net/struct.Ipv4Addr.html"><code>Ipv4Addr</code></a> structs.  An unused random port is requested
+by passing 0 to <a href="https://doc.rust-lang.org/std/net/struct.TcpListener.html#method.bind"><code>TcpListener::bind</code></a>.  The assigned address is available via
+<a href="https://doc.rust-lang.org/std/net/struct.TcpListener.html#method.local_addr"><code>TcpListener::local_addr</code></a>.</p>
+<p><a href="https://doc.rust-lang.org/std/net/struct.TcpListener.html#method.accept"><code>TcpListener::accept</code></a> synchronously waits for an incoming connection and
+returns a <code>(</code><a href="https://doc.rust-lang.org/std/net/struct.TcpStream.html"><code>TcpStream</code></a>,  <a href="https://doc.rust-lang.org/std/net/struct.SocketAddrV4.html"><code>SocketAddrV4</code></a><code>)</code> representing the request.
+Reading on the socket with <a href="https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_string"><code>read_to_string</code></a> will wait until the connection is
+closed which can be tested with <code>telnet ip port</code>.  For example, if the program
+shows Listening on 127.0.0.1:11500, run</p>
+<p><code>telnet 127.0.0.1 11500</code></p>
+<p>After sending data in telnet press <code>ctrl-]</code> and type <code>quit</code>.</p>
+<p><a name="ex-extract-links-webpage"/></p>
+<a class="header" href="net.html#extract-all-links-from-a-webpage-html" id="extract-all-links-from-a-webpage-html"><h2>Extract all links from a webpage HTML</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/select/"><img src="https://badge-cache.kominick.com/crates/v/select.svg?label=select" alt="select-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>Use <a href="https://docs.rs/reqwest/*/reqwest/fn.get.html"><code>reqwest::get</code></a> to perform a HTTP GET request and then use <a href="https://docs.rs/select/*/select/document/struct.Document.html#method.from_read"><code>Document::from_read</code></a> to parse the response into a HTML document.
+We can then retrieve all the links from the document by using <a href="https://docs.rs/select/*/select/document/struct.Document.html#method.find"><code>find</code></a> with the criteria of the <a href="https://docs.rs/select/*/select/predicate/struct.Name.html"><code>Name</code></a> being &quot;a&quot;.
+This returns a <a href="https://docs.rs/select/*/select/selection/struct.Selection.html"><code>Selection</code></a> that we <a href="https://doc.rust-lang.org/core/iter/trait.Iterator.html#method.filter_map"><code>filter_map</code></a> on to retrieve the urls from links that have the &quot;href&quot; <a href="https://docs.rs/select/*/select/node/struct.Node.html#method.attr"><code>attr</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate reqwest;
+extern crate select;
+
+use select::document::Document;
+use select::predicate::Name;
+#
+# error_chain! {
+#    foreign_links {
+#        ReqError(reqwest::Error);
+#        IoError(std::io::Error);
+#    }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let res = reqwest::get(&quot;https://www.rust-lang.org/en-US/&quot;)?;
+
+    Document::from_read(res)?
+        .find(Name(&quot;a&quot;))
+        .filter_map(|n| n.attr(&quot;href&quot;))
+        .for_each(|x| println!(&quot;{}&quot;, x));
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-check-broken-links"/></p>
+<a class="header" href="net.html#check-a-webpage-for-broken-links" id="check-a-webpage-for-broken-links"><h2>Check a webpage for broken links</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/select/"><img src="https://badge-cache.kominick.com/crates/v/select.svg?label=select" alt="select-badge" /></a> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>We call &quot;get_base_url&quot; to retrieve the base URL. If the document has a &quot;base&quot; tag, we get the &quot;href&quot; <a href="https://docs.rs/select/*/select/node/struct.Node.html#method.attr"><code>attr</code></a> from the first occurrence of the &quot;base&quot; tag. This is then used as the base URL. Otherwise, we can use <a href="https://docs.rs/url/*/url/enum.Position.html#variant.BeforePath"><code>Position::BeforePath</code></a> with the original URL to get the base of that URL.</p>
+<p>We iterate through all the links in the document and get the absolute URL for each (using <a href="https://docs.rs/url/*/url/struct.ParseOptions.html"><code>url::ParseOptions</code></a> and <a href="https://docs.rs/url/*/url/struct.Url.html#method.parse"><code>Url::parse</code></a>). We then filter these so that we can report which links are broken.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate reqwest;
+extern crate select;
+extern crate url;
+
+use std::collections::HashSet;
+
+use url::{Url, Position};
+use reqwest::StatusCode;
+use select::document::Document;
+use select::predicate::Name;
+#
+# error_chain! {
+#   foreign_links {
+#       ReqError(reqwest::Error);
+#       IoError(std::io::Error);
+#       UrlParseError(url::ParseError);
+#   }
+# }
+
+fn get_base_url(url: &amp;Url, doc: &amp;Document) -&gt; Result&lt;Url&gt; {
+    let base_tag_href = doc.find(Name(&quot;base&quot;)).filter_map(|n| n.attr(&quot;href&quot;)).nth(0);
+
+    let base_url = base_tag_href.map_or_else(
+        || Url::parse(&amp;url[..Position::BeforePath]),
+        Url::parse,
+    )?;
+
+    Ok(base_url)
+}
+
+fn check_link(url: &amp;Url) -&gt; Result&lt;bool&gt; {
+    let res = reqwest::get(url.as_ref())?;
+
+    Ok(res.status() != StatusCode::NotFound)
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let url = Url::parse(&quot;https://www.rust-lang.org/en-US/&quot;)?;
+
+    let res = reqwest::get(url.as_ref())?;
+    let document = Document::from_read(res)?;
+
+    let base_url = get_base_url(&amp;url, &amp;document)?;
+
+    let base_parser = Url::options().base_url(Some(&amp;base_url));
+
+    let links: HashSet&lt;Url&gt; = document
+        .find(Name(&quot;a&quot;))
+        .filter_map(|n| n.attr(&quot;href&quot;))
+        .filter_map(|link| base_parser.parse(link).ok())
+        .collect();
+
+    links
+        .iter()
+        .filter(|link| check_link(link).ok() == Some(false))
+        .for_each(|x| println!(&quot;{} is broken.&quot;, x));
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-extract-mediawiki-links"/></p>
+<a class="header" href="net.html#extract-all-unique-links-from-a-mediawiki-markup" id="extract-all-unique-links-from-a-mediawiki-markup"><h2>Extract all unique links from a MediaWiki markup</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>Pull the source of a MediaWiki page using <a href="https://docs.rs/reqwest/*/reqwest/fn.get.html"><code>reqwest::get</code></a> and then
+look for all entries of internal and external links with
+<a href="https://doc.rust-lang.org/regex/*/regex/struct.Regex.html#method.captures_iter"><code>Regex::captures_iter</code></a>. Using <a href="https://doc.rust-lang.org/std/borrow/enum.Cow.html"><code>Cow</code></a> avoids excessive <a href="https://doc.rust-lang.org/std/string/struct.String.html"><code>String</code></a> allocations.</p>
+<p>MediaWiki link syntax is described <a href="https://www.mediawiki.org/wiki/Help:Links">here</a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate lazy_static;
+extern crate reqwest;
+extern crate regex;
+
+use std::io::Read;
+use std::collections::HashSet;
+use std::borrow::Cow;
+use regex::Regex;
+
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         Reqwest(reqwest::Error);
+#         Regex(regex::Error);
+#     }
+# }
+#
+fn extract_links(content: &amp;str) -&gt; Result&lt;HashSet&lt;Cow&lt;str&gt;&gt;&gt; {
+    lazy_static! {
+        static ref WIKI_REGEX: Regex =
+            Regex::new(r&quot;(?x)
+                \[\[(?P&lt;internal&gt;[^\[\]|]*)[^\[\]]*\]\]    # internal links
+                |
+                (url=|URL\||\[)(?P&lt;external&gt;http.*?)[ \|}] # external links
+            &quot;).unwrap();
+    }
+
+    let links: HashSet&lt;_&gt; = WIKI_REGEX
+        .captures_iter(content)
+        .map(|c| match (c.name(&quot;internal&quot;), c.name(&quot;external&quot;)) {
+            (Some(val), None) =&gt; Cow::from(val.as_str().to_lowercase()),
+            (None, Some(val)) =&gt; Cow::from(val.as_str()),
+            _ =&gt; unreachable!(),
+        })
+        .collect();
+
+    Ok(links)
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let mut content = String::new();
+    reqwest::get(
+        &quot;https://en.wikipedia.org/w/index.php?title=Rust_(programming_language)&amp;action=raw&quot;,
+    )?
+        .read_to_string(&amp;mut content)?;
+
+    println!(&quot;{:#?}&quot;, extract_links(&amp;content)?);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-progress-with-range"/></p>
+<a class="header" href="net.html#make-a-partial-download-with-http-range-headers" id="make-a-partial-download-with-http-range-headers"><h2>Make a partial download with HTTP range headers</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>Uses <a href="https://docs.rs/reqwest/*/reqwest/struct.Client.html#method.head"><code>reqwest::Client::head</code></a> to get the content-length and validate if the server sets the header
+<a href="https://docs.rs/reqwest/*/reqwest/header/struct.ContentRange.html"><code>reqwest::header::ContentRange</code></a>, required to confirm the support of partial downloads.</p>
+<p>If supported, downloads the content using <a href="https://docs.rs/reqwest/*/reqwest/fn.get.html"><code>reqwest::get</code></a>, setting the <a href="https://docs.rs/reqwest/*/reqwest/header/enum.Range.html"><code>reqwest::header::Range</code></a>
+to do partial downloads printing basic progress messages.
+in chunks of 10240 bytes</p>
+<p>Range header is defined in <a href="https://tools.ietf.org/html/rfc7233#section-3.1">RFC7233</a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate reqwest;
+
+use std::fs::File;
+use reqwest::header::{ContentRange, ContentRangeSpec, Range};
+use reqwest::StatusCode;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         Reqwest(reqwest::Error);
+#     }
+# }
+#
+# struct PartialRangeIter {
+#     start: u64,
+#     end: u64,
+#     buffer_size: u32,
+# }
+#
+# impl PartialRangeIter {
+#     pub fn new(content_range: &amp;ContentRangeSpec, buffer_size: u32) -&gt; Result&lt;Self&gt; {
+#         if buffer_size == 0 {
+#             Err(&quot;invalid buffer_size, give a value greater than zero.&quot;)?;
+#         }
+#
+#         match *content_range {
+#             ContentRangeSpec::Bytes { range: Some(range), .. } =&gt; Ok(PartialRangeIter {
+#                 start: range.0,
+#                 end: range.1,
+#                 buffer_size,
+#             }),
+#             _ =&gt; Err(&quot;invalid range specification&quot;)?,
+#         }
+#     }
+# }
+#
+# impl Iterator for PartialRangeIter {
+#     type Item = Range;
+#
+#     fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+#         if self.start &gt; self.end {
+#             None
+#         } else {
+#             let prev_start = self.start;
+#             self.start += std::cmp::min(self.buffer_size as u64, self.end - self.start + 1);
+#             Some(Range::bytes(prev_start, self.start - 1))
+#         }
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    // For the purpose of this example only a small download of 102400 bytes
+    // with chunk size of 10240 bytes is used.
+    let url = &quot;https://httpbin.org/range/102400?duration=2&quot;;
+    const CHUNK_SIZE: u32 = 10240;
+
+    let client = reqwest::Client::new();
+    let response = client.head(url).send()?;
+    let range = response.headers().get::&lt;ContentRange&gt;().ok_or(
+        &quot;response doesn't include the expected ranges&quot;,
+    )?;
+
+    let mut output_file = File::create(&quot;download.bin&quot;)?;
+
+    println!(&quot;starting download...&quot;);
+    for range in PartialRangeIter::new(range, CHUNK_SIZE)? {
+
+        println!(&quot;range {:?}&quot;, range);
+        let mut response = client.get(url).header(range).send()?;
+
+        let status = response.status();
+        if !(status == StatusCode::Ok || status == StatusCode::PartialContent) {
+            bail!(&quot;Unexpected server response: {}&quot;, status)
+        }
+
+        std::io::copy(&amp;mut response, &amp;mut output_file)?;
+    }
+
+    println!(&quot;Finished with success!&quot;);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-handle-rate-limited-api"/></p>
+<a class="header" href="net.html#handle-a-rate-limited-api" id="handle-a-rate-limited-api"><h2>Handle a rate-limited API</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/hyper/"><img src="https://badge-cache.kominick.com/crates/v/hyper.svg?label=hyper" alt="hyper-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a></p>
+<p>This example uses the <a href="https://developer.github.com/v3/#rate-limiting">GitHub API - Rate limiting</a>, as an example of how to
+handle remote server errors.  This example uses the <a href="https://docs.rs/hyper/*/hyper/macro.header.html"><code>hyper::header!</code></a> macro
+to parse the response header and checks for <a href="https://docs.rs/reqwest/*/reqwest/enum.StatusCode.html#variant.Forbidden"><code>reqwest::StatusCode::Forbidden</code></a>.
+If the response exceeds the rate limit, the example waits and retries.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate hyper;
+extern crate reqwest;
+
+use std::time::{Duration, UNIX_EPOCH};
+use std::thread;
+use reqwest::StatusCode;
+#
+# error_chain! {
+#    foreign_links {
+#        Io(std::io::Error);
+#        Time(std::time::SystemTimeError);
+#        Reqwest(reqwest::Error);
+#    }
+# }
+
+header! { (XRateLimitLimit, &quot;X-RateLimit-Limit&quot;) =&gt; [usize] }
+header! { (XRateLimitRemaining, &quot;X-RateLimit-Remaining&quot;) =&gt; [usize] }
+header! { (XRateLimitReset, &quot;X-RateLimit-Reset&quot;) =&gt; [u64] }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let url = &quot;https://api.github.com/users/rust-lang-nursery &quot;;
+    let client = reqwest::Client::new();
+    let response = client.get(url).send()?;
+
+    let rate_limit = response.headers().get::&lt;XRateLimitLimit&gt;().ok_or(
+        &quot;response doesn't include the expected X-RateLimit-Limit header&quot;,
+    )?;
+
+    let rate_remaining = response.headers().get::&lt;XRateLimitRemaining&gt;().ok_or(
+        &quot;response doesn't include the expected X-RateLimit-Remaining header&quot;,
+    )?;
+
+    let rate_reset_at = response.headers().get::&lt;XRateLimitReset&gt;().ok_or(
+        &quot;response doesn't include the expected X-RateLimit-Reset header&quot;,
+    )?;
+
+    let rate_reset_within = Duration::from_secs(**rate_reset_at) - UNIX_EPOCH.elapsed()?;
+
+    if response.status() == StatusCode::Forbidden &amp;&amp; **rate_remaining == 0 {
+        println!(&quot;Sleeping for {} seconds.&quot;, rate_reset_within.as_secs());
+        thread::sleep(rate_reset_within);
+        return run();
+    }
+    else {
+        println!(
+            &quot;Rate limit is currently {}/{}, the reset of this limit will be within {} seconds.&quot;,
+            **rate_remaining,
+            **rate_limit,
+            rate_reset_within.as_secs(),
+        );
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-http-response-mime-type"/></p>
+<a class="header" href="net.html#parse-the-mime-type-of-a-http-response" id="parse-the-mime-type-of-a-http-response"><h2>Parse the MIME type of a HTTP response</h2></a>
+<p><a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/mime/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=mime" alt="mime-badge" /></a> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a></p>
+<p>When receiving a HTTP reponse from <em>reqwest</em> the <a href="https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/MIME_types">MIME type</a> or media type can be
+found in the <a href="https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type">Content-Type</a> header. The header can be looked up by using
+<a href="https://docs.rs/reqwest/*/reqwest/header/struct.Headers.html#method.get"><code>reqwest::Headers::get</code></a> with the generic type <a href="https://docs.rs/reqwest/*/reqwest/header/struct.ContentType.html"><code>reqwest::header::ContentType</code></a>.
+Because <code>ContentType</code> implements Deref with <a href="https://docs.rs/mime/*/mime/struct.Mime.html"><code>mime::Mime</code></a> as a target, parts of the
+MIME type can be obtained directly.</p>
+<p>The <em>Mime</em> crate also has some, commonly used, predefined MIME types. These can be
+used for comparison and matching on the types. <em>Reqwest</em> also exports the <em>mime</em>
+crate, which can be found in the <code>reqwest::mime</code> module.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate mime;
+extern crate reqwest;
+
+use reqwest::header::ContentType;
+#
+# error_chain! {
+#    foreign_links {
+#        Reqwest(reqwest::Error);
+#    }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let response = reqwest::get(&quot;https://www.rust-lang.org/logos/rust-logo-32x32.png&quot;)?;
+    let headers = response.headers();
+
+    match headers.get::&lt;ContentType&gt;() {
+        None =&gt; {
+            println!(&quot;The response does not contain a Content-Type header.&quot;);
+        }
+        Some(content_type) =&gt; {
+            let media_type = match (content_type.type_(), content_type.subtype()) {
+                (mime::TEXT, mime::HTML) =&gt; &quot;a HTML document&quot;,
+                (mime::TEXT, _) =&gt; &quot;a text document&quot;,
+                (mime::IMAGE, mime::PNG) =&gt; &quot;a PNG image&quot;,
+                (mime::IMAGE, _) =&gt; &quot;an image&quot;,
+                _ =&gt; &quot;neither text nor image&quot;,
+            };
+
+            println!(&quot;The reponse contains {}.&quot;, media_type);
+        }
+    };
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<!--
+Links, in a few categories. Follow the existing structure.
+Keep lines sorted.
+-->
+<!-- Categories -->
+<!-- Crates -->
+<!-- API Reference -->
+<!-- Other Reference -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="concurrency.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="app.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="concurrency.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="app.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>

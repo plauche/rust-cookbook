@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Table of Contents - Rust Cookbook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Collection of useful Rust code examples">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/custom.css">
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html" class="active">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong aria-hidden="true">1.</strong> Basics</a></li><li><a href="encoding.html"><strong aria-hidden="true">2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong aria-hidden="true">3.</strong> Concurrency</a></li><li><a href="net.html"><strong aria-hidden="true">4.</strong> Networking</a></li><li><a href="app.html"><strong aria-hidden="true">5.</strong> Application development</a></li><li><a href="logging.html"><strong aria-hidden="true">6.</strong> Logging</a></li><li><a href="build_tools.html"><strong aria-hidden="true">7.</strong> Build Time Tooling</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <!-- START - Rust Cookbook customization -->
+                            <button id="edit-button" class="icon-button" type="button" title="Fork and edit" aria-label="Fork and edit" aria-haspopup="true" aria-expanded="false" aria-controls="edit">
+                                <i class="fa fa-edit">Edit</i>
+                            </button>
+                            <!-- END - Rust Cookbook customization -->
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Cookbook</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+
+                   // START - Rust Cookbook customization
+                   document.getElementById("edit-button").addEventListener("click", function(){
+                       var editWindow = window.open("https://github.com/rust-lang-nursery/rust-cookbook/edit/master/src/intro.md");
+                   });
+                   // END - Rust Cookbook customization
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="intro.html#cookin-with-rust" id="cookin-with-rust"><h1>Cookin' with Rust</h1></a>
+<p>This <em>Rust Cookbook</em> is a collection of
+simple examples that demonstrate good practices to accomplish common
+programming tasks, using the crates of the Rust ecosystem.</p>
+<p><a href="about.html">Read more about <em>Rust Cookbook</em></a>, including tips for
+how to read the book, how to use the examples, and notes on conventions.</p>
+<a class="header" href="intro.html#contributing" id="contributing"><h2>Contributing</h2></a>
+<p>This project is intended to be easy for new Rust programmers to
+contribute to, and an easy to way get involved with the Rust
+community. It needs and welcomes help. For details see
+<a href="https://github.com/rust-lang-nursery/rust-cookbook/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
+<a class="header" href="intro.html#a-hrefbasicshtmlbasicsa" id="a-hrefbasicshtmlbasicsa"><h2><a href="basics.html">Basics</a></h2></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="basics.html#ex-std-read-lines">Read lines of strings from a file</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-byteorder-le">Read and write integers in little-endian byte order</a> </td><td> <a href="https://docs.rs/byteorder/"><img src="https://badge-cache.kominick.com/crates/v/byteorder.svg?label=byteorder" alt="byteorder-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand">Generate random numbers</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-range">Generate random numbers within a range</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-dist">Generate random numbers with given distribution</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-custom">Generate random values of a custom type</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-passwd">Create random passwords from a set of alphanumeric characters</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-choose">Create random passwords from a set of user-defined characters</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-parse-subprocess-output">Run an external command and process stdout</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-parse-subprocess-input">Run an external command passing it stdin and check for an error code</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-run-piped-external-commands">Run piped external commands</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-redirect-stdout-stderr-same-file">Redirect both stdout and stderr of child process to the same file</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-continuous-process-output">Continuously process child process' outputs</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a><a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-regex-filter-log">Filter a log file by matching multiple regular expressions</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></td></tr>
+<tr><td> <a href="basics.html#ex-lazy-constant">Declare lazily evaluated constant</a> </td><td> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/caching"><img src="https://badge-cache.kominick.com/badge/caching--x.svg?style=social" alt="cat-caching-badge" /></a> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-global-mut-state">Maintain global mutable state</a> </td><td> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-verify-extract-email">Verify and extract login from an email address</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-extract-hashtags">Extract a list of unique #Hashtags from a text</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-regex-replace-named">Replace all occurrences of one text pattern with another pattern.</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-phone">Extract phone numbers from text</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-sha-digest">Calculate the SHA-256 digest of a file</a> </td><td> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://docs.rs/data-encoding/"><img src="https://badge-cache.kominick.com/crates/v/data-encoding.svg?label=data-encoding" alt="data-encoding-badge" /></a> </td><td> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-hmac">Sign and verify a message with an HMAC digest</a> </td><td> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> </td><td> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-pbkdf2">Salt and hash a password with PBKDF2</a> </td><td> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://docs.rs/data-encoding/"><img src="https://badge-cache.kominick.com/crates/v/data-encoding.svg?label=data-encoding" alt="data-encoding-badge" /></a> </td><td> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-bitflags">Define and operate on a type represented as a bitfield</a> </td><td> <a href="https://docs.rs/bitflags/"><img src="https://badge-cache.kominick.com/crates/v/bitflags.svg?label=bitflags" alt="bitflags-badge" /></a> </td><td> <a href="https://crates.io/categories/no-std"><img src="https://badge-cache.kominick.com/badge/no_std--x.svg?style=social" alt="cat-no-std-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-random-file-access">Access a file randomly using a memory map</a> </td><td> <a href="https://docs.rs/memmap/"><img src="https://badge-cache.kominick.com/crates/v/memmap.svg?label=memmap" alt="memmap-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-check-cpu-cores">Check number of logical cpu cores</a> </td><td> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> </td><td> <a href="https://crates.io/categories/hardware-support"><img src="https://badge-cache.kominick.com/badge/hardware_support--x.svg?style=social" alt="cat-hardware-support-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-error-chain-simple-error-handling">Handle errors correctly in main</a> </td><td> <a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a></td></tr>
+<tr><td> <a href="basics.html#ex-error-chain-avoid-discarding">Avoid discarding errors during error conversions</a> </td><td> <a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-error-chain-backtrace">Obtain backtrace of complex error scenarios</a> </td><td> <a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-measure-elapsed-time">Measure elapsed time</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/time--x.svg?style=social" alt="cat-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-convert-datetime-timestamp">Convert date to UNIX timestamp and vice versa</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-convert-datetime-timezone">Convert a local time to an another UTC timezone and vice versa</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-format-datetime">Display formatted date and time</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-parse-datetime">Parse string into DateTime struct</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-datetime-arithmetic">Perform checked date and time calculations</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-examine-date-and-time">Examine the date and time</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-file-24-hours-modified">File names that have been modified in the last 24 hours for the working directory</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+</tbody></table>
+<a class="header" href="intro.html#a-hrefencodinghtmlencodinga" id="a-hrefencodinghtmlencodinga"><h2><a href="encoding.html">Encoding</a></h2></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="encoding.html#ex-json-value">Serialize and deserialize unstructured JSON</a> </td><td> <a href="https://docs.rs/serde_json/*/serde_json/"><img src="https://badge-cache.kominick.com/crates/v/serde_json.svg?label=serde_json" alt="serde-json-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-toml-config">Deserialize a TOML configuration file</a> </td><td> <a href="https://docs.rs/toml/"><img src="https://badge-cache.kominick.com/crates/v/toml.svg?label=toml" alt="toml-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-percent-encode">Percent-encode a string</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-urlencoded">Encode a string as application/x-www-form-urlencoded</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-hex-encode-decode">Encode and decode hex</a> </td><td> <a href="https://docs.rs/data-encoding/"><img src="https://badge-cache.kominick.com/crates/v/data-encoding.svg?label=data-encoding" alt="data-encoding-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-base64">Encode and decode base64</a> </td><td> <a href="https://docs.rs/base64/"><img src="https://badge-cache.kominick.com/crates/v/base64.svg?label=base64" alt="base64-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-csv-read">Read CSV records</a> </td><td> <a href="https://docs.rs/csv/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=csv" alt="csv-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-csv-delimiter">Read CSV records with different delimiter</a> </td><td> <a href="https://docs.rs/csv/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=csv" alt="csv-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-csv-filter">Filter CSV records matching a predicate</a> </td><td> <a href="https://docs.rs/csv/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=csv" alt="csv-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-invalid-csv">Handle invalid CSV data with Serde</a> </td><td> <a href="https://docs.rs/csv/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=csv" alt="csv-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-serialize-csv">Serialize records to CSV</a> </td><td> <a href="https://docs.rs/csv/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=csv" alt="csv-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-csv-serde">Serialize records to CSV using Serde</a> </td><td> <a href="https://docs.rs/csv/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=csv" alt="csv-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-csv-transform-column">Transform one column of a CSV file</a> </td><td> <a href="https://docs.rs/csv/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=csv" alt="csv-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="encoding.html#ex-mime-from-string">Get MIME type from string</a> </td><td> <a href="https://docs.rs/mime/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=mime" alt="mime-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+</tbody></table>
+<a class="header" href="intro.html#a-hrefconcurrencyhtmlconcurrencya" id="a-hrefconcurrencyhtmlconcurrencya"><h2><a href="concurrency.html">Concurrency</a></h2></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="concurrency.html#ex-rayon-iter-mut">Mutate the elements of an array in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-any-all">Test in parallel if any or all elements of a collection match a given predicate</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-parallel-search">Search items using given predicate in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-parallel-sort">Sort a vector in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-map-reduce">Map-reduce in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-rayon-thumbnails">Generate jpg thumbnails in parallel</a> </td><td> <a href="https://docs.rs/rayon/"><img src="https://badge-cache.kominick.com/crates/v/rayon.svg?label=rayon" alt="rayon-badge" /></a> <a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> <a href="https://docs.rs/image/"><img src="https://badge-cache.kominick.com/crates/v/image.svg?label=image" alt="image-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-crossbeam-spawn">Spawn a short-lived thread</a> </td><td> <a href="https://docs.rs/crossbeam/"><img src="https://badge-cache.kominick.com/crates/v/crossbeam.svg?label=crossbeam" alt="crossbeam-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-threadpool-fractal">Draw fractal dispatching work to a thread pool</a> </td><td> <a href="https://docs.rs/threadpool/"><img src="https://badge-cache.kominick.com/crates/v/threadpool.svg?label=threadpool" alt="threadpool-badge" /></a> <a href="https://docs.rs/num/"><img src="https://badge-cache.kominick.com/crates/v/num.svg?label=num" alt="num-badge" /></a> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> <a href="https://docs.rs/image/"><img src="https://badge-cache.kominick.com/crates/v/image.svg?label=image" alt="image-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a><a href="https://crates.io/categories/rendering"><img src="https://badge-cache.kominick.com/badge/rendering--x.svg?style=social" alt="cat-rendering-badge" /></a> </td></tr>
+<tr><td> <a href="concurrency.html#ex-threadpool-walk">Calculate SHA1 sum of *.iso files concurrently</a>  </td><td> <a href="https://docs.rs/threadpool/"><img src="https://badge-cache.kominick.com/crates/v/threadpool.svg?label=threadpool" alt="threadpool-badge" /></a> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> </td><td> <a href="https://crates.io/categories/concurrency"><img src="https://badge-cache.kominick.com/badge/concurrency--x.svg?style=social" alt="cat-concurrency-badge" /></a><a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+</tbody></table>
+<a class="header" href="intro.html#a-hrefnethtmlnetworkinga" id="a-hrefnethtmlnetworkinga"><h2><a href="net.html">Networking</a></h2></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="net.html#ex-url-parse">Parse a URL from a string to a <code>Url</code> type</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-base">Create a base URL by removing path segments</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-new-from-base">Create new URLs from a base URL</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-origin">Extract the URL origin (scheme / host / port)</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-rm-frag">Remove fragment identifiers and query pairs from a URL</a> </td><td> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-basic">Make a HTTP GET request</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-url-download">Download a file to a temporary directory</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/tempdir/"><img src="https://badge-cache.kominick.com/crates/v/tempdir.svg?label=tempdir" alt="tempdir-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-get">Query the GitHub API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-paginated-api">Consume a paginated RESTful API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-head">Check if an API resource exists</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-custom-params">Set custom headers and URL parameters for a REST request</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/hyper/"><img src="https://badge-cache.kominick.com/crates/v/hyper.svg?label=hyper" alt="hyper-badge" /></a> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-rest-post">Create and delete Gist with GitHub API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/serde/"><img src="https://badge-cache.kominick.com/crates/v/serde.svg?label=serde" alt="serde-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-file-post">POST a file to paste-rs</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-random-port-tcp">Listen on unused port TCP/IP</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-extract-links-webpage">Extract all links from a webpage HTML</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/select/"><img src="https://badge-cache.kominick.com/crates/v/select.svg?label=select" alt="select-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-check-broken-links">Check webpage for broken links</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/select/"><img src="https://badge-cache.kominick.com/crates/v/select.svg?label=select" alt="select-badge" /></a> <a href="https://docs.rs/url/"><img src="https://badge-cache.kominick.com/crates/v/url.svg?label=url" alt="url-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-extract-mediawiki-links">Extract all unique links from a MediaWiki markup</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-progress-with-range">Make a partial download with HTTP range headers</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-handle-rate-limited-api">Handle a rate-limited API</a> </td><td> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> <a href="https://docs.rs/hyper/"><img src="https://badge-cache.kominick.com/crates/v/hyper.svg?label=hyper" alt="hyper-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> </td></tr>
+<tr><td> <a href="net.html#ex-http-response-mime-type">Parse the MIME type of a HTTP response</a> </td><td> <a href="https://docs.rs/mime/"><img src="https://badge-cache.kominick.com/crates/v/csv.svg?label=mime" alt="mime-badge" /></a> <a href="https://docs.rs/reqwest/"><img src="https://badge-cache.kominick.com/crates/v/reqwest.svg?label=reqwest" alt="reqwest-badge" /></a> </td><td> <a href="https://crates.io/categories/network-programming"><img src="https://badge-cache.kominick.com/badge/net--x.svg?style=social" alt="cat-net-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+</tbody></table>
+<a class="header" href="intro.html#a-hrefapphtmlapplication-developmenta" id="a-hrefapphtmlapplication-developmenta"><h2><a href="app.html">Application development</a></h2></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="app.html#ex-clap-basic">Parse command line arguments</a> </td><td> <a href="https://docs.rs/clap/"><img src="https://badge-cache.kominick.com/crates/v/clap.svg?label=clap" alt="clap-badge" /></a> </td><td> <a href="https://crates.io/categories/command-line-interface"><img src="https://badge-cache.kominick.com/badge/command_line--x.svg?style=social" alt="cat-command-line-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-tar-decompress">Decompress a tarball</a> </td><td> <a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> </td><td> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-tar-compress">Compress a directory into a tarball</a> </td><td> <a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> </td><td> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-tar-strip-prefix">Decompress a tarball while removing a prefix from the paths</a> </td><td> <a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> </td><td> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-avoid-read-write">Avoid writing and reading from a same file</a> </td><td> <a href="https://docs.rs/same-file/"><img src="https://badge-cache.kominick.com/crates/v/same_file.svg?label=same_file" alt="same_file-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-find-file-loops">Find loops for a given path</a> </td><td> <a href="https://docs.rs/same-file/"><img src="https://badge-cache.kominick.com/crates/v/same_file.svg?label=same_file" alt="same_file-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-dedup-filenames">Recursively find duplicate file names</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-file-predicate">Recursively find all files with given predicate</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-file-skip-dot">Traverse directories while skipping dotfiles</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-file-sizes">Recursively calculate file sizes at given depth</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-glob-recursive">Find all png files recursively</a> </td><td> <a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-glob-with">Find all files with given pattern ignoring filename case</a> </td><td> <a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-increment">Parse and increment a version string</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-complex">Parse a complex version string</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-prerelease">Check if given version is pre-release</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-latest">Find the latest version satisfying given range</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-command">Check external command version for compatibility</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></td></tr>
+</tbody></table>
+<a class="header" href="intro.html#a-hreflogginghtmllogginga" id="a-hreflogginghtmllogginga"><h2><a href="logging.html">Logging</a></h2></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="logging.html#ex-log-debug">Log a debug message to the console</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-error">Log an error message to the console</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-mod">Enable log levels per module</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-stdout">Log to stdout instead of stderr</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-custom-logger">Log messages with a custom logger</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-env-variable">Use a custom environment variable to set up logging</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-timestamp">Include timestamp in log messages</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-syslog">Log to the Unix syslog</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/syslog/"><img src="https://badge-cache.kominick.com/crates/v/syslog.svg?label=syslog" alt="syslog-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-custom">Log messages to a custom location</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/log4rs/"><img src="https://badge-cache.kominick.com/crates/v/log4rs.svg?label=log4rs" alt="log4rs-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+</tbody></table>
+<a class="header" href="intro.html#a-hrefbuild_toolshtmlbuild-time-toolinga" id="a-hrefbuild_toolshtmlbuild-time-toolinga"><h2><a href="build_tools.html">Build Time Tooling</a></h2></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="build_tools.html#ex-cc-static-bundled">Compile and link statically to a bundled C library</a> </td><td> <a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> </td><td> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a> </td></tr>
+<tr><td> <a href="build_tools.html#ex-cc-static-bundled-cpp">Compile and link statically to a bundled C++ library</a>  </td><td> <a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> </td><td> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a> </td></tr>
+<tr><td> <a href="build_tools.html#ex-cc-custom-defines">Compile a C library while setting custom defines</a> </td><td> <a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> </td><td> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a> </td></tr>
+</tbody></table>
+<!--
+Links, in a few categories. Follow the existing structure.
+Keep lines sorted.
+-->
+<!-- Categories -->
+<!-- Crates -->
+<!-- Examples -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+                            <a rel="next" href="about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+                    <a href="about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>

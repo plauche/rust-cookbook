@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Logging - Rust Cookbook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Collection of useful Rust code examples">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/custom.css">
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong aria-hidden="true">1.</strong> Basics</a></li><li><a href="encoding.html"><strong aria-hidden="true">2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong aria-hidden="true">3.</strong> Concurrency</a></li><li><a href="net.html"><strong aria-hidden="true">4.</strong> Networking</a></li><li><a href="app.html"><strong aria-hidden="true">5.</strong> Application development</a></li><li><a href="logging.html" class="active"><strong aria-hidden="true">6.</strong> Logging</a></li><li><a href="build_tools.html"><strong aria-hidden="true">7.</strong> Build Time Tooling</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <!-- START - Rust Cookbook customization -->
+                            <button id="edit-button" class="icon-button" type="button" title="Fork and edit" aria-label="Fork and edit" aria-haspopup="true" aria-expanded="false" aria-controls="edit">
+                                <i class="fa fa-edit">Edit</i>
+                            </button>
+                            <!-- END - Rust Cookbook customization -->
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Cookbook</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+
+                   // START - Rust Cookbook customization
+                   document.getElementById("edit-button").addEventListener("click", function(){
+                       var editWindow = window.open("https://github.com/rust-lang-nursery/rust-cookbook/edit/master/src/logging.md");
+                   });
+                   // END - Rust Cookbook customization
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="logging.html#logging" id="logging"><h1>Logging</h1></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="logging.html#ex-log-debug">Log a debug message to the console</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-error">Log an error message to the console</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-mod">Enable log levels per module</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-stdout">Log to stdout instead of stderr</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-custom-logger">Log messages with a custom logger</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-env-variable">Use a custom environment variable to set up logging</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-timestamp">Include timestamp in log messages</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-syslog">Log to the Unix syslog</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/syslog/"><img src="https://badge-cache.kominick.com/crates/v/syslog.svg?label=syslog" alt="syslog-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+<tr><td> <a href="logging.html#ex-log-custom">Log messages to a custom location</a> </td><td> <a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/log4rs/"><img src="https://badge-cache.kominick.com/crates/v/log4rs.svg?label=log4rs" alt="log4rs-badge" /></a> </td><td> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a> </td></tr>
+</tbody></table>
+<p><a name="ex-log-debug"></a></p>
+<a class="header" href="logging.html#log-a-debug-message-to-the-console" id="log-a-debug-message-to-the-console"><h2>Log a debug message to the console</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>The <code>log</code> crate provides logging utilities. The <code>env_logger</code> crate configures
+logging via an environment variable.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate log;
+extern crate env_logger;
+
+fn execute_query(query: &amp;str) {
+    debug!(&quot;Executing query: {}&quot;, query);
+
+    // then do the thing
+}
+
+fn main() {
+    env_logger::init();
+
+    execute_query(&quot;DROP TABLE students&quot;);
+}
+</code></pre></pre>
+<p>If you run this code, you'll notice that no output is printed. By default, the
+log level is <code>error</code>, and any lower levels are dropped.</p>
+<p>We can change that easily by setting the <code>RUST_LOG</code> environment variable:</p>
+<pre><code>$ RUST_LOG=debug cargo run
+</code></pre>
+<p>After running this, you'll likely see a pile of logs from cargo, as well as the
+following line at the very end of the output:</p>
+<pre><code>DEBUG:main: Executing query: DROP TABLE students
+</code></pre>
+<p><a name="ex-log-error"></a></p>
+<a class="header" href="logging.html#log-an-error-message-to-the-console" id="log-an-error-message-to-the-console"><h2>Log an error message to the console</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate log;
+extern crate env_logger;
+#
+# #[macro_use]
+# extern crate error_chain;
+#
+# error_chain! {
+#     foreign_links {
+#         SetLogger(log::SetLoggerError);
+#     }
+# }
+
+fn execute_query(_query: &amp;str) -&gt; Result&lt;()&gt; {
+    // Do the thing, or maybe not
+
+    bail!(&quot;I'm afraid I can't do that&quot;)
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    env_logger::init();
+
+    let response = execute_query(&quot;DROP TABLE students&quot;);
+    if let Err(err) = response {
+        // Log the error message and continue
+        error!(&quot;Failed to execute query: {}&quot;, err);
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p>Run this code with <code>cargo run</code> and you should see the following line:</p>
+<pre><code>DEBUG:main: Failed to execute query: I'm afraid I can't do that
+</code></pre>
+<p><a name="ex-log-mod"></a></p>
+<a class="header" href="logging.html#enable-log-levels-per-module" id="enable-log-levels-per-module"><h2>Enable log levels per module</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>Creates two modules <code>foo</code> and nested <code>foo::bar</code> with logging directives
+controlled separately with <a href="https://docs.rs/env_logger/*/env_logger/#enabling-logging"><code>RUST_LOG</code></a> environmental variable.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate log;
+extern crate env_logger;
+
+mod foo {
+    mod bar {
+        pub fn run() {
+            warn!(&quot;[bar] warn&quot;);
+            info!(&quot;[bar] info&quot;);
+            debug!(&quot;[bar] debug&quot;);
+        }
+    }
+
+    pub fn run() {
+        warn!(&quot;[foo] warn&quot;);
+        info!(&quot;[foo] info&quot;);
+        debug!(&quot;[foo] debug&quot;);
+        bar::run();
+    }
+}
+
+fn main() {
+    env_logger::init();
+    warn!(&quot;[root] warn&quot;);
+    info!(&quot;[root] info&quot;);
+    debug!(&quot;[root] debug&quot;);
+    foo::run();
+}
+</code></pre></pre>
+<p><a href="https://docs.rs/env_logger/"><code>env_logger</code></a> output is controlled by <a href="https://docs.rs/env_logger/*/env_logger/#enabling-logging"><code>RUST_LOG</code></a> environmental
+variable on per module basis with comma separated entries in format <code>path::to::module=log_level</code>.
+Running the <code>test</code> application as follows:</p>
+<pre><code class="language-bash">RUST_LOG=&quot;warn,test::foo=info,test::foo::bar=debug&quot; ./test
+</code></pre>
+<p>Sets the default <a href="https://docs.rs/log/*/log/enum.Level.html"><code>log::Level</code></a> to <code>warn</code>, module's <code>foo</code> and module's <code>foo::bar</code>
+respectively to <code>info</code> and <code>debug</code>. The output is:</p>
+<pre><code class="language-bash">WARN:test: [root] warn
+WARN:test::foo: [foo] warn
+INFO:test::foo: [foo] info
+WARN:test::foo::bar: [bar] warn
+INFO:test::foo::bar: [bar] info
+DEBUG:test::foo::bar: [bar] debug
+</code></pre>
+<p><a name="ex-log-stdout"></a></p>
+<a class="header" href="logging.html#log-to-stdout-instead-of-stderr" id="log-to-stdout-instead-of-stderr"><h2>Log to stdout instead of stderr</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>Creates a custom logger configuration using the <a href="https://docs.rs/env_logger/*/env_logger/struct.Builder.html#method.target"><code>Builder::target</code></a> to set the target of the log output to <a href="https://docs.rs/env_logger/*/env_logger/fmt/enum.Target.html"><code>Target::Stdout</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate log;
+extern crate env_logger;
+
+use env_logger::{Builder, Target};
+
+fn main() {
+    Builder::new()
+        .target(Target::Stdout)
+        .init();
+
+    error!(&quot;This error has been printed to Stdout&quot;);
+}
+</code></pre></pre>
+<p><a name="ex-log-custom-logger"></a></p>
+<a class="header" href="logging.html#log-messages-with-a-custom-logger" id="log-messages-with-a-custom-logger"><h2>Log messages with a custom logger</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>Implements a custom logger <code>ConsoleLogger</code> which prints to stdout.
+In order to use the logging macros, <code>ConsoleLogger</code> implements
+the <a href="https://docs.rs/log/*/log/trait.Log.html"><code>log::Log</code></a> trait and has to be installed via <a href="https://docs.rs/log/*/log/fn.set_logger.html"><code>log::set_logger</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate log;
+
+use log::{Record, Level, Metadata, LevelFilter};
+
+static CONSOLE_LOGGER: ConsoleLogger = ConsoleLogger;
+
+struct ConsoleLogger;
+
+impl log::Log for ConsoleLogger {
+    fn enabled(&amp;self, metadata: &amp;Metadata) -&gt; bool {
+        metadata.level() &lt;= Level::Info
+    }
+
+    fn log(&amp;self, record: &amp;Record) {
+        if self.enabled(record.metadata()) {
+            println!(&quot;Rust says: {} - {}&quot;, record.level(), record.args());
+        }
+    }
+
+    fn flush(&amp;self) {}
+}
+#
+# error_chain! {
+#     foreign_links {
+#         SetLogger(log::SetLoggerError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    log::set_logger(&amp;CONSOLE_LOGGER)?;
+    log::set_max_level(LevelFilter::Info);
+
+    info!(&quot;hello log&quot;);
+    warn!(&quot;warning&quot;);
+    error!(&quot;oops&quot;);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-log-env-variable"></a></p>
+<a class="header" href="logging.html#use-a-custom-environment-variable-to-set-up-logging" id="use-a-custom-environment-variable-to-set-up-logging"><h2>Use a custom environment variable to set up logging</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>Logging is configured with <a href="https://docs.rs/env_logger/*/env_logger/struct.Builder.html"><code>Builder</code></a>.</p>
+<p><a href="https://docs.rs/env_logger/*/env_logger/struct.Builder.html#method.parse"><code>Builder::parse</code></a> parses <code>MY_APP_LOG</code>
+environmental variable contents in the form of <a href="https://docs.rs/env_logger/*/env_logger/#enabling-logging"><code>RUST_LOG</code></a> syntax.
+Then <a href="https://docs.rs/env_logger/*/env_logger/struct.Builder.html#method.init"><code>Builder::init</code></a> initializes the logger.
+All these steps are normally done internally by <a href="https://docs.rs/env_logger/*/env_logger/fn.init.html"><code>env_logger::init</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate log;
+extern crate env_logger;
+
+use std::env;
+use env_logger::Builder;
+
+fn main() {
+    Builder::new()
+        .parse(&amp;env::var(&quot;MY_APP_LOG&quot;).unwrap_or_default())
+        .init();
+
+    info!(&quot;informational message&quot;);
+    warn!(&quot;warning message&quot;);
+    error!(&quot;this is an error {}&quot;, &quot;message&quot;);
+}
+</code></pre></pre>
+<p><a name="ex-log-timestamp"></a></p>
+<a class="header" href="logging.html#include-timestamp-in-log-messages" id="include-timestamp-in-log-messages"><h2>Include timestamp in log messages</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/env_logger/"><img src="https://badge-cache.kominick.com/crates/v/env_logger.svg?label=env_logger" alt="env_logger-badge" /></a> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>Creates a custom logger configuration with <a href="https://docs.rs/env_logger/*/env_logger/struct.Builder.html"><code>Builder</code></a>.
+Each log entry calls <a href="https://docs.rs/chrono/*/chrono/offset/local/struct.Local.html#method.now"><code>Local::now</code></a> to get the current <a href="https://docs.rs/chrono/*/chrono/datetime/struct.DateTime.html"><code>DateTime</code></a> in local timezone and uses <a href="https://docs.rs/chrono/*/chrono/datetime/struct.DateTime.html#method.format"><code>DateTime::format</code></a> with <a href="https://docs.rs/chrono/*/chrono/format/strftime/index.html#specifiers"><code>strftime::specifiers</code></a> to format a timestamp used in the final log.</p>
+<p>The example calls <a href="https://docs.rs/env_logger/*/env_logger/struct.Builder.html#method.format"><code>Builder::format</code></a> to set a closure which writes each
+message text with timestamp, <a href="https://docs.rs/log/*/log/struct.Record.html#method.level"><code>Record::level</code></a> and body (<a href="https://docs.rs/log/*/log/struct.Record.html#method.args"><code>Record::args</code></a>).</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate log;
+extern crate chrono;
+extern crate env_logger;
+
+use std::env;
+use std::io::Write;
+use chrono::Local;
+use env_logger::Builder;
+
+fn main() {
+    Builder::new()
+        .format(|buf, record| {
+            write!(buf,
+                &quot;{} [{}] - {}&quot;,
+                Local::now().format(&quot;%Y-%m-%dT%H:%M:%S&quot;),
+                record.level(),
+                record.args()
+            )
+        })
+        .parse(&amp;env::var(&quot;MY_APP_LOG&quot;).unwrap_or_default())
+        .init();
+
+    warn!(&quot;warn&quot;);
+    info!(&quot;info&quot;);
+    debug!(&quot;debug&quot;);
+}
+</code></pre></pre>
+<p>Calling <code>MY_APP_LOG=&quot;info&quot; cargo run</code> will result in similar output:</p>
+<pre><code>2017-05-22T21:57:06 [WARN] - warn
+2017-05-22T21:57:06 [INFO] - info
+</code></pre>
+<p><a name="ex-log-syslog"></a></p>
+<a class="header" href="logging.html#log-to-the-unix-syslog" id="log-to-the-unix-syslog"><h2>Log to the Unix syslog</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/syslog/"><img src="https://badge-cache.kominick.com/crates/v/syslog.svg?label=syslog" alt="syslog-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>Logs messages to <a href="https://www.gnu.org/software/libc/manual/html_node/Overview-of-Syslog.html">UNIX syslog</a>. Initializes logger backend
+with <a href="https://docs.rs/syslog/*/syslog/fn.init.html"><code>syslog::init</code></a>. <a href="https://docs.rs/syslog/*/syslog/enum.Facility.html"><code>syslog::Facility</code></a> indicates type of program submitting log, <a href="https://docs.rs/log/*/log/enum.LevelFilter.html"><code>log::LevelFilter</code></a> denotes allowed log verbosity
+and <code>Option&lt;&amp;str&gt;</code> holds optional application name.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #![allow(unused_imports)]
+# #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate log;
+# #[cfg(target_os = &quot;linux&quot;)]
+extern crate syslog;
+
+# #[cfg(target_os = &quot;linux&quot;)]
+use syslog::Facility;
+#
+# #[cfg(target_os = &quot;linux&quot;)]
+# error_chain! {
+#     foreign_links {
+#         SetLogger(syslog::Error);
+#     }
+# }
+
+# #[cfg(target_os = &quot;linux&quot;)]
+fn run() -&gt; Result&lt;()&gt; {
+    syslog::init(Facility::LOG_USER,
+                 log::LevelFilter::Debug,
+                 Some(&quot;My app name&quot;))?;
+    debug!(&quot;this is a debug {}&quot;, &quot;message&quot;);
+    error!(&quot;this is an error!&quot;);
+    Ok(())
+}
+#
+# #[cfg(not(target_os = &quot;linux&quot;))]
+# error_chain! {}
+# #[cfg(not(target_os = &quot;linux&quot;))]
+# fn run() -&gt; Result&lt;()&gt; {
+#     Ok(())
+# }
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-log-custom"></a></p>
+<a class="header" href="logging.html#log-messages-to-a-custom-location" id="log-messages-to-a-custom-location"><h2>Log messages to a custom location</h2></a>
+<p><a href="https://docs.rs/log/"><img src="https://badge-cache.kominick.com/crates/v/log.svg?label=log" alt="log-badge" /></a> <a href="https://docs.rs/log4rs/"><img src="https://badge-cache.kominick.com/crates/v/log4rs.svg?label=log4rs" alt="log4rs-badge" /></a> <a href="https://crates.io/categories/debugging"><img src="https://badge-cache.kominick.com/badge/debugging--x.svg?style=social" alt="cat-debugging-badge" /></a></p>
+<p>Configures log to be output into custom location with <a href="https://docs.rs/log4rs/">log4rs</a>. <a href="https://docs.rs/log4rs/">log4rs</a> can use either an external YAML file or a programmatically constructed configuration.</p>
+<p>Firstly creates the log configuration with <a href="https://docs.rs/log4rs/*/log4rs/append/file/struct.FileAppender.html"><code>log4rs::append::file::FileAppender</code></a>
+using a custom pattern from <a href="https://docs.rs/log4rs/*/log4rs/encode/pattern/index.html"><code>log4rs::encode::pattern</code></a>.</p>
+<p>Secondly assigns it to the <a href="https://docs.rs/log4rs/*/log4rs/config/struct.Config.html"><code>log4rs::config::Config</code></a> which has a root appender that uses the previously created <code>logfile</code> appender. Subsequently sets the default <a href="https://docs.rs/log/*/log/enum.LevelFilter.html"><code>log::LevelFilter</code></a> so that any logs with <code>Info</code> level or higher will be sent to the logger.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate log;
+extern crate log4rs;
+
+use log::LevelFilter;
+use log4rs::append::file::FileAppender;
+use log4rs::encode::pattern::PatternEncoder;
+use log4rs::config::{Appender, Config, Root};
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         LogConfig(log4rs::config::Errors);
+#         SetLogger(log::SetLoggerError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let logfile = FileAppender::builder()
+        .encoder(Box::new(PatternEncoder::new(&quot;{l} - {m}\n&quot;)))
+        .build(&quot;log/output.log&quot;)?;
+
+    let config = Config::builder()
+        .appender(Appender::builder().build(&quot;logfile&quot;, Box::new(logfile)))
+        .build(Root::builder()
+                   .appender(&quot;logfile&quot;)
+                   .build(LevelFilter::Info))?;
+
+    log4rs::init_config(config)?;
+
+    info!(&quot;Hello, world!&quot;);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<!--
+Links, in a few categories. Follow the existing structure.
+Keep lines sorted.
+-->
+<!-- Categories -->
+<!-- Crates -->
+<!-- API Reference -->
+<!-- Other Reference -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="app.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="build_tools.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="app.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="build_tools.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>

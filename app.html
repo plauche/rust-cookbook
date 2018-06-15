@@ -1,0 +1,936 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Application development - Rust Cookbook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Collection of useful Rust code examples">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/custom.css">
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong aria-hidden="true">1.</strong> Basics</a></li><li><a href="encoding.html"><strong aria-hidden="true">2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong aria-hidden="true">3.</strong> Concurrency</a></li><li><a href="net.html"><strong aria-hidden="true">4.</strong> Networking</a></li><li><a href="app.html" class="active"><strong aria-hidden="true">5.</strong> Application development</a></li><li><a href="logging.html"><strong aria-hidden="true">6.</strong> Logging</a></li><li><a href="build_tools.html"><strong aria-hidden="true">7.</strong> Build Time Tooling</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <!-- START - Rust Cookbook customization -->
+                            <button id="edit-button" class="icon-button" type="button" title="Fork and edit" aria-label="Fork and edit" aria-haspopup="true" aria-expanded="false" aria-controls="edit">
+                                <i class="fa fa-edit">Edit</i>
+                            </button>
+                            <!-- END - Rust Cookbook customization -->
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Cookbook</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+
+                   // START - Rust Cookbook customization
+                   document.getElementById("edit-button").addEventListener("click", function(){
+                       var editWindow = window.open("https://github.com/rust-lang-nursery/rust-cookbook/edit/master/src/app.md");
+                   });
+                   // END - Rust Cookbook customization
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="app.html#application-development" id="application-development"><h1>Application development</h1></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="app.html#ex-clap-basic">Parse command line arguments</a> </td><td> <a href="https://docs.rs/clap/"><img src="https://badge-cache.kominick.com/crates/v/clap.svg?label=clap" alt="clap-badge" /></a> </td><td> <a href="https://crates.io/categories/command-line-interface"><img src="https://badge-cache.kominick.com/badge/command_line--x.svg?style=social" alt="cat-command-line-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-tar-decompress">Decompress a tarball</a> </td><td> <a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> </td><td> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-tar-compress">Compress a directory into a tarball</a> </td><td> <a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> </td><td> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-tar-strip-prefix">Decompress a tarball while removing a prefix from the paths</a> </td><td> <a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> </td><td> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-avoid-read-write">Avoid writing and reading from a same file</a> </td><td> <a href="https://docs.rs/same-file/"><img src="https://badge-cache.kominick.com/crates/v/same_file.svg?label=same_file" alt="same_file-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-find-file-loops">Find loops for a given path</a> </td><td> <a href="https://docs.rs/same-file/"><img src="https://badge-cache.kominick.com/crates/v/same_file.svg?label=same_file" alt="same_file-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-dedup-filenames">Recursively find duplicate file names</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-file-predicate">Recursively find all files with given predicate</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-file-skip-dot">Traverse directories while skipping dotfiles</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-file-sizes">Recursively calculate file sizes at given depth</a> </td><td> <a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-glob-recursive">Find all png files recursively</a> </td><td> <a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-glob-with">Find all files with given pattern ignoring filename case</a> </td><td> <a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-increment">Parse and increment a version string</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-complex">Parse a complex version string</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-prerelease">Check if given version is pre-release</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-latest">Find the latest version satisfying given range</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a> </td></tr>
+<tr><td> <a href="app.html#ex-semver-command">Check external command version for compatibility</a> </td><td> <a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></td></tr>
+</tbody></table>
+<p><a name="ex-clap-basic"></a></p>
+<a class="header" href="app.html#parse-command-line-arguments" id="parse-command-line-arguments"><h2>Parse command line arguments</h2></a>
+<p><a href="https://docs.rs/clap/"><img src="https://badge-cache.kominick.com/crates/v/clap.svg?label=clap" alt="clap-badge" /></a> <a href="https://crates.io/categories/command-line-interface"><img src="https://badge-cache.kominick.com/badge/command_line--x.svg?style=social" alt="cat-command-line-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust">extern crate clap;
+
+use clap::{Arg, App};
+
+fn main() {
+    // Define command line arguments.
+    let matches = App::new(&quot;My Test Program&quot;)
+        .version(&quot;0.1.0&quot;)
+        .author(&quot;Hackerman Jones &lt;hckrmnjones@hack.gov&gt;&quot;)
+        .about(&quot;Teaches argument parsing&quot;)
+        .arg(Arg::with_name(&quot;file&quot;)
+                 .short(&quot;f&quot;)
+                 .long(&quot;file&quot;)
+                 .takes_value(true)
+                 .help(&quot;A cool file&quot;))
+        .arg(Arg::with_name(&quot;num&quot;)
+                 .short(&quot;n&quot;)
+                 .long(&quot;number&quot;)
+                 .takes_value(true)
+                 .help(&quot;Five less than your favorite number&quot;))
+        .get_matches();
+
+    // Get value for file, or default to 'input.txt'.
+    let myfile = matches.value_of(&quot;file&quot;).unwrap_or(&quot;input.txt&quot;);
+    println!(&quot;The file passed is: {}&quot;, myfile);
+
+    // Get value for num if present, and try parsing it as i32.
+    let num_str = matches.value_of(&quot;num&quot;);
+    match num_str {
+        None =&gt; println!(&quot;No idea what your favorite number is.&quot;),
+        Some(s) =&gt; {
+            match s.parse::&lt;i32&gt;() {
+                Ok(n) =&gt; println!(&quot;Your favorite number must be {}.&quot;, n + 5),
+                Err(_) =&gt; println!(&quot;That's not a number! {}&quot;, s),
+            }
+        }
+    }
+}
+</code></pre></pre>
+<p>The <code>clap</code> crate is a simple-to-use, efficient, and full-featured library for
+parsing command line arguments and subcommands when writing console/terminal
+applications.</p>
+<p>The application can describe the structure of its command-line interface using
+<code>clap</code>'s builder style. The <a href="https://docs.rs/clap/">documentation</a> gives two other possible ways to
+instantiate an application.</p>
+<p>In the builder style, <code>with_name</code> is the unique identifier that <code>value_of</code> will
+use to retrieve the value passed. The <code>short</code> and <code>long</code> options control the
+flag the user will be expected to type; short flags look like <code>-f</code> and long
+flags look like <code>--file</code>.</p>
+<p>Usage information is generated by <code>clap</code>. The usage for the example application
+looks like this.</p>
+<pre><code>My Test Program 0.1.0
+Hackerman Jones &lt;hckrmnjones@hack.gov&gt;
+Teaches argument parsing
+
+USAGE:
+    testing [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -f, --file &lt;file&gt;     A cool file
+    -n, --number &lt;num&gt;    Five less than your favorite number
+</code></pre>
+<p>We can test the application by running a command like the following.</p>
+<pre><code>$ cargo run -- -f myfile.txt -n 251
+</code></pre>
+<p>The output is:</p>
+<pre><code>The file passed is: myfile.txt
+Your favorite number must be 256.
+</code></pre>
+<p><a name="ex-tar-decompress"></a></p>
+<a class="header" href="app.html#decompress-a-tarball" id="decompress-a-tarball"><h2>Decompress a tarball</h2></a>
+<p><a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a></p>
+<p>Decompress (<a href="https://docs.rs/flate2/*/flate2/read/struct.GzDecoder.html"><code>GzDecoder</code></a>) and
+extract (<a href="https://docs.rs/tar/*/tar/struct.Archive.html#method.unpack"><code>Archive::unpack</code></a>) all files from a compressed tarball
+named <code>archive.tar.gz</code> located in the current working directory.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate flate2;
+extern crate tar;
+
+use std::fs::File;
+use flate2::read::GzDecoder;
+use tar::Archive;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let path = &quot;archive.tar.gz&quot;;
+
+    // Open a compressed tarball
+    let tar_gz = File::open(path)?;
+    // Decompress it
+    let tar = GzDecoder::new(tar_gz);
+    // Load the archive from the tarball
+    let mut archive = Archive::new(tar);
+    // Unpack the archive inside current working directory
+    archive.unpack(&quot;.&quot;)?;
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-tar-compress"></a></p>
+<a class="header" href="app.html#compress-a-directory-into-tarball" id="compress-a-directory-into-tarball"><h2>Compress a directory into tarball</h2></a>
+<p><a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a></p>
+<p>Compresses <code>/var/log</code> directory into <code>archive.tar.gz</code>.</p>
+<p>Creates a <a href="https://doc.rust-lang.org/std/fs/struct.File.html"><code>File</code></a> wrapped in <a href="https://docs.rs/flate2/*/flate2/write/struct.GzEncoder.html"><code>GzEncoder</code></a>
+and <a href="https://docs.rs/tar/*/tar/struct.Builder.html"><code>tar::Builder</code></a>. </br>Adds contents of <code>/var/log</code> directory recursively into the archive
+under <code>backup/logs</code>path with <a href="https://docs.rs/tar/*/tar/struct.Builder.html#method.append_dir_all"><code>Builder::append_dir_all</code></a>.
+<a href="https://docs.rs/flate2/*/flate2/write/struct.GzEncoder.html"><code>GzEncoder</code></a> is responsible for transparently compressing the
+data prior to writing it into <code>archive.tar.gz</code>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate tar;
+extern crate flate2;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+
+use std::fs::File;
+use flate2::Compression;
+use flate2::write::GzEncoder;
+
+fn run() -&gt; Result&lt;()&gt; {
+    let tar_gz = File::create(&quot;archive.tar.gz&quot;)?;
+    let enc = GzEncoder::new(tar_gz, Compression::default());
+    let mut tar = tar::Builder::new(enc);
+    tar.append_dir_all(&quot;backup/logs&quot;, &quot;/var/log&quot;)?;
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-tar-strip-prefix"></a></p>
+<a class="header" href="app.html#decompress-a-tarball-while-removing-a-prefix-from-the-paths" id="decompress-a-tarball-while-removing-a-prefix-from-the-paths"><h2>Decompress a tarball while removing a prefix from the paths</h2></a>
+<p><a href="https://docs.rs/flate2/"><img src="https://badge-cache.kominick.com/crates/v/flate2.svg?label=flate2" alt="flate2-badge" /></a> <a href="https://docs.rs/tar/"><img src="https://badge-cache.kominick.com/crates/v/tar.svg?label=tar" alt="tar-badge" /></a> <a href="https://crates.io/categories/compression"><img src="https://badge-cache.kominick.com/badge/compression--x.svg?style=social" alt="cat-compression-badge" /></a></p>
+<p>Strip a path prefix from the entries of a tarball before unpacking them.</p>
+<p>We iterate over the <a href="https://docs.rs/tar/*/tar/struct.Archive.html#method.entries"><code>Archive::entries</code></a>, using <a href="https://doc.rust-lang.org/std/path/struct.Path.html#method.strip_prefix"><code>Path::strip_prefix</code></a> to remove
+the specified path prefix (<code>bundle/logs</code>) before extracting the <a href="https://docs.rs/tar/*/tar/struct.Entry.html"><code>tar::Entry</code></a>
+via <a href="https://docs.rs/tar/*/tar/struct.Entry.html#method.unpack"><code>Entry::unpack</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate flate2;
+extern crate tar;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         StripPrefixError(::std::path::StripPrefixError);
+#     }
+# }
+
+use std::fs::File;
+use std::path::PathBuf;
+use flate2::read::GzDecoder;
+use tar::Archive;
+
+fn run() -&gt; Result&lt;()&gt; {
+    let file = File::open(&quot;archive.tar.gz&quot;)?;
+    let mut archive = Archive::new(GzDecoder::new(file));
+    let prefix = &quot;bundle/logs&quot;;
+
+    println!(&quot;Extracted the following files:&quot;);
+    archive
+        .entries()?
+        .filter_map(|e| e.ok())
+        .map(|mut entry| -&gt; Result&lt;PathBuf&gt; {
+            // Need to get owned data to break the borrow loop
+            let path = entry.path()?.strip_prefix(prefix)?.to_owned();
+            entry.unpack(&amp;path)?;
+            Ok(path)
+        })
+        .filter_map(|e| e.ok())
+        .for_each(|x| println!(&quot;&gt; {}&quot;, x.display()));
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-avoid-read-write"></a></p>
+<a class="header" href="app.html#avoid-writing-and-reading-from-a-same-file" id="avoid-writing-and-reading-from-a-same-file"><h2>Avoid writing and reading from a same file</h2></a>
+<p><a href="https://docs.rs/same-file/"><img src="https://badge-cache.kominick.com/crates/v/same_file.svg?label=same_file" alt="same_file-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Use <a href="https://docs.rs/same-file/*/same_file/struct.Handle.html"><code>same_file::Handle</code></a> to a file that can be tested for equality with
+other handles. In this example, the handles of file to be read from and
+to be written to are tested for equality.</p>
+<pre><code class="language-bash">cargo run
+</code></pre>
+<p>will display the contents of the file if the two files are not same and</p>
+<pre><code class="language-bash">cargo run &gt;&gt; ./new.txt
+</code></pre>
+<p>will display the error (because the two files are same).</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate same_file;
+
+use same_file::Handle;
+use std::path::Path;
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+#
+# error_chain! {
+#     foreign_links {
+#          IOError(::std::io::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let path_to_read = Path::new(&quot;new.txt&quot;);
+
+    let stdout_handle = Handle::stdout()?;
+    let handle = Handle::from_path(path_to_read)?;
+
+    if stdout_handle == handle {
+        bail!(&quot;You are reading and writing to the same file&quot;);
+    } else {
+        let file = File::open(&amp;path_to_read)?;
+        let file = BufReader::new(file);
+        for (num, line) in file.lines().enumerate() {
+            println!(&quot;{} : {}&quot;, num, line?.to_uppercase());
+        }
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-find-file-loops"></a></p>
+<a class="header" href="app.html#find-loops-for-a-given-path" id="find-loops-for-a-given-path"><h2>Find loops for a given path</h2></a>
+<p><a href="https://docs.rs/same-file/"><img src="https://badge-cache.kominick.com/crates/v/same_file.svg?label=same_file" alt="same_file-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Use <a href="https://docs.rs/same-file/*/same_file/fn.is_same_file.html#method.is_same_file"><code>same_file::is_same_file</code></a> to detect loops for a given path.
+For example, a loop could be created on a Unix system via symlinks:</p>
+<pre><code class="language-bash">mkdir -p /tmp/foo/bar/baz
+ln -s /tmp/foo/  /tmp/foo/bar/baz/qux
+</code></pre>
+<p>Then, running the following would assert that there exists a loop.</p>
+<pre><pre class="playpen"><code class="language-rust no_run">extern crate same_file;
+
+use std::io;
+use std::path::{Path, PathBuf};
+use same_file::is_same_file;
+
+// Check this path against all of its parents
+fn contains_loop&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;Option&lt;(PathBuf, PathBuf)&gt;&gt; {
+    let path = path.as_ref();
+    let mut path_buf = path.to_path_buf();
+    while path_buf.pop() {
+        if is_same_file(&amp;path_buf, path)? {
+            return Ok(Some((path_buf, path.to_path_buf())));
+        } else if let Some(looped_paths) = contains_loop(&amp;path_buf)? {
+            return Ok(Some(looped_paths));
+        }
+    }
+    return Ok(None);
+}
+
+fn main() {
+    assert_eq!(
+        contains_loop(&quot;/tmp/foo/bar/baz/qux/bar/baz&quot;).unwrap(),
+        Some((
+            PathBuf::from(&quot;/tmp/foo&quot;),
+            PathBuf::from(&quot;/tmp/foo/bar/baz/qux&quot;)
+        ))
+    );
+}
+</code></pre></pre>
+<p><a name="ex-dedup-filenames"></a></p>
+<a class="header" href="app.html#recursively-find-duplicate-file-names" id="recursively-find-duplicate-file-names"><h2>Recursively find duplicate file names</h2></a>
+<p><a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Find recursively in the current directory duplicate filenames,
+printing them only once.</p>
+<pre><pre class="playpen"><code class="language-rust no_run">extern crate walkdir;
+
+use std::collections::HashMap;
+use walkdir::WalkDir;
+
+fn main() {
+    // Counters indexed by filenames
+    let mut filenames = HashMap::new();
+
+    // List recusively all files in the current directory filtering out
+    // directories and files not accessible (permission denied)
+    for entry in WalkDir::new(&quot;.&quot;)
+            .into_iter()
+            .filter_map(Result::ok)
+            .filter(|e| !e.file_type().is_dir()) {
+        // Get entry's filename
+        let f_name = String::from(entry.file_name().to_string_lossy());
+        // Get or initialize the counter
+        let counter = filenames.entry(f_name.clone()).or_insert(0);
+        // Update the counter
+        *counter += 1;
+
+        if *counter == 2 {
+            println!(&quot;{}&quot;, f_name);
+        }
+    }
+}
+</code></pre></pre>
+<p><a name="ex-file-predicate"></a></p>
+<a class="header" href="app.html#recursively-find-all-files-with-given-predicate" id="recursively-find-all-files-with-given-predicate"><h2>Recursively find all files with given predicate</h2></a>
+<p><a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Find JSON files modified within the last day in the current directory.
+Using <a href="https://docs.rs/walkdir/*/walkdir/struct.WalkDir.html#method.follow_links"><code>follow_links</code></a> ensures symbolic links are followed like they were
+normal directories and files.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate walkdir;
+
+use walkdir::WalkDir;
+#
+# error_chain! {
+#     foreign_links {
+#         WalkDir(walkdir::Error);
+#         Io(std::io::Error);
+#         SystemTime(std::time::SystemTimeError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    // List recusively all accessible files in the current directory
+    for entry in WalkDir::new(&quot;.&quot;)
+            .follow_links(true)
+            .into_iter()
+            .filter_map(|e| e.ok()) {
+        // Get entry's filename
+        let f_name = entry.file_name().to_string_lossy();
+        // Get entry's modified time
+        let sec = entry.metadata()?.modified()?;
+
+        // Print JSON files modified within the last day
+        if f_name.ends_with(&quot;.json&quot;) &amp;&amp; sec.elapsed()?.as_secs() &lt; 86400 {
+            println!(&quot;{}&quot;, f_name);
+        }
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-file-skip-dot"></a></p>
+<a class="header" href="app.html#traverse-directories-while-skipping-dotfiles" id="traverse-directories-while-skipping-dotfiles"><h2>Traverse directories while skipping dotfiles</h2></a>
+<p><a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Uses <a href="https://docs.rs/walkdir/*/walkdir/struct.IntoIter.html#method.filter_entry"><code>filter_entry</code></a> to descend recursively into entries passing the <code>is_not_hidden</code> predicate thus skipping hidden files and directories whereas <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter"><code>Iterator::filter</code></a> would be applied to each <a href="https://docs.rs/walkdir/*/walkdir/struct.DirEntry.html"><code>WalkDir::DirEntry</code></a> even if the parent is a hidden directory.</p>
+<p>Root dir <code>&quot;.&quot;</code> is yielded due to <a href="https://docs.rs/walkdir/*/walkdir/struct.DirEntry.html#method.depth"><code>WalkDir::depth</code></a> usage in <code>is_not_hidden</code> predicate.</p>
+<pre><pre class="playpen"><code class="language-rust no_run">extern crate walkdir;
+
+use walkdir::{DirEntry, WalkDir};
+
+fn is_not_hidden(entry: &amp;DirEntry) -&gt; bool {
+    entry
+         .file_name()
+         .to_str()
+         .map(|s| entry.depth() == 0 || !s.starts_with(&quot;.&quot;))
+         .unwrap_or(false)
+}
+
+fn main() {
+    WalkDir::new(&quot;.&quot;)
+        .into_iter()
+        .filter_entry(|e| is_not_hidden(e))
+        .filter_map(|v| v.ok())
+        .for_each(|x| println!(&quot;{}&quot;, x.path().display()));
+}
+</code></pre></pre>
+<p><a name="ex-file-sizes"></a></p>
+<a class="header" href="app.html#recursively-calculate-file-sizes-at-given-depth" id="recursively-calculate-file-sizes-at-given-depth"><h2>Recursively calculate file sizes at given depth</h2></a>
+<p><a href="https://docs.rs/walkdir/"><img src="https://badge-cache.kominick.com/crates/v/walkdir.svg?label=walkdir" alt="walkdir-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Recursion depth can be flexibly set by <a href="https://docs.rs/walkdir/*/walkdir/struct.WalkDir.html#method.min_depth"><code>WalkDir::min_depth</code></a> &amp; <a href="https://docs.rs/walkdir/*/walkdir/struct.WalkDir.html#method.max_depth"><code>WalkDir::max_depth</code></a> methods.
+In this example we sum all file sizes to 3 subfolders depth, ignoring files in the root folder
+at the same time.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate walkdir;
+
+use walkdir::WalkDir;
+
+fn main() {
+    let total_size = WalkDir::new(&quot;.&quot;)
+        .min_depth(1)
+        .max_depth(3)
+        .into_iter()
+        .filter_map(|entry| entry.ok()) // Files, we have access to
+        .filter_map(|entry| entry.metadata().ok()) // Get metadata
+        .filter(|metadata| metadata.is_file()) // Filter out directories
+        .fold(0, |acc, m| acc + m.len()); // Accumulate sizes
+
+    println!(&quot;Total size: {} bytes.&quot;, total_size);
+}
+</code></pre></pre>
+<p><a name="ex-glob-recursive"></a></p>
+<a class="header" href="app.html#find-all-png-files-recursively" id="find-all-png-files-recursively"><h2>Find all png files recursively</h2></a>
+<p><a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Recursively find all PNG files in the current directory.
+In this case, the <code>**</code> pattern matches the current directory and all subdirectories.</p>
+<p>You can also use the <code>**</code> pattern for any directory, not just the current one.
+For example, <code>/media/**/*.png</code> would match all PNGs in <code>media</code> and it's subdirectories.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate glob;
+
+use glob::glob;
+#
+# error_chain! {
+#     foreign_links {
+#         Glob(glob::GlobError);
+#         Pattern(glob::PatternError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    for entry in glob(&quot;**/*.png&quot;)? {
+        println!(&quot;{}&quot;, entry?.display());
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-glob-with"></a></p>
+<a class="header" href="app.html#find-all-files-with-given-pattern-ignoring-filename-case" id="find-all-files-with-given-pattern-ignoring-filename-case"><h2>Find all files with given pattern ignoring filename case.</h2></a>
+<p><a href="https://docs.rs/glob/"><img src="https://badge-cache.kominick.com/crates/v/glob.svg?label=glob" alt="glob-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Find all image files in the <code>/media/</code> directory matching the <code>img_[0-9]*.png</code> pattern.</p>
+<p>A custom <a href="https://docs.rs/glob/*/glob/struct.MatchOptions.html"><code>MatchOptions</code></a> struct is passed to the <a href="https://docs.rs/glob/*/glob/fn.glob_with.html"><code>glob_with</code></a> function making the glob pattern case insensitive while keeping the other options <a href="https://doc.rust-lang.org/std/default/trait.Default.html"><code>Default</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate glob;
+
+use glob::{glob_with, MatchOptions};
+#
+# error_chain! {
+#     foreign_links {
+#         Glob(glob::GlobError);
+#         Pattern(glob::PatternError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let options = MatchOptions {
+        case_sensitive: false,
+        ..Default::default()
+    };
+
+    for entry in glob_with(&quot;/media/img_[0-9]*.png&quot;, &amp;options)? {
+        println!(&quot;{}&quot;, entry?.display());
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-semver-increment"></a></p>
+<a class="header" href="app.html#parse-and-increment-a-version-string" id="parse-and-increment-a-version-string"><h2>Parse and increment a version string.</h2></a>
+<p><a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a></p>
+<p>Constructs a <a href="https://docs.rs/semver/*/semver/struct.Version.html"><code>semver::Version</code></a> from a string literal using <a href="https://docs.rs/semver/*/semver/struct.Version.html#method.parse"><code>Version::parse</code></a>, then increments it by patch, minor, and major version number one by one.</p>
+<p>Note that in accordance with the <a href="http://semver.org/">Semantic Versioning Specification</a>, incrementing the minor version number resets the patch version number to 0 and incrementing the major version number resets both the minor and patch version numbers to 0.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate semver;
+
+use semver::Version;
+#
+# error_chain! {
+#     foreign_links {
+#         SemVer(semver::SemVerError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let mut parsed_version = Version::parse(&quot;0.2.6&quot;)?;
+
+    assert_eq!(
+        parsed_version,
+        Version {
+            major: 0,
+            minor: 2,
+            patch: 6,
+            pre: vec![],
+            build: vec![],
+        }
+    );
+
+    parsed_version.increment_patch();
+    assert_eq!(parsed_version.to_string(), &quot;0.2.7&quot;);
+    println!(&quot;New patch release: v{}&quot;, parsed_version);
+
+    parsed_version.increment_minor();
+    assert_eq!(parsed_version.to_string(), &quot;0.3.0&quot;);
+    println!(&quot;New minor release: v{}&quot;, parsed_version);
+
+    parsed_version.increment_major();
+    assert_eq!(parsed_version.to_string(), &quot;1.0.0&quot;);
+    println!(&quot;New major release: v{}&quot;, parsed_version);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-semver-complex"></a></p>
+<a class="header" href="app.html#parse-a-complex-version-string" id="parse-a-complex-version-string"><h2>Parse a complex version string.</h2></a>
+<p><a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a></p>
+<p>Constructs a <a href="https://docs.rs/semver/*/semver/struct.Version.html"><code>semver::Version</code></a> from a complex version string using <a href="https://docs.rs/semver/*/semver/struct.Version.html#method.parse"><code>Version::parse</code></a>. The string
+contains pre-release and build metadata as defined in the <a href="http://semver.org/">Semantic Versioning Specification</a>.</p>
+<p>Note that, in accordance with the Specification, build metadata is parsed but not considered when
+comparing versions. In other words, two versions may be equal even if their build strings differ.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate semver;
+
+use semver::{Identifier, Version};
+#
+# error_chain! {
+#     foreign_links {
+#         SemVer(semver::SemVerError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let version_str = &quot;1.0.49-125+g72ee7853&quot;;
+    let parsed_version = Version::parse(version_str)?;
+
+    assert_eq!(
+        parsed_version,
+        Version {
+            major: 1,
+            minor: 0,
+            patch: 49,
+            pre: vec![Identifier::Numeric(125)],
+            build: vec![],
+        }
+    );
+    assert_eq!(
+        parsed_version.build,
+        vec![Identifier::AlphaNumeric(String::from(&quot;g72ee7853&quot;))]
+    );
+
+    let serialized_version = parsed_version.to_string();
+    assert_eq!(&amp;serialized_version, version_str);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-semver-prerelease"></a></p>
+<a class="header" href="app.html#check-if-given-version-is-pre-release" id="check-if-given-version-is-pre-release"><h2>Check if given version is pre-release.</h2></a>
+<p><a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a></p>
+<p>Given two versions, we assert (by using <a href="https://docs.rs/semver/*/semver/struct.Version.html#method.is_prerelease"><code>is_prerelease</code></a>) that one is pre-release and that the other is not.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate semver;
+
+use semver::Version;
+#
+# error_chain! {
+#     foreign_links {
+#         SemVer(semver::SemVerError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let version_1 = Version::parse(&quot;1.0.0-alpha&quot;)?;
+    let version_2 = Version::parse(&quot;1.0.0&quot;)?;
+
+    assert!(version_1.is_prerelease());
+    assert!(!version_2.is_prerelease());
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-semver-latest"></a></p>
+<a class="header" href="app.html#find-the-latest-version-satisfying-given-range" id="find-the-latest-version-satisfying-given-range"><h2>Find the latest version satisfying given range</h2></a>
+<p><a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> <a href="https://crates.io/categories/config"><img src="https://badge-cache.kominick.com/badge/config--x.svg?style=social" alt="cat-config-badge" /></a></p>
+<p>Given a list of version &amp;strs, finds the latest <a href="https://docs.rs/semver/*/semver/struct.Version.html"><code>semver::Version</code></a> that satisfying a given <a href="https://docs.rs/semver/*/semver/struct.VersionReq.html"><code>semver::VersionReq</code></a> using <a href="https://docs.rs/semver/*/semver/struct.VersionReq.html#method.matches"><code>VersionReq::matches</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate semver;
+
+use semver::{Version, VersionReq};
+#
+# error_chain! {
+#     foreign_links {
+#         SemVer(semver::SemVerError);
+#         SemVerReq(semver::ReqParseError);
+#     }
+# }
+
+fn find_max_matching_version&lt;'a, I&gt;(version_req_str: &amp;str, iterable: I) -&gt; Result&lt;Option&lt;Version&gt;&gt;
+where
+    I: IntoIterator&lt;Item = &amp;'a str&gt;,
+{
+    let vreq = VersionReq::parse(version_req_str)?;
+
+    Ok(
+        iterable
+            .into_iter()
+            .filter_map(|s| Version::parse(s).ok())
+            .filter(|s| vreq.matches(s))
+            .max(),
+    )
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    assert_eq!(
+        find_max_matching_version(&quot;&lt;= 1.0.0&quot;, vec![&quot;0.9.0&quot;, &quot;1.0.0&quot;, &quot;1.0.1&quot;])?,
+        Some(Version::parse(&quot;1.0.0&quot;)?)
+    );
+
+    // Shows Semver precedence for pre-release tags
+    assert_eq!(
+        find_max_matching_version(
+            &quot;&gt;1.2.3-alpha.3&quot;,
+            vec![
+                &quot;1.2.3-alpha.3&quot;,
+                &quot;1.2.3-alpha.4&quot;,
+                &quot;1.2.3-alpha.10&quot;,
+                &quot;1.2.3-beta.4&quot;,
+                &quot;3.4.5-alpha.9&quot;,
+            ]
+        )?,
+        Some(Version::parse(&quot;1.2.3-beta.4&quot;)?)
+    );
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-semver-command"></a></p>
+<a class="header" href="app.html#check-external-command-version-for-compatibility" id="check-external-command-version-for-compatibility"><h2>Check external command version for compatibility</h2></a>
+<p><a href="https://docs.rs/semver/"><img src="https://badge-cache.kominick.com/crates/v/semver.svg?label=semver" alt="semver-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></p>
+<p>Runs <code>git --version</code> using <a href="https://doc.rust-lang.org/std/process/struct.Command.html"><code>Command</code></a>, then parses the version number into a <a href="https://docs.rs/semver/*/semver/struct.Version.html"><code>semver::Version</code></a>
+using <a href="https://docs.rs/semver/*/semver/struct.Version.html#method.parse"><code>Version::parse</code></a>. A <a href="https://docs.rs/semver/*/semver/struct.VersionReq.html"><code>semver::VersionReq</code></a> is used to compare the parsed version to a
+minimum version requirement.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate semver;
+
+use std::process::Command;
+use semver::{Version, VersionReq};
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         Utf8(std::string::FromUtf8Error);
+#         SemVer(semver::SemVerError);
+#         SemVerReq(semver::ReqParseError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let version_constraint = &quot;&gt; 1.12.0&quot;;
+    let version_test = VersionReq::parse(version_constraint)?;
+    let output = Command::new(&quot;git&quot;).arg(&quot;--version&quot;).output()?;
+
+    if !output.status.success() {
+        bail!(&quot;Command executed with failing error code&quot;);
+    }
+
+    let stdout = String::from_utf8(output.stdout)?;
+    // `git --version` output: &quot;git version x.y.z&quot;
+    let version = stdout.split(&quot; &quot;).last().ok_or_else(|| {
+        &quot;Invalid command output&quot;
+    })?;
+    let parsed_version = Version::parse(version)?;
+
+    if !version_test.matches(&amp;parsed_version) {
+        bail!(&quot;Command version lower than minimum supported version (found {}, need {})&quot;,
+            parsed_version, version_constraint);
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<!--
+Links, in a few categories. Follow the existing structure.
+Keep lines sorted.
+-->
+<!-- Categories -->
+<!-- Crates -->
+<!-- API Reference -->
+<!-- Other Reference -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="net.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="logging.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="net.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="logging.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>

@@ -1,0 +1,1750 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Basics - Rust Cookbook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Collection of useful Rust code examples">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/custom.css">
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html" class="active"><strong aria-hidden="true">1.</strong> Basics</a></li><li><a href="encoding.html"><strong aria-hidden="true">2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong aria-hidden="true">3.</strong> Concurrency</a></li><li><a href="net.html"><strong aria-hidden="true">4.</strong> Networking</a></li><li><a href="app.html"><strong aria-hidden="true">5.</strong> Application development</a></li><li><a href="logging.html"><strong aria-hidden="true">6.</strong> Logging</a></li><li><a href="build_tools.html"><strong aria-hidden="true">7.</strong> Build Time Tooling</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <!-- START - Rust Cookbook customization -->
+                            <button id="edit-button" class="icon-button" type="button" title="Fork and edit" aria-label="Fork and edit" aria-haspopup="true" aria-expanded="false" aria-controls="edit">
+                                <i class="fa fa-edit">Edit</i>
+                            </button>
+                            <!-- END - Rust Cookbook customization -->
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Cookbook</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+
+                   // START - Rust Cookbook customization
+                   document.getElementById("edit-button").addEventListener("click", function(){
+                       var editWindow = window.open("https://github.com/rust-lang-nursery/rust-cookbook/edit/master/src/basics.md");
+                   });
+                   // END - Rust Cookbook customization
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="basics.html#basics" id="basics"><h1>Basics</h1></a>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="basics.html#ex-std-read-lines">Read lines of strings from a file</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-byteorder-le">Read and write integers in little-endian byte order</a> </td><td> <a href="https://docs.rs/byteorder/"><img src="https://badge-cache.kominick.com/crates/v/byteorder.svg?label=byteorder" alt="byteorder-badge" /></a> </td><td> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand">Generate random numbers</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-range">Generate random numbers within a range</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-dist">Generate random numbers with given distribution</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-custom">Generate random values of a custom type</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-passwd">Create random passwords from a set of alphanumeric characters</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-rand-choose">Create random passwords from a set of user-defined characters</a> </td><td> <a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-parse-subprocess-output">Run an external command and process stdout</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-parse-subprocess-input">Run an external command passing it stdin and check for an error code</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-run-piped-external-commands">Run piped external commands</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-redirect-stdout-stderr-same-file">Redirect both stdout and stderr of child process to the same file</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-continuous-process-output">Continuously process child process' outputs</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a><a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-regex-filter-log">Filter a log file by matching multiple regular expressions</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></td></tr>
+<tr><td> <a href="basics.html#ex-lazy-constant">Declare lazily evaluated constant</a> </td><td> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/caching"><img src="https://badge-cache.kominick.com/badge/caching--x.svg?style=social" alt="cat-caching-badge" /></a> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-global-mut-state">Maintain global mutable state</a> </td><td> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-verify-extract-email">Verify and extract login from an email address</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-extract-hashtags">Extract a list of unique #Hashtags from a text</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-regex-replace-named">Replace all occurrences of one text pattern with another pattern.</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-phone">Extract phone numbers from text</a> </td><td> <a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> </td><td> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-sha-digest">Calculate the SHA-256 digest of a file</a> </td><td> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://docs.rs/data-encoding/"><img src="https://badge-cache.kominick.com/crates/v/data-encoding.svg?label=data-encoding" alt="data-encoding-badge" /></a> </td><td> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-hmac">Sign and verify a message with an HMAC digest</a> </td><td> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> </td><td> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-pbkdf2">Salt and hash a password with PBKDF2</a> </td><td> <a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://docs.rs/data-encoding/"><img src="https://badge-cache.kominick.com/crates/v/data-encoding.svg?label=data-encoding" alt="data-encoding-badge" /></a> </td><td> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-bitflags">Define and operate on a type represented as a bitfield</a> </td><td> <a href="https://docs.rs/bitflags/"><img src="https://badge-cache.kominick.com/crates/v/bitflags.svg?label=bitflags" alt="bitflags-badge" /></a> </td><td> <a href="https://crates.io/categories/no-std"><img src="https://badge-cache.kominick.com/badge/no_std--x.svg?style=social" alt="cat-no-std-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-random-file-access">Access a file randomly using a memory map</a> </td><td> <a href="https://docs.rs/memmap/"><img src="https://badge-cache.kominick.com/crates/v/memmap.svg?label=memmap" alt="memmap-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-check-cpu-cores">Check number of logical cpu cores</a> </td><td> <a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> </td><td> <a href="https://crates.io/categories/hardware-support"><img src="https://badge-cache.kominick.com/badge/hardware_support--x.svg?style=social" alt="cat-hardware-support-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-error-chain-simple-error-handling">Handle errors correctly in main</a> </td><td> <a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-error-chain-avoid-discarding">Avoid discarding errors during error conversions</a> </td><td> <a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-error-chain-backtrace">Obtain backtrace of complex error scenarios</a> </td><td> <a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> </td><td> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-measure-elapsed-time">Measure elapsed time</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/time--x.svg?style=social" alt="cat-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-convert-datetime-timestamp">Convert date to UNIX timestamp and vice versa</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-convert-datetime-timezone">Convert a local time to an another UTC timezone and vice versa</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-format-datetime">Display formatted date and time</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-parse-datetime">Parse string into DateTime struct</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-datetime-arithmetic">Perform checked date and time calculations</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-examine-date-and-time">Examine the date and time</a> </td><td> <a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> </td><td> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a> </td></tr>
+<tr><td> <a href="basics.html#ex-file-24-hours-modified">File names that have been modified in the last 24 hours for the working directory</a> </td><td> <a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> </td><td> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> </td></tr>
+</tbody></table>
+<p><a name="ex-std-read-lines"></a></p>
+<a class="header" href="basics.html#read-lines-of-strings-from-a-file" id="read-lines-of-strings-from-a-file"><h2>Read lines of strings from a file</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Writes a three-line message to a file, then reads it back a line at a
+time with the <a href="https://doc.rust-lang.org/std/io/struct.Lines.html"><code>Lines</code></a> iterator created by
+<a href="https://doc.rust-lang.org/std/io/trait.BufRead.html#method.lines"><code>BufRead::lines</code></a>. <a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> is a trait, and the most common way to
+get one is from a <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a>, which is constructed from some type
+that implements <a href="https://doc.rust-lang.org/std/io/trait.Read.html"><code>Read</code></a>, here a <a href="https://doc.rust-lang.org/std/fs/struct.File.html"><code>File</code></a>. The <a href="https://doc.rust-lang.org/std/fs/struct.File.html"><code>File</code></a> is opened
+for writing with <a href="https://doc.rust-lang.org/std/fs/struct.File.html#method.create"><code>File::create</code></a>, and reading with <a href="https://doc.rust-lang.org/std/fs/struct.File.html#method.open"><code>File::open</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+#
+use std::fs::File;
+use std::io::{Write, BufReader, BufRead};
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let path = &quot;lines.txt&quot;;
+
+    let mut output = File::create(path)?;
+    write!(output, &quot;Rust\n💖\nFun&quot;)?;
+
+    let input = File::open(path)?;
+    let buffered = BufReader::new(input);
+
+    for line in buffered.lines() {
+        println!(&quot;{}&quot;, line?);
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-byteorder-le"></a></p>
+<a class="header" href="basics.html#read-and-write-integers-in-little-endian-byte-order" id="read-and-write-integers-in-little-endian-byte-order"><h2>Read and write integers in little-endian byte order</h2></a>
+<p><a href="https://docs.rs/byteorder/"><img src="https://badge-cache.kominick.com/crates/v/byteorder.svg?label=byteorder" alt="byteorder-badge" /></a> <a href="https://crates.io/categories/encoding"><img src="https://badge-cache.kominick.com/badge/encoding--x.svg?style=social" alt="cat-encoding-badge" /></a></p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate byteorder;
+
+use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
+
+#[derive(Default, PartialEq, Debug)]
+struct Payload {
+    kind: u8,
+    value: u16,
+}
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let original_payload = Payload::default();
+    let encoded_bytes = encode(&amp;original_payload)?;
+    let decoded_payload = decode(&amp;encoded_bytes)?;
+    assert_eq!(original_payload, decoded_payload);
+    Ok(())
+}
+
+fn encode(payload: &amp;Payload) -&gt; Result&lt;Vec&lt;u8&gt;&gt; {
+    let mut bytes = vec![];
+    bytes.write_u8(payload.kind)?;
+    bytes.write_u16::&lt;LittleEndian&gt;(payload.value)?;
+    Ok(bytes)
+}
+
+fn decode(mut bytes: &amp;[u8]) -&gt; Result&lt;Payload&gt; {
+    let payload = Payload {
+        kind: bytes.read_u8()?,
+        value: bytes.read_u16::&lt;LittleEndian&gt;()?,
+    };
+    Ok(payload)
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-rand"></a></p>
+<a class="header" href="basics.html#generate-random-numbers" id="generate-random-numbers"><h2>Generate random numbers</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a></p>
+<p>Generates random numbers with help of random-number
+generator <a href="https://docs.rs/rand/*/rand/trait.Rng.html"><code>rand::Rng</code></a> obtained via <a href="https://docs.rs/rand/*/rand/fn.thread_rng.html"><code>rand::thread_rng</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+
+use rand::Rng;
+
+fn main() {
+    // Each thread has an automatically-initialised random number generator:
+    let mut rng = rand::thread_rng();
+
+    // Integers are uniformly distributed over the type's whole range:
+    let n1: u8 = rng.gen();
+    let n2: u16 = rng.gen();
+    println!(&quot;Random u8: {}&quot;, n1);
+    println!(&quot;Random u16: {}&quot;, n2);
+    println!(&quot;Random u32: {}&quot;, rng.gen::&lt;u32&gt;());
+    println!(&quot;Random i32: {}&quot;, rng.gen::&lt;i32&gt;());
+
+    // Floating point numbers are uniformly distributed in the half-open range [0, 1)
+    println!(&quot;Random float: {}&quot;, rng.gen::&lt;f64&gt;());
+}
+</code></pre></pre>
+<p><a name="ex-rand-range"></a></p>
+<a class="header" href="basics.html#generate-random-numbers-within-a-range" id="generate-random-numbers-within-a-range"><h2>Generate random numbers within a range</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a></p>
+<p>Generates a random value within half-open <code>[0, 10)</code> range (not including <code>10</code>) with <a href="https://docs.rs/rand/*/rand/trait.Rng.html#method.gen_range"><code>Rng::gen_range</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+
+use rand::Rng;
+
+fn main() {
+    let mut rng = rand::thread_rng();
+    println!(&quot;Integer: {}&quot;, rng.gen_range(0, 10));
+    println!(&quot;Float: {}&quot;, rng.gen_range(0.0, 10.0));
+}
+</code></pre></pre>
+<p>Alternatively, one can use <a href="https://docs.rs/rand/*/rand/distributions/#reexports"><code>Range</code></a> to obtain values with <a href="https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)">uniform distribution</a>.
+This has the same effect, but may be faster when repeatedly generating numbers
+in the same range.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+
+use rand::distributions::{Range, Distribution};
+
+fn main() {
+    let mut rng = rand::thread_rng();
+    let die = Range::new(1, 7);
+
+    loop {
+        let throw = die.sample(&amp;mut rng);
+        println!(&quot;Roll the die: {}&quot;, throw);
+        if throw == 6 {
+            break;
+        }
+    }
+}
+</code></pre></pre>
+<p><a name="ex-rand-dist"></a></p>
+<a class="header" href="basics.html#generate-random-numbers-with-given-distribution" id="generate-random-numbers-with-given-distribution"><h2>Generate random numbers with given distribution</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a></p>
+<p>By default, random numbers are generated with <a href="https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)">uniform distribution</a>.
+To generate numbers with other distributions you instantiate a
+distribution, then sample from that distribution using
+<a href="https://docs.rs/rand/*/rand/distributions/trait.Distribution.html#tymethod.sample"><code>Distribution::sample</code></a> with help of a random-number
+generator <a href="https://docs.rs/rand/*/rand/trait.Rng.html"><code>rand::Rng</code></a>.</p>
+<p>The <a href="https://docs.rs/rand/*/rand/distributions/index.html">distributions available are documented here</a>. An example using the
+<a href="https://docs.rs/rand/*/rand/distributions/normal/struct.Normal.html"><code>Normal</code></a> distribution is shown below.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+
+use rand::distributions::{Normal, Distribution};
+
+fn main() {
+    let mut rng = rand::thread_rng();
+
+    // mean 2, standard deviation 3:
+    let normal = Normal::new(2.0, 3.0);
+    let v = normal.sample(&amp;mut rng);
+    println!(&quot;{} is from a N(2, 9) distribution&quot;, v)
+}
+</code></pre></pre>
+<p><a name="ex-rand-custom"></a></p>
+<a class="header" href="basics.html#generate-random-values-of-a-custom-type" id="generate-random-values-of-a-custom-type"><h2>Generate random values of a custom type</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/science"><img src="https://badge-cache.kominick.com/badge/science--x.svg?style=social" alt="cat-science-badge" /></a></p>
+<p>Randomly generates a tuple <code>(i32, bool, f64)</code> and variable of user defined type <code>Point</code>.
+Implements the <a href="https://docs.rs/rand/*/rand/distributions/trait.Distribution.html"><code>Distribution</code></a> trait on type <code>Point</code> for <a href="https://docs.rs/rand/*/rand/distributions/struct.Standard.html"><code>Standard</code></a> in order to allow random generation.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+
+use rand::Rng;
+use rand::distributions::{Distribution, Standard};
+
+#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Distribution&lt;Point&gt; for Standard {
+    fn sample&lt;R: Rng + ?Sized&gt;(&amp;self, rng: &amp;mut R) -&gt; Point {
+        let (rand_x, rand_y) = rng.gen();
+        Point {
+            x: rand_x,
+            y: rand_y,
+        }
+    }
+}
+
+fn main() {
+    let mut rng = rand::thread_rng();
+    let rand_tuple = rng.gen::&lt;(i32, bool, f64)&gt;();
+    let rand_point: Point = rng.gen();
+    println!(&quot;Random tuple: {:?}&quot;, rand_tuple);
+    println!(&quot;Random Point: {:?}&quot;, rand_point);
+}
+</code></pre></pre>
+<p><a name="ex-rand-passwd"></a></p>
+<a class="header" href="basics.html#create-random-passwords-from-a-set-of-alphanumeric-characters" id="create-random-passwords-from-a-set-of-alphanumeric-characters"><h2>Create random passwords from a set of alphanumeric characters</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></p>
+<p>Randomly generates a string of given length ASCII characters in the range <code>A-Z, a-z, 0-9</code>, with <a href="https://docs.rs/rand/*/rand/distributions/struct.Alphanumeric.html#struct.Alphanumaric"><code>Alphanumeric</code></a> sample.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+
+use rand::{thread_rng, Rng};
+use rand::distributions::Alphanumeric;
+
+fn main() {
+    let rand_string: String = thread_rng()
+        .sample_iter(&amp;Alphanumeric)
+        .take(30)
+        .collect();
+
+    println!(&quot;{}&quot;, rand_string);
+}
+</code></pre></pre>
+<p><a name="ex-rand-choose"></a></p>
+<a class="header" href="basics.html#create-random-passwords-from-a-set-of-user-defined-characters" id="create-random-passwords-from-a-set-of-user-defined-characters"><h2>Create random passwords from a set of user-defined characters</h2></a>
+<p><a href="https://docs.rs/rand/"><img src="https://badge-cache.kominick.com/crates/v/rand.svg?label=rand" alt="rand-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></p>
+<p>Randomly generates a string of given length ASCII characters with custom user-defined bytestring, with <a href="https://docs.rs/rand/*/rand/trait.Rng.html#method.choose"><code>choose</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate rand;
+
+use rand::{thread_rng, Rng};
+
+fn main() {
+    const CHARSET: &amp;[u8] =  b&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+    abcdefghijklmnopqrstuvwxyz\
+    0123456789)(*&amp;^%$#@!~&quot;;
+
+    let mut rng = thread_rng();
+    let password: Option&lt;String&gt; = (0..30)
+        .map(|_| Some(*rng.choose(CHARSET)? as char))
+        .collect();
+
+    println!(&quot;{:?}&quot;, password);
+}
+</code></pre></pre>
+<p><a name="ex-parse-subprocess-output"></a></p>
+<a class="header" href="basics.html#run-an-external-command-and-process-stdout" id="run-an-external-command-and-process-stdout"><h2>Run an external command and process stdout</h2></a>
+<p><a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></p>
+<p>Runs <code>git log --oneline</code> as an external <a href="https://doc.rust-lang.org/std/process/struct.Command.html"><code>Command</code></a> and inspects its <a href="https://doc.rust-lang.org/std/process/struct.Output.html"><code>Output</code></a>
+using <a href="https://doc.rust-lang.org/regex/*/regex/struct.Regex.html"><code>Regex</code></a> to get the hash and message of the last 5 commits.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate regex;
+
+use std::process::Command;
+use regex::Regex;
+#
+# error_chain!{
+#     foreign_links {
+#         Io(std::io::Error);
+#         Regex(regex::Error);
+#         Utf8(std::string::FromUtf8Error);
+#     }
+# }
+
+#[derive(PartialEq, Default, Clone, Debug)]
+struct Commit {
+    hash: String,
+    message: String,
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let output = Command::new(&quot;git&quot;).arg(&quot;log&quot;).arg(&quot;--oneline&quot;).output()?;
+
+    if !output.status.success() {
+        bail!(&quot;Command executed with failing error code&quot;);
+    }
+
+    let pattern = Regex::new(r&quot;(?x)
+                               ([0-9a-fA-F]+) # commit hash
+                               (.*)           # The commit message&quot;)?;
+
+    String::from_utf8(output.stdout)?
+        .lines()
+        .filter_map(|line| pattern.captures(line))
+        .map(|cap| {
+                 Commit {
+                     hash: cap[1].to_string(),
+                     message: cap[2].trim().to_string(),
+                 }
+             })
+        .take(5)
+        .for_each(|x| println!(&quot;{:?}&quot;, x));
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-parse-subprocess-input"></a></p>
+<a class="header" href="basics.html#run-an-external-command-passing-it-stdin-and-check-for-an-error-code" id="run-an-external-command-passing-it-stdin-and-check-for-an-error-code"><h2>Run an external command passing it stdin and check for an error code</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></p>
+<p>Opens the <code>python</code> interpreter using an external <a href="https://doc.rust-lang.org/std/process/struct.Command.html"><code>Command</code></a> and passes it a python statement
+for execution. <a href="https://doc.rust-lang.org/std/process/struct.Output.html"><code>Output</code></a> of said statement is then parsed.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#
+use std::collections::HashSet;
+use std::io::Write;
+use std::process::{Command, Stdio};
+#
+# error_chain!{
+#     errors { CmdError }
+#     foreign_links {
+#         Io(std::io::Error);
+#         Utf8(std::string::FromUtf8Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let mut child = Command::new(&quot;python&quot;).stdin(Stdio::piped())
+        .stderr(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()?;
+
+    child.stdin
+        .as_mut()
+        .ok_or(&quot;Child process stdin has not been captured!&quot;)?
+        .write_all(b&quot;import this; copyright(); credits(); exit()&quot;)?;
+
+    let output = child.wait_with_output()?;
+
+    if output.status.success() {
+        let raw_output = String::from_utf8(output.stdout)?;
+        let words = raw_output.split_whitespace()
+            .map(|s| s.to_lowercase())
+            .collect::&lt;HashSet&lt;_&gt;&gt;();
+        println!(&quot;Found {} unique words:&quot;, words.len());
+        println!(&quot;{:#?}&quot;, words);
+        Ok(())
+    } else {
+        let err = String::from_utf8(output.stderr)?;
+        bail!(&quot;External command failed:\n {}&quot;, err)
+    }
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-run-piped-external-commands"></a></p>
+<a class="header" href="basics.html#run-piped-external-commands" id="run-piped-external-commands"><h2>Run piped external commands</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></p>
+<p>Shows up to the 10<sup>th</sup> biggest files and subdirectories in
+the current working directory. It is equivalent to run: <code>du -ah . | sort -hr | head -n 10</code>.</p>
+<p>It spawns Unix processes which are represented as <a href="https://doc.rust-lang.org/std/process/struct.Command.html"><code>Command</code></a>s. In
+order to capture the output of a child process it is necessary to
+create a new <a href="https://doc.rust-lang.org/std/process/struct.Stdio.html"><code>Stdio::piped</code></a> between parent and child.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#
+use std::process::{Command, Stdio};
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         Utf8(std::string::FromUtf8Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let directory = std::env::current_dir()?;
+    let du_output = Command::new(&quot;du&quot;)
+        .arg(&quot;-ah&quot;)
+        .arg(&amp;directory)
+        .stdout(Stdio::piped())
+        .spawn()?
+        .stdout
+        .ok_or_else(|| &quot;Could not capture `du` standard output.&quot;)?;
+
+    let sort_output = Command::new(&quot;sort&quot;)
+        .arg(&quot;-hr&quot;)
+        .stdin(du_output)
+        .stdout(Stdio::piped())
+        .spawn()?
+        .stdout
+        .ok_or_else(|| &quot;Could not capture `sort` standard output.&quot;)?;
+
+    let head_output = Command::new(&quot;head&quot;)
+        .args(&amp;[&quot;-n&quot;, &quot;10&quot;])
+        .stdin(sort_output)
+        .stdout(Stdio::piped())
+        .spawn()?
+        .wait_with_output()?;
+
+    println!(
+        &quot;Top 10 biggest files and directories in '{}':\n{}&quot;,
+        directory.display(),
+        String::from_utf8(head_output.stdout)?
+    );
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-redirect-stdout-stderr-same-file"></a></p>
+<a class="header" href="basics.html#redirect-both-stdout-and-stderr-of-child-process-to-the-same-file" id="redirect-both-stdout-and-stderr-of-child-process-to-the-same-file"><h2>Redirect both stdout and stderr of child process to the same file</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></p>
+<p>Spawns a child process and redirects <code>stdout</code> and <code>stderr</code> to the same
+file. It follows the same idea as <a href="basics.html#ex-run-piped-external-commands">run piped external
+commands</a>, however <a href="https://doc.rust-lang.org/std/process/struct.Stdio.html"><code>process::Stdio</code></a>
+will write to the provided files and beforehand, <a href="https://doc.rust-lang.org/std/fs/struct.File.html#method.try_clone"><code>File::try_clone</code></a>
+is used to reference the same file handle for <code>stdout</code> and
+<code>stderr</code>. It will ensure that both handles write with the same cursor
+position.</p>
+<p>The below recipe is equivalent to run the Unix shell command <code>ls . oops &gt;out.txt 2&gt;&amp;1</code>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#
+use std::fs::File;
+use std::process::{Command, Stdio};
+
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+#
+fn run() -&gt; Result&lt;()&gt; {
+    let outputs = File::create(&quot;out.txt&quot;)?;
+    let errors = outputs.try_clone()?;
+
+    Command::new(&quot;ls&quot;)
+        .args(&amp;[&quot;.&quot;, &quot;oops&quot;])
+        .stdout(Stdio::from(outputs))
+        .stderr(Stdio::from(errors))
+        .spawn()?
+        .wait_with_output()?;
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-continuous-process-output"></a></p>
+<a class="header" href="basics.html#continuously-process-child-process-outputs" id="continuously-process-child-process-outputs"><h2>Continuously process child process' outputs</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/os"><img src="https://badge-cache.kominick.com/badge/OS--x.svg?style=social" alt="cat-os-badge" /></a></p>
+<p>In <a href="basics.html#ex-parse-subprocess-output">Run an external command and process stdout</a>,
+processing doesn't start until external <a href="https://doc.rust-lang.org/std/process/struct.Command.html"><code>Command</code></a> is finished.
+The recipe below creates a new pipe by calling <a href="https://doc.rust-lang.org/std/process/struct.Stdio.html"><code>Stdio::piped</code></a> and reads
+<code>stdout</code> continuously as soon as the <a href="https://doc.rust-lang.org/std/io/struct.BufReader.html"><code>BufReader</code></a> is updated.</p>
+<p>The below recipe is equivalent to the Unix shell command
+<code>journalctl | grep usb</code>.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+#
+use std::process::{Command, Stdio};
+use std::io::{BufRead, BufReader};
+
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+#
+fn run() -&gt; Result&lt;()&gt; {
+    let stdout = Command::new(&quot;journalctl&quot;)
+        .stdout(Stdio::piped())
+        .spawn()?
+        .stdout
+        .ok_or_else(|| &quot;Could not capture standard output.&quot;)?;
+
+    let reader = BufReader::new(stdout);
+
+    reader
+        .lines()
+        .filter_map(|line| line.ok())
+        .filter(|line| line.find(&quot;usb&quot;).is_some())
+        .for_each(|line| println!(&quot;{}&quot;, line));
+
+     Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-regex-filter-log"></a></p>
+<a class="header" href="basics.html#filter-a-log-file-by-matching-multiple-regular-expressions" id="filter-a-log-file-by-matching-multiple-regular-expressions"><h2>Filter a log file by matching multiple regular expressions</h2></a>
+<p><a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></p>
+<p>Reads a file named <code>application.log</code> and only outputs the lines
+containing “version X.X.X”, some IP address followed by port 443
+(e.g. “192.168.0.1:443”), or a specific warning.</p>
+<p>A <a href="https://doc.rust-lang.org/regex/*/regex/struct.RegexSet.html"><code>regex::RegexSet</code></a> is built with <a href="https://doc.rust-lang.org/regex/*/regex/struct.RegexSetBuilder.html"><code>regex::RegexSetBuilder</code></a>.
+Since backslashes are very common in regular expressions, using
+<a href="https://doc.rust-lang.org/reference/tokens.html#raw-string-literals">raw string literals</a> make them more readable.</p>
+<pre><pre class="playpen"><code class="language-rust no_run"># #[macro_use]
+# extern crate error_chain;
+extern crate regex;
+
+use std::fs::File;
+use std::io::{BufReader, BufRead};
+use regex::RegexSetBuilder;
+
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         Regex(regex::Error);
+#     }
+# }
+#
+fn run() -&gt; Result&lt;()&gt; {
+    let log_path = &quot;application.log&quot;;
+    let buffered = BufReader::new(File::open(log_path)?);
+
+    let set = RegexSetBuilder::new(&amp;[
+        r#&quot;version &quot;\d\.\d\.\d&quot;&quot;#,
+        r#&quot;\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:443&quot;#,
+        r#&quot;warning.*timeout expired&quot;#,
+    ]).case_insensitive(true)
+        .build()?;
+
+    buffered
+        .lines()
+        .filter_map(|line| line.ok())
+        .filter(|line| set.is_match(line.as_str()))
+        .for_each(|x| println!(&quot;{}&quot;, x));
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-lazy-constant"></a></p>
+<a class="header" href="basics.html#declare-lazily-evaluated-constant" id="declare-lazily-evaluated-constant"><h2>Declare lazily evaluated constant</h2></a>
+<p><a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> <a href="https://crates.io/categories/caching"><img src="https://badge-cache.kominick.com/badge/caching--x.svg?style=social" alt="cat-caching-badge" /></a> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a></p>
+<p>Declares a lazily evaluated constant <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a>. The <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html"><code>HashMap</code></a> will
+be evaluated once and stored behind a global static reference.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate lazy_static;
+
+use std::collections::HashMap;
+
+lazy_static! {
+    static ref PRIVILEGES: HashMap&lt;&amp;'static str, Vec&lt;&amp;'static str&gt;&gt; = {
+        let mut map = HashMap::new();
+        map.insert(&quot;James&quot;, vec![&quot;user&quot;, &quot;admin&quot;]);
+        map.insert(&quot;Jim&quot;, vec![&quot;user&quot;]);
+        map
+    };
+}
+
+fn show_access(name: &amp;str) {
+    let access = PRIVILEGES.get(name);
+    println!(&quot;{}: {:?}&quot;, name, access);
+}
+
+fn main() {
+    let access = PRIVILEGES.get(&quot;James&quot;);
+    println!(&quot;James: {:?}&quot;, access);
+
+    show_access(&quot;Jim&quot;);
+}
+</code></pre></pre>
+<p><a name="ex-global-mut-state"></a></p>
+<a class="header" href="basics.html#maintain-global-mutable-state" id="maintain-global-mutable-state"><h2>Maintain global mutable state</h2></a>
+<p><a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a></p>
+<p>Declares some global state using <a href="https://docs.rs/lazy_static/">lazy_static</a>. Since <a href="https://docs.rs/lazy_static/">lazy_static</a>
+creates a globally available <code>static ref</code> we also need to wrap our state
+in a <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a> to allow mutation (also see <a href="https://doc.rust-lang.org/std/sync/struct.RwLock.html"><code>RwLock</code></a>). The <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a> ensures
+the state cannot be simultaneously accessed by multiple threads, preventing
+race conditions. A <a href="https://doc.rust-lang.org/std/sync/struct.MutexGuard.html"><code>MutexGuard</code></a> must be acquired to read or mutate the
+value stored in a <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+#[macro_use]
+extern crate lazy_static;
+
+use std::sync::Mutex;
+#
+# error_chain!{ }
+
+lazy_static! {
+    static ref FRUIT: Mutex&lt;Vec&lt;String&gt;&gt; = Mutex::new(Vec::new());
+}
+
+fn insert(fruit: &amp;str) -&gt; Result&lt;()&gt; {
+    // acquire exclusive access
+    let mut db = FRUIT.lock().map_err(|_| &quot;Failed to acquire MutexGuard&quot;)?;
+    db.push(fruit.to_string());
+    Ok(())
+    // release exclusive access
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    insert(&quot;apple&quot;)?;
+    insert(&quot;orange&quot;)?;
+    insert(&quot;peach&quot;)?;
+    {
+        // acquire access
+        let db = FRUIT.lock().map_err(|_| &quot;Failed to acquire MutexGuard&quot;)?;
+
+        db.iter().enumerate().for_each(|(i, item)| println!(&quot;{}: {}&quot;, i, item));
+        // release access
+    }
+    insert(&quot;grape&quot;)?;
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-verify-extract-email"></a></p>
+<a class="header" href="basics.html#verify-and-extract-login-from-an-email-address" id="verify-and-extract-login-from-an-email-address"><h2>Verify and extract login from an email address</h2></a>
+<p><a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></p>
+<p>Validates that an email address is formatted correctly, and extracts everything
+before the @ symbol.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate lazy_static;
+extern crate regex;
+
+use regex::Regex;
+
+fn extract_login(input: &amp;str) -&gt; Option&lt;&amp;str&gt; {
+    lazy_static! {
+        static ref RE: Regex = Regex::new(r&quot;(?x)
+            ^(?P&lt;login&gt;[^@\s]+)@
+            ([[:word:]]+\.)*
+            [[:word:]]+$
+            &quot;).unwrap();
+    }
+    RE.captures(input).and_then(|cap| {
+        cap.name(&quot;login&quot;).map(|login| login.as_str())
+    })
+}
+
+fn main() {
+    assert_eq!(extract_login(r&quot;I❤email@example.com&quot;), Some(r&quot;I❤email&quot;));
+    assert_eq!(
+        extract_login(r&quot;sdf+sdsfsd.as.sdsd@jhkk.d.rl&quot;),
+        Some(r&quot;sdf+sdsfsd.as.sdsd&quot;)
+    );
+    assert_eq!(extract_login(r&quot;More@Than@One@at.com&quot;), None);
+    assert_eq!(extract_login(r&quot;Not an email@email&quot;), None);
+}
+</code></pre></pre>
+<p><a name="ex-extract-hashtags"></a></p>
+<a class="header" href="basics.html#extract-a-list-of-unique-hashtags-from-a-text" id="extract-a-list-of-unique-hashtags-from-a-text"><h2>Extract a list of unique #Hashtags from a text</h2></a>
+<p><a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></p>
+<p>Extracts a sorted and deduplicated list of hashtags from a text.</p>
+<p>The hashtag regex given here only catches Latin hashtags that start with a letter. The complete <a href="https://github.com/twitter/twitter-text/blob/c9fc09782efe59af4ee82855768cfaf36273e170/java/src/com/twitter/Regex.java#L255">twitter hashtag regex</a> is much more complicated.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate regex;
+#[macro_use]
+extern crate lazy_static;
+
+use regex::Regex;
+use std::collections::HashSet;
+
+/// Note: A HashSet does not contain duplicate values.
+fn extract_hashtags(text: &amp;str) -&gt; HashSet&lt;&amp;str&gt; {
+    lazy_static! {
+        static ref HASHTAG_REGEX : Regex = Regex::new(
+                r&quot;\#[a-zA-Z][0-9a-zA-Z_]*&quot;
+            ).unwrap();
+    }
+    HASHTAG_REGEX.find_iter(text).map(|mat| mat.as_str()).collect()
+}
+
+fn main() {
+    let tweet = &quot;Hey #world, I just got my new #dog, say hello to Till. #dog #forever #2 #_ &quot;;
+    let tags = extract_hashtags(tweet);
+    assert!(tags.contains(&quot;#dog&quot;) &amp;&amp; tags.contains(&quot;#forever&quot;) &amp;&amp; tags.contains(&quot;#world&quot;));
+    assert_eq!(tags.len(), 3);
+}
+</code></pre></pre>
+<p><a name="ex-regex-replace-named"></a></p>
+<a class="header" href="basics.html#replace-all-occurrences-of-one-text-pattern-with-another-pattern" id="replace-all-occurrences-of-one-text-pattern-with-another-pattern"><h2>Replace all occurrences of one text pattern with another pattern.</h2></a>
+<p><a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://docs.rs/lazy_static/"><img src="https://badge-cache.kominick.com/crates/v/lazy_static.svg?label=lazy_static" alt="lazy_static-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></p>
+<p>Replaces all occurrences of the standard ISO 8601 <em>YYYY-MM-DD</em> date pattern
+with the equivalent American English date with slashes; for example <code>2013-01-15</code> becomes <code>01/15/2013</code>.</p>
+<p>The method <a href="https://docs.rs/regex/*/regex/struct.Regex.html#method.replace_all"><code>Regex::replace_all</code></a> replaces all occurrences of the whole regex. The
+<code>Replacer</code> trait helps to figure out the replacement string. This trait is implemented
+for <code>&amp;str</code> and allows to use variables like <code>$abcde</code> to refer to corresponding named capture groups
+<code>(?P&lt;abcde&gt;REGEX)</code> from the search regex. See the <a href="https://docs.rs/regex/*/regex/struct.Regex.html#replacement-string-syntax">replacement string syntax</a> for examples
+and information about escaping.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate regex;
+#[macro_use]
+extern crate lazy_static;
+
+use std::borrow::Cow;
+use regex::Regex;
+
+fn reformat_dates(before: &amp;str) -&gt; Cow&lt;str&gt; {
+    lazy_static! {
+        static ref ISO8601_DATE_REGEX : Regex = Regex::new(
+            r&quot;(?P&lt;y&gt;\d{4})-(?P&lt;m&gt;\d{2})-(?P&lt;d&gt;\d{2})&quot;
+            ).unwrap();
+    }
+    ISO8601_DATE_REGEX.replace_all(before, &quot;$m/$d/$y&quot;)
+}
+
+fn main() {
+    let before = &quot;2012-03-14, 2013-01-15 and 2014-07-05&quot;;
+    let after = reformat_dates(before);
+    assert_eq!(after, &quot;03/14/2012, 01/15/2013 and 07/05/2014&quot;);
+}
+</code></pre></pre>
+<p><a name="ex-phone"></a></p>
+<a class="header" href="basics.html#extract-phone-numbers-from-text" id="extract-phone-numbers-from-text"><h2>Extract phone numbers from text</h2></a>
+<p><a href="https://docs.rs/regex/"><img src="https://badge-cache.kominick.com/crates/v/regex.svg?label=regex" alt="regex-badge" /></a> <a href="https://crates.io/categories/text-processing"><img src="https://badge-cache.kominick.com/badge/text_processing--x.svg?style=social" alt="cat-text-processing-badge" /></a></p>
+<p>Processes a string of text using <a href="https://doc.rust-lang.org/regex/*/regex/struct.Regex.html#method.captures_iter"><code>Regex::captures_iter</code></a> to capture multiple
+phone numbers.  The example here is for US convention phone numbers.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate regex;
+
+use regex::Regex;
+use std::fmt;
+#
+# error_chain!{
+#     foreign_links {
+#         Regex(regex::Error);
+#         Io(std::io::Error);
+#     }
+# }
+
+struct PhoneNumber&lt;'a&gt; {
+    area: &amp;'a str,
+    exchange: &amp;'a str,
+    subscriber: &amp;'a str,
+}
+
+// Allows printing phone numbers based on country convention.
+impl&lt;'a&gt; fmt::Display for PhoneNumber&lt;'a&gt; {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
+        write!(f, &quot;1 ({}) {}-{}&quot;, self.area, self.exchange, self.subscriber)
+    }
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let phone_text = &quot;
+    +1 505 881 9292 (v) +1 505 778 2212 (c) +1 505 881 9297 (f)
+    (202) 991 9534
+    Alex 5553920011
+    1 (800) 233-2010
+    1.299.339.1020&quot;;
+
+    let re = Regex::new(
+        r#&quot;(?x)
+          (?:\+?1)?                       # Country Code Optional
+          [\s\.]?
+          (([2-9]\d{2})|\(([2-9]\d{2})\)) # Area Code
+          [\s\.\-]?
+          ([2-9]\d{2})                    # Exchange Code
+          [\s\.\-]?
+          (\d{4})                         # Subscriber Number&quot;#,
+    )?;
+
+    let phone_numbers = re.captures_iter(phone_text).filter_map(|cap| {
+        // Area code populates either capture group 2 or 3.
+        // Group 1 contains optional parenthesis.
+        let groups = (cap.get(2).or(cap.get(3)), cap.get(4), cap.get(5));
+        match groups {
+            (Some(area), Some(ext), Some(sub)) =&gt; Some(PhoneNumber {
+                area: area.as_str(),
+                exchange: ext.as_str(),
+                subscriber: sub.as_str(),
+            }),
+            _ =&gt; None,
+        }
+    });
+
+    assert_eq!(
+        phone_numbers.map(|m| m.to_string()).collect::&lt;Vec&lt;_&gt;&gt;(),
+        vec![
+            &quot;1 (505) 881-9292&quot;,
+            &quot;1 (505) 778-2212&quot;,
+            &quot;1 (505) 881-9297&quot;,
+            &quot;1 (202) 991-9534&quot;,
+            &quot;1 (555) 392-0011&quot;,
+            &quot;1 (800) 233-2010&quot;,
+            &quot;1 (299) 339-1020&quot;,
+        ]
+    );
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-sha-digest"></a></p>
+<a class="header" href="basics.html#calculate-the-sha-256-digest-of-a-file" id="calculate-the-sha-256-digest-of-a-file"><h2>Calculate the SHA-256 digest of a file</h2></a>
+<p><a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://docs.rs/data-encoding/"><img src="https://badge-cache.kominick.com/crates/v/data-encoding.svg?label=data-encoding" alt="data-encoding-badge" /></a> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a></p>
+<p>Writes some data to a file, then calculates the SHA-256 <a href="https://briansmith.org/rustdoc/ring/digest/struct.Digest.html"><code>digest::Digest</code></a> of
+the file's contents using <a href="https://briansmith.org/rustdoc/ring/digest/struct.Context.html"><code>digest::Context</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate data_encoding;
+extern crate ring;
+
+use data_encoding::HEXUPPER;
+use ring::digest::{Context, Digest, SHA256};
+use std::fs::File;
+use std::io::{BufReader, Read, Write};
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         Decode(data_encoding::DecodeError);
+#     }
+# }
+
+fn sha256_digest&lt;R: Read&gt;(mut reader: R) -&gt; Result&lt;Digest&gt; {
+    let mut context = Context::new(&amp;SHA256);
+    let mut buffer = [0; 1024];
+
+    loop {
+        let count = reader.read(&amp;mut buffer)?;
+        if count == 0 {
+            break;
+        }
+        context.update(&amp;buffer[..count]);
+    }
+
+    Ok(context.finish())
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let path = &quot;file.txt&quot;;
+
+    let mut output = File::create(path)?;
+    write!(output, &quot;We will generate a digest of this text&quot;)?;
+
+    let input = File::open(path)?;
+    let reader = BufReader::new(input);
+    let digest = sha256_digest(reader)?;
+
+    // digest.as_ref() provides the digest as a byte slice: &amp;[u8]
+    println!(&quot;SHA-256 digest is {}&quot;, HEXUPPER.encode(digest.as_ref()));
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-hmac"></a></p>
+<a class="header" href="basics.html#sign-and-verify-a-message-with-hmac-digest" id="sign-and-verify-a-message-with-hmac-digest"><h2>Sign and verify a message with HMAC digest</h2></a>
+<p><a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a></p>
+<p>Uses <a href="https://briansmith.org/rustdoc/ring/hmac/"><code>ring::hmac</code></a> to creates a <a href="https://briansmith.org/rustdoc/ring/hmac/struct.Signature.html"><code>hmac::Signature</code></a> of a string then verifies the signature is correct.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate ring;
+#
+# error_chain! {
+#     foreign_links {
+#         Ring(ring::error::Unspecified);
+#     }
+# }
+
+use ring::{digest, hmac, rand};
+use ring::rand::SecureRandom;
+
+fn run() -&gt; Result&lt;()&gt; {
+    let mut key_value = [0u8; 48];
+    let rng = rand::SystemRandom::new();
+    rng.fill(&amp;mut key_value)?;
+    let key = hmac::SigningKey::new(&amp;digest::SHA256, &amp;key_value);
+
+    let message = &quot;Legitimate and important message.&quot;;
+    let signature = hmac::sign(&amp;key, message.as_bytes());
+    hmac::verify_with_own_key(&amp;key, message.as_bytes(), signature.as_ref())?;
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-pbkdf2"></a></p>
+<a class="header" href="basics.html#salt-and-hash-a-password-with-pbkdf2" id="salt-and-hash-a-password-with-pbkdf2"><h2>Salt and hash a password with PBKDF2</h2></a>
+<p><a href="https://briansmith.org/rustdoc/ring/"><img src="https://badge-cache.kominick.com/crates/v/ring.svg?label=ring" alt="ring-badge" /></a> <a href="https://docs.rs/data-encoding/"><img src="https://badge-cache.kominick.com/crates/v/data-encoding.svg?label=data-encoding" alt="data-encoding-badge" /></a> <a href="https://crates.io/categories/cryptography"><img src="https://badge-cache.kominick.com/badge/cryptography--x.svg?style=social" alt="cat-cryptography-badge" /></a></p>
+<p>Uses <a href="https://briansmith.org/rustdoc/ring/pbkdf2/index.html"><code>ring::pbkdf2</code></a> to hash a salted password using the PBKDF2 key derivation
+function <a href="https://briansmith.org/rustdoc/ring/pbkdf2/fn.derive.html"><code>pbkdf2::derive</code></a> and then verifies the hash is correct with
+<a href="https://briansmith.org/rustdoc/ring/pbkdf2/fn.verify.html"><code>pbkdf2::verify</code></a>. The salt is generated using
+<a href="https://briansmith.org/rustdoc/ring/rand/trait.SecureRandom.html#tymethod.fill"><code>SecureRandom::fill</code></a>, which fills the salt byte array with
+securely generated random numbers.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate data_encoding;
+extern crate ring;
+#
+# error_chain! {
+#   foreign_links {
+#     Ring(ring::error::Unspecified);
+#   }
+# }
+
+use data_encoding::HEXUPPER;
+use ring::{digest, pbkdf2, rand};
+use ring::rand::SecureRandom;
+
+fn run() -&gt; Result&lt;()&gt; {
+  const CREDENTIAL_LEN: usize = digest::SHA512_OUTPUT_LEN;
+  const N_ITER: u32 = 100_000;
+  let rng = rand::SystemRandom::new();
+
+  // Generate salt
+  let mut salt = [0u8; CREDENTIAL_LEN];
+  rng.fill(&amp;mut salt)?;
+
+  // Hash password
+  let password = &quot;Guess Me If You Can!&quot;;
+  let mut pbkdf2_hash = [0u8; CREDENTIAL_LEN];
+  pbkdf2::derive(
+      &amp;digest::SHA512,
+      N_ITER,
+      &amp;salt,
+      password.as_bytes(),
+      &amp;mut pbkdf2_hash,
+  );
+  println!(&quot;Salt: {}&quot;, HEXUPPER.encode(&amp;salt));
+  println!(&quot;PBKDF2 hash: {}&quot;, HEXUPPER.encode(&amp;pbkdf2_hash));
+
+  // Verify hash with correct password and wrong password
+  let should_succeed = pbkdf2::verify(
+      &amp;digest::SHA512,
+      N_ITER,
+      &amp;salt,
+      password.as_bytes(),
+      &amp;pbkdf2_hash,
+  );
+  let wrong_password = &quot;Definitely not the correct password&quot;;
+  let should_fail = pbkdf2::verify(
+      &amp;digest::SHA512,
+      N_ITER,
+      &amp;salt,
+      wrong_password.as_bytes(),
+      &amp;pbkdf2_hash,
+  );
+
+  assert!(should_succeed.is_ok());
+  assert!(!should_fail.is_ok());
+
+  Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-bitflags"></a></p>
+<a class="header" href="basics.html#define-and-operate-on-a-type-represented-as-a-bitfield" id="define-and-operate-on-a-type-represented-as-a-bitfield"><h2>Define and operate on a type represented as a bitfield</h2></a>
+<p><a href="https://docs.rs/bitflags/"><img src="https://badge-cache.kominick.com/crates/v/bitflags.svg?label=bitflags" alt="bitflags-badge" /></a> <a href="https://crates.io/categories/no-std"><img src="https://badge-cache.kominick.com/badge/no_std--x.svg?style=social" alt="cat-no-std-badge" /></a></p>
+<p>Creates typesafe bitfield type <code>MyFlags</code> with help of <a href="https://docs.rs/bitflags/*/bitflags/macro.bitflags.html"><code>bitflags!</code></a> macro
+and implements elementary <code>clear</code> operation as well as <a href="https://doc.rust-lang.org/std/fmt/trait.Display.html"><code>Display</code></a> trait for it.
+Subsequently, shows basic bitwise operations and formatting.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate bitflags;
+
+use std::fmt;
+
+bitflags! {
+    struct MyFlags: u32 {
+        const FLAG_A       = 0b00000001;
+        const FLAG_B       = 0b00000010;
+        const FLAG_C       = 0b00000100;
+        const FLAG_ABC     = Self::FLAG_A.bits
+                           | Self::FLAG_B.bits
+                           | Self::FLAG_C.bits;
+    }
+}
+
+impl MyFlags {
+    pub fn clear(&amp;mut self) -&gt; &amp;mut MyFlags {
+        self.bits = 0;  // The `bits` field can be accessed from within the
+                        // same module where the `bitflags!` macro was invoked.
+        self
+    }
+}
+
+impl fmt::Display for MyFlags {
+    fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
+        write!(f, &quot;{:032b}&quot;, self.bits)
+    }
+}
+
+fn main() {
+    let e1 = MyFlags::FLAG_A | MyFlags::FLAG_C;
+    let e2 = MyFlags::FLAG_B | MyFlags::FLAG_C;
+    assert_eq!((e1 | e2), MyFlags::FLAG_ABC);   // union
+    assert_eq!((e1 &amp; e2), MyFlags::FLAG_C);     // intersection
+    assert_eq!((e1 - e2), MyFlags::FLAG_A);     // set difference
+    assert_eq!(!e2, MyFlags::FLAG_A);           // set complement
+
+    let mut flags = MyFlags::FLAG_ABC;
+    assert_eq!(format!(&quot;{}&quot;, flags), &quot;00000000000000000000000000000111&quot;);
+    assert_eq!(format!(&quot;{}&quot;, flags.clear()), &quot;00000000000000000000000000000000&quot;);
+    // Debug trait is automatically derived for the MyFlags through `bitflags!`
+    assert_eq!(format!(&quot;{:?}&quot;, MyFlags::FLAG_B), &quot;FLAG_B&quot;);
+    assert_eq!(format!(&quot;{:?}&quot;, MyFlags::FLAG_A | MyFlags::FLAG_B), &quot;FLAG_A | FLAG_B&quot;);
+}
+</code></pre></pre>
+<p><a name="ex-random-file-access"></a></p>
+<a class="header" href="basics.html#access-a-file-randomly-using-a-memory-map" id="access-a-file-randomly-using-a-memory-map"><h2>Access a file randomly using a memory map</h2></a>
+<p><a href="https://docs.rs/memmap/"><img src="https://badge-cache.kominick.com/crates/v/memmap.svg?label=memmap" alt="memmap-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Creates a memory map of a file using <a href="https://docs.rs/memmap/">memmap</a> and simulates some non-sequential
+reads from the file. Using a memory map means you just index into a slice rather
+than dealing with <a href="https://doc.rust-lang.org/std/fs/struct.File.html#method.seek"><code>seek</code></a>ing around in a File.</p>
+<p>The <a href="https://docs.rs/memmap/*/memmap/struct.Mmap.html#method.map"><code>Mmap::map</code></a> function is only safe if we can guarantee that the file
+behind the memory map is not being modified at the same time by another process,
+as this would be a <a href="https://en.wikipedia.org/wiki/Race_condition#File_systems">race condition</a>.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+extern crate memmap;
+
+use memmap::Mmap;
+# use std::fs::File;
+# use std::io::Write;
+#
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+#     write!(File::create(&quot;content.txt&quot;)?, &quot;My hovercraft is full of eels!&quot;)?;
+#
+    let file = File::open(&quot;content.txt&quot;)?;
+    let map = unsafe { Mmap::map(&amp;file)? };
+
+    let random_indexes = [0, 1, 2, 19, 22, 10, 11, 29];
+    assert_eq!(&amp;map[3..13], b&quot;hovercraft&quot;);
+    // I'm using an iterator here to change indexes to bytes
+    let random_bytes: Vec&lt;u8&gt; = random_indexes.iter()
+        .map(|&amp;idx| map[idx])
+        .collect();
+    assert_eq!(&amp;random_bytes[..], b&quot;My loaf!&quot;);
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-check-cpu-cores"></a></p>
+<a class="header" href="basics.html#check-number-of-logical-cpu-cores" id="check-number-of-logical-cpu-cores"><h2>Check number of logical cpu cores</h2></a>
+<p><a href="https://docs.rs/num_cpus/"><img src="https://badge-cache.kominick.com/crates/v/num_cpus.svg?label=num_cpus" alt="num_cpus-badge" /></a> <a href="https://crates.io/categories/hardware-support"><img src="https://badge-cache.kominick.com/badge/hardware_support--x.svg?style=social" alt="cat-hardware-support-badge" /></a></p>
+<p>Shows the number of logical cpu cores in current machine using <a href="https://docs.rs/num_cpus/*/num_cpus/fn.get.html"><code>num_cpus::get</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate num_cpus;
+
+fn main() {
+    println!(&quot;Number of logical cores is {}&quot;, num_cpus::get());
+}
+</code></pre></pre>
+<p><a name="ex-error-chain-simple-error-handling"></a></p>
+<a class="header" href="basics.html#handle-errors-correctly-in-main" id="handle-errors-correctly-in-main"><h2>Handle errors correctly in main</h2></a>
+<p><a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a></p>
+<p>Handles error that occur when trying to open a file that does not
+exist. It is achieved by using <a href="https://docs.rs/error-chain/">error-chain</a>, a library that takes
+care of a lot of boilerplate code needed in order to <a href="https://doc.rust-lang.org/book/second-edition/ch09-00-error-handling.html">handle errors in
+Rust</a>.</p>
+<p><code>Io(std::io::Error)</code> inside <a href="https://docs.rs/error-chain/*/error_chain/#foreign-links"><code>foreign_links</code></a> allows automatic
+conversion from <a href="https://doc.rust-lang.org/std/io/struct.Error.html"><code>std::io::Error</code></a> into <a href="https://docs.rs/error-chain/*/error_chain/macro.error_chain.html"><code>error_chain!</code></a> defined type
+implementing the <a href="https://doc.rust-lang.org/std/error/trait.Error.html"><code>Error</code></a> trait.</p>
+<p>The below recipe will tell how long the system has been running by
+opening the Unix file <code>/proc/uptime</code> and parse the content to get the
+first number. Returns uptime unless there is an error.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate error_chain;
+
+use std::fs::File;
+use std::io::Read;
+
+error_chain!{
+    foreign_links {
+        Io(std::io::Error);
+        ParseInt(::std::num::ParseIntError);
+    }
+}
+
+fn read_uptime() -&gt; Result&lt;u64&gt; {
+    let mut uptime = String::new();
+    File::open(&quot;/proc/uptime&quot;)?.read_to_string(&amp;mut uptime)?;
+
+    Ok(uptime
+        .split('.')
+        .next()
+        .ok_or(&quot;Cannot parse uptime data&quot;)?
+        .parse()?)
+}
+
+fn main() {
+    match read_uptime() {
+        Ok(uptime) =&gt; println!(&quot;uptime: {} seconds&quot;, uptime),
+        Err(err) =&gt; eprintln!(&quot;error: {}&quot;, err),
+    };
+}
+</code></pre></pre>
+<p><a name="ex-error-chain-avoid-discarding"></a></p>
+<a class="header" href="basics.html#avoid-discarding-errors-during-error-conversions" id="avoid-discarding-errors-during-error-conversions"><h2>Avoid discarding errors during error conversions</h2></a>
+<p><a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a></p>
+<p><a href="https://docs.rs/error-chain/*/error_chain/#matching-errors">Matching</a> on different error types returned by a function is possible
+and relatively compact with <a href="https://docs.rs/error-chain/">error-chain</a> crate. To do so,
+<a href="https://docs.rs/error-chain/*/error_chain/example_generated/enum.ErrorKind.html"><code>ErrorKind</code></a> is used to determine the error type.</p>
+<p>To illustrate the error matching, a random integer generator web
+service will be queried via <a href="https://docs.rs/reqwest/">reqwest</a> and then the response will be
+parsed. Errors can be generated by the Rust standard library,
+<a href="https://docs.rs/reqwest/">reqwest</a> and by the web service. <a href="https://docs.rs/error-chain/*/error_chain/#foreign-links"><code>foreign_links</code></a> are used for well
+defined Rust errors. The <code>errors</code> block of the <code>error_chain!</code> macro is
+used to create an additional <a href="https://docs.rs/error-chain/*/error_chain/example_generated/enum.ErrorKind.html"><code>ErrorKind</code></a> variant for the web service
+error. Finally, a regular <code>match</code> can be used to react differently
+according to the raised error.</p>
+<pre><pre class="playpen"><code class="language-rust">#[macro_use]
+extern crate error_chain;
+extern crate reqwest;
+
+use std::io::Read;
+
+error_chain! {
+    foreign_links {
+        Io(std::io::Error);
+        Reqwest(reqwest::Error);
+        ParseIntError(std::num::ParseIntError);
+    }
+
+    errors { RandomResponseError(t: String) }
+}
+
+fn parse_response(mut response: reqwest::Response) -&gt; Result&lt;u32&gt; {
+    let mut body = String::new();
+    response.read_to_string(&amp;mut body)?;
+    body.pop();
+    body.parse::&lt;u32&gt;()
+        .chain_err(|| ErrorKind::RandomResponseError(body))
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    let url =
+        format!(&quot;https://www.random.org/integers/?num=1&amp;min=0&amp;max=10&amp;col=1&amp;base=10&amp;format=plain&quot;);
+    let response = reqwest::get(&amp;url)?;
+    let random_value: u32 = parse_response(response)?;
+
+    println!(&quot;a random number between 0 and 10: {}&quot;, random_value);
+
+    Ok(())
+}
+
+fn main() {
+    if let Err(error) = run() {
+        match *error.kind() {
+            ErrorKind::Io(_) =&gt; println!(&quot;Standard IO error: {:?}&quot;, error),
+            ErrorKind::Reqwest(_) =&gt; println!(&quot;Reqwest error: {:?}&quot;, error),
+            ErrorKind::ParseIntError(_) =&gt; println!(&quot;Standard parse int error: {:?}&quot;, error),
+            ErrorKind::RandomResponseError(_) =&gt; println!(&quot;User defined error: {:?}&quot;, error),
+            _ =&gt; println!(&quot;Other error: {:?}&quot;, error),
+        }
+    }
+}
+</code></pre></pre>
+<p><a name="ex-error-chain-backtrace"></a></p>
+<a class="header" href="basics.html#obtain-backtrace-of-complex-error-scenarios" id="obtain-backtrace-of-complex-error-scenarios"><h2>Obtain backtrace of complex error scenarios</h2></a>
+<p><a href="https://docs.rs/error-chain/"><img src="https://badge-cache.kominick.com/crates/v/error-chain.svg?label=error-chain" alt="error-chain-badge" /></a> <a href="https://crates.io/categories/rust-patterns"><img src="https://badge-cache.kominick.com/badge/rust_patterns--x.svg?style=social" alt="cat-rust-patterns-badge" /></a></p>
+<p>This recipe shows how to handle a complex error scenario and then
+print a backtrace. It relies on <a href="https://docs.rs/error-chain/*/error_chain/index.html#chaining-errors"><code>chain_err</code></a> to extend errors by
+appending new errors. The error stack can be unwinded, thus providing
+a better context to understand why an error was raised.</p>
+<p>The below recipes attempts to deserialize the value <code>256</code> into a
+<code>u8</code>. An error will bubble up from Serde then csv and finally up to the
+user code.</p>
+<pre><pre class="playpen"><code class="language-rust"># extern crate csv;
+#[macro_use]
+extern crate error_chain;
+# #[macro_use]
+# extern crate serde_derive;
+#
+# use std::fmt;
+#
+# error_chain! {
+#     foreign_links {
+#         Reader(csv::Error);
+#     }
+# }
+
+#[derive(Debug, Deserialize)]
+struct Rgb {
+    red: u8,
+    blue: u8,
+    green: u8,
+}
+
+impl Rgb {
+    fn from_reader(csv_data: &amp;[u8]) -&gt; Result&lt;Rgb&gt; {
+        let color: Rgb = csv::Reader::from_reader(csv_data)
+            .deserialize()
+            .nth(0)
+            .ok_or(&quot;Cannot deserialize the first CSV record&quot;)?
+            .chain_err(|| &quot;Cannot deserialize RGB color&quot;)?;
+
+        Ok(color)
+    }
+}
+
+# impl fmt::UpperHex for Rgb {
+#     fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
+#         let hexa = u32::from(self.red) &lt;&lt; 16 | u32::from(self.blue) &lt;&lt; 8 | u32::from(self.green);
+#         write!(f, &quot;{:X}&quot;, hexa)
+#     }
+# }
+#
+fn run() -&gt; Result&lt;()&gt; {
+    let csv = &quot;red,blue,green
+102,256,204&quot;;
+
+    let rgb = Rgb::from_reader(csv.as_bytes()).chain_err(|| &quot;Cannot read CSV data&quot;)?;
+    println!(&quot;{:?} to hexadecimal #{:X}&quot;, rgb, rgb);
+
+    Ok(())
+}
+
+fn main() {
+    if let Err(ref errors) = run() {
+        eprintln!(&quot;Error level - description&quot;);
+        errors
+            .iter()
+            .enumerate()
+            .for_each(|(index, error)| eprintln!(&quot;└&gt; {} - {}&quot;, index, error));
+
+        if let Some(backtrace) = errors.backtrace() {
+            eprintln!(&quot;{:?}&quot;, backtrace);
+        }
+#
+#         // In a real use case, errors should handled. For example:
+#         // ::std::process::exit(1);
+    }
+}
+</code></pre></pre>
+<p>Backtrace error rendered:</p>
+<pre><code class="language-text">Error level - description
+└&gt; 0 - Cannot read CSV data
+└&gt; 1 - Cannot deserialize RGB color
+└&gt; 2 - CSV deserialize error: record 1 (line: 2, byte: 15): field 1: number too large to fit in target type
+└&gt; 3 - field 1: number too large to fit in target type
+</code></pre>
+<p>Run the recipe with <code>RUST_BACKTRACE=1</code> to display a detailed <a href="https://docs.rs/error-chain/*/error_chain/trait.ChainedError.html#tymethod.backtrace"><code>backtrace</code></a> associated with this error.</p>
+<p><a name="ex-measure-elapsed-time"></a></p>
+<a class="header" href="basics.html#measure-the-elapsed-time-between-two-code-sections" id="measure-the-elapsed-time-between-two-code-sections"><h2>Measure the elapsed time between two code sections</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/time--x.svg?style=social" alt="cat-time-badge" /></a></p>
+<p>Measures <a href="https://doc.rust-lang.org/std/time/struct.Instant.html#method.elapsed"><code>time::Instant::elapsed</code></a> since <a href="https://doc.rust-lang.org/std/time/struct.Instant.html#method.now"><code>time::Instant::now</code></a>.</p>
+<p>Calling <a href="https://doc.rust-lang.org/std/time/struct.Instant.html#method.elapsed"><code>time::Instant::elapsed</code></a> returns a <a href="https://doc.rust-lang.org/std/time/struct.Duration.html"><code>time::Duration</code></a> that we print at the end of the example.
+This method will not mutate or reset the <a href="https://doc.rust-lang.org/std/time/struct.Instant.html"><code>time::Instant</code></a> object.</p>
+<pre><pre class="playpen"><code class="language-rust">use std::time::{Duration, Instant};
+# use std::thread;
+#
+# fn expensive_function() {
+#     thread::sleep(Duration::from_secs(1));
+# }
+
+fn main() {
+    let start = Instant::now();
+    expensive_function();
+    let duration = start.elapsed();
+
+    println!(&quot;Time elapsed in expensive_function() is: {:?}&quot;, duration);
+}
+</code></pre></pre>
+<p><a name="ex-convert-datetime-timezone"></a></p>
+<a class="header" href="basics.html#convert-a-local-time-to-an-another-utc-timezone-and-vice-versa" id="convert-a-local-time-to-an-another-utc-timezone-and-vice-versa"><h2>Convert a local time to an another UTC timezone and vice versa</h2></a>
+<p><a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a></p>
+<p>Gets the local time and displays it using <a href="https://docs.rs/chrono/*/chrono/offset/struct.Local.html#method.now"><code>offset::Local::now</code></a> and then converts it to the UTC standard using the <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.from_utc"><code>DateTime::from_utc</code></a> struct method. A time is then converted using the <a href="https://docs.rs/chrono/*/chrono/offset/struct.FixedOffset.html"><code>offset::FixedOffset</code></a> struct and the UTC time is then converted to UTC+8 and UTC-2.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate chrono;
+
+use chrono::{DateTime, FixedOffset, Local, Utc};
+
+fn main() {
+    let local_time = Local::now();
+    let utc_time = DateTime::&lt;Utc&gt;::from_utc(local_time.naive_utc(), Utc);
+    let china_timezone = FixedOffset::east(8 * 3600);
+    let rio_timezone = FixedOffset::west(2 * 3600);
+    println!(&quot;Local time now is {}&quot;, local_time);
+    println!(&quot;UTC time now is {}&quot;, utc_time);
+    println!(
+        &quot;Time in Hong Kong now is {}&quot;,
+        utc_time.with_timezone(&amp;china_timezone)
+    );
+    println!(&quot;Time in Rio de Janeiro now is {}&quot;, utc_time.with_timezone(&amp;rio_timezone));
+}
+</code></pre></pre>
+<p><a name="ex-convert-datetime-timestamp"></a></p>
+<a class="header" href="basics.html#convert-date-to-unix-timestamp-and-vice-versa" id="convert-date-to-unix-timestamp-and-vice-versa"><h2>Convert date to UNIX timestamp and vice versa</h2></a>
+<p><a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a></p>
+<p>Converts a date given by <a href="https://docs.rs/chrono/*/chrono/naive/struct.NaiveDate.html#method.from_ymd"><code>NaiveDate::from_ymd</code></a> and <a href="https://docs.rs/chrono/*/chrono/naive/struct.NaiveTime.html#method.from_hms"><code>NaiveTime::from_hms</code></a>
+to <a href="https://en.wikipedia.org/wiki/Unix_time">UNIX timestamp</a> using <a href="https://docs.rs/chrono/*/chrono/naive/struct.NaiveDateTime.html#method.timestamp"><code>NaiveDateTime::timestamp</code></a>.
+Then it calculates what was the date after one billion seconds
+since January 1, 1970 0:00:00 UTC, using <a href="https://docs.rs/chrono/*/chrono/naive/struct.NaiveDateTime.html#method.from_timestamp"><code>NaiveDateTime::from_timestamp</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate chrono;
+
+use chrono::{NaiveDate, NaiveDateTime};
+
+fn main() {
+    let date_time: NaiveDateTime = NaiveDate::from_ymd(2017, 11, 12).and_hms(17, 33, 44);
+    println!(
+        &quot;Number of seconds between 1970-01-01 00:00:00 and {} is {}.&quot;,
+        date_time, date_time.timestamp());
+
+    let date_time_after_a_billion_seconds = NaiveDateTime::from_timestamp(1_000_000_000, 0);
+    println!(
+        &quot;Date after a billion seconds since 1970-01-01 00:00:00 was {}.&quot;,
+        date_time_after_a_billion_seconds);
+}
+</code></pre></pre>
+<p><a name="ex-format-datetime"></a></p>
+<a class="header" href="basics.html#display-formatted-date-and-time" id="display-formatted-date-and-time"><h2>Display formatted date and time</h2></a>
+<p><a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a></p>
+<p>Gets and displays the current time in UTC using <a href="https://docs.rs/chrono/*/chrono/offset/struct.Utc.html#method.now"><code>Utc::now</code></a>. Formats the
+current time in the well-known formats <a href="https://www.ietf.org/rfc/rfc2822.txt">RFC 2822</a> using <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.to_rfc2822"><code>DateTime::to_rfc2822</code></a>
+and <a href="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</a> using <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.to_rfc3339"><code>DateTime::to_rfc3339</code></a>, and in a custom format using
+<a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.format"><code>DateTime::format</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate chrono;
+use chrono::{DateTime, Utc};
+
+fn main() {
+    let now: DateTime&lt;Utc&gt; = Utc::now();
+
+    println!(&quot;UTC now is: {}&quot;, now);
+    println!(&quot;UTC now in RFC 2822 is: {}&quot;, now.to_rfc2822());
+    println!(&quot;UTC now in RFC 3339 is: {}&quot;, now.to_rfc3339());
+    println!(&quot;UTC now in a custom format is: {}&quot;, now.format(&quot;%a %b %e %T %Y&quot;));
+}
+</code></pre></pre>
+<p><a name="ex-parse-datetime"></a></p>
+<a class="header" href="basics.html#parse-string-into-datetime-struct" id="parse-string-into-datetime-struct"><h2>Parse string into DateTime struct</h2></a>
+<p><a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a></p>
+<p>Parses a <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html"><code>DateTime</code></a> struct from strings representing the well-known formats
+<a href="https://www.ietf.org/rfc/rfc2822.txt">RFC 2822</a>, <a href="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</a>, and a custom format, using
+<a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.parse_from_rfc2822"><code>DateTime::parse_from_rfc2822</code></a>, <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.parse_from_rfc3339"><code>DateTime::parse_from_rfc3339</code></a>, and
+<a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.parse_from_str"><code>DateTime::parse_from_str</code></a> respectively.</p>
+<p>Escape sequences that are available for the <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.parse_from_str"><code>DateTime::parse_from_str</code></a> can be
+found at <a href="https://docs.rs/chrono/*/chrono/format/strftime/index.html"><code>chrono::format::strftime</code></a>. Note that the <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.parse_from_str"><code>DateTime::parse_from_str</code></a>
+requires that such a DateTime struct can be created that it uniquely
+identifies a date and a time. For parsing dates and times without timezones use
+<a href="https://docs.rs/chrono/*/chrono/naive/struct.NaiveDate.html"><code>NaiveDate</code></a>, <a href="https://docs.rs/chrono/*/chrono/naive/struct.NaiveTime.html"><code>NaiveTime</code></a>, and <a href="https://docs.rs/chrono/*/chrono/naive/struct.NaiveDateTime.html"><code>NaiveDateTime</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate chrono;
+# #[macro_use]
+# extern crate error_chain;
+#
+use chrono::{DateTime, NaiveDate, NaiveDateTime, NaiveTime};
+#
+# error_chain! {
+#     foreign_links {
+#         DateParse(chrono::format::ParseError);
+#     }
+# }
+
+fn run() -&gt; Result&lt;()&gt; {
+    let rfc2822 = DateTime::parse_from_rfc2822(&quot;Tue, 1 Jul 2003 10:52:37 +0200&quot;)?;
+    println!(&quot;{}&quot;, rfc2822);
+
+    let rfc3339 = DateTime::parse_from_rfc3339(&quot;1996-12-19T16:39:57-08:00&quot;)?;
+    println!(&quot;{}&quot;, rfc3339);
+
+    let custom = DateTime::parse_from_str(&quot;5.8.1994 8:00 am +0000&quot;, &quot;%d.%m.%Y %H:%M %P %z&quot;)?;
+    println!(&quot;{}&quot;, custom);
+
+    let time_only = NaiveTime::parse_from_str(&quot;23:56:04&quot;, &quot;%H:%M:%S&quot;)?;
+    println!(&quot;{}&quot;, time_only);
+
+    let date_only = NaiveDate::parse_from_str(&quot;2015-09-05&quot;, &quot;%Y-%m-%d&quot;)?;
+    println!(&quot;{}&quot;, date_only);
+
+    let no_timezone = NaiveDateTime::parse_from_str(&quot;2015-09-05 23:56:04&quot;, &quot;%Y-%m-%d %H:%M:%S&quot;)?;
+    println!(&quot;{}&quot;, no_timezone);
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<p><a name="ex-datetime-arithmetic"></a></p>
+<a class="header" href="basics.html#perform-checked-date-and-time-calculations" id="perform-checked-date-and-time-calculations"><h2>Perform checked date and time calculations</h2></a>
+<p><a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a></p>
+<p>Calculates and displays the date and time two weeks from now using
+<a href="https://docs.rs/chrono/*/chrono/struct.Date.html#method.checked_add_signed"><code>DateTime::checked_add_signed</code></a> and the date of the day before that using
+<a href="https://docs.rs/chrono/*/chrono/struct.Date.html#method.checked_sub_signed"><code>DateTime::checked_sub_signed</code></a>. The methods return None if the date and time
+cannot be calculated.</p>
+<p>Escape sequences that are available for the
+<a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html#method.format"><code>DateTime::format</code></a> can be found at <a href="https://docs.rs/chrono/*/chrono/format/strftime/index.html"><code>chrono::format::strftime</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate chrono;
+use chrono::{DateTime, Duration, Utc};
+
+fn day_earlier(date_time: DateTime&lt;Utc&gt;) -&gt; Option&lt;DateTime&lt;Utc&gt;&gt; {
+    date_time.checked_sub_signed(Duration::days(1))
+}
+
+fn main() {
+    let now = Utc::now();
+    println!(&quot;{}&quot;, now);
+
+    let almost_three_weeks_from_now = now.checked_add_signed(Duration::weeks(2))
+            .and_then(|in_2weeks| in_2weeks.checked_add_signed(Duration::weeks(1)))
+            .and_then(day_earlier);
+
+    match almost_three_weeks_from_now {
+        Some(x) =&gt; println!(&quot;{}&quot;, x),
+        None =&gt; eprintln!(&quot;Almost three weeks from now overflows!&quot;),
+    }
+
+    match now.checked_add_signed(Duration::max_value()) {
+        Some(x) =&gt; println!(&quot;{}&quot;, x),
+        None =&gt; eprintln!(&quot;We can't use chrono to tell the time for the Solar System to complete more than one full orbit around the galactic center.&quot;),
+    }
+}
+</code></pre></pre>
+<p><a name="ex-examine-date-and-time"></a></p>
+<a class="header" href="basics.html#examine-the-date-and-time" id="examine-the-date-and-time"><h2>Examine the date and time</h2></a>
+<p><a href="https://docs.rs/chrono/"><img src="https://badge-cache.kominick.com/crates/v/chrono.svg?label=chrono" alt="chrono-badge" /></a> <a href="https://crates.io/categories/date-and-time"><img src="https://badge-cache.kominick.com/badge/date_and_time--x.svg?style=social" alt="cat-date-and-time-badge" /></a></p>
+<p>Gets the current UTC <a href="https://docs.rs/chrono/*/chrono/struct.DateTime.html"><code>DateTime</code></a> and its hour/minute/second via <a href="https://docs.rs/chrono/*/chrono/trait.Timelike.html"><code>Timelike</code></a>
+and its year/month/day/weekday via <a href="https://docs.rs/chrono/*/chrono/trait.Datelike.html"><code>Datelike</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust">extern crate chrono;
+use chrono::{Datelike, Timelike, Utc};
+
+fn main() {
+    let now = Utc::now();
+
+    let (is_pm, hour) = now.hour12();
+    println!(
+        &quot;The current UTC time is {:02}:{:02}:{:02} {}&quot;,
+        hour,
+        now.minute(),
+        now.second(),
+        if is_pm { &quot;PM&quot; } else { &quot;AM&quot; }
+    );
+    println!(
+        &quot;And there have been {} seconds since midnight&quot;,
+        now.num_seconds_from_midnight()
+    );
+
+    let (is_common_era, year) = now.year_ce();
+    println!(
+        &quot;The current UTC date is {}-{:02}-{:02} {:?} ({})&quot;,
+        year,
+        now.month(),
+        now.day(),
+        now.weekday(),
+        if is_common_era { &quot;CE&quot; } else { &quot;BCE&quot; }
+    );
+    println!(
+        &quot;And the Common Era began {} days ago&quot;,
+        now.num_days_from_ce()
+    );
+}
+</code></pre></pre>
+<p><a name="ex-file-24-hours-modified"></a></p>
+<a class="header" href="basics.html#file-names-that-have-been-modified-in-the-last-24-hours-for-the-working-directory" id="file-names-that-have-been-modified-in-the-last-24-hours-for-the-working-directory"><h2>File names that have been modified in the last 24 hours for the working directory</h2></a>
+<p><a href="https://doc.rust-lang.org/std"><img src="https://badge-cache.kominick.com/badge/std-1.25.0-blue.svg" alt="std-badge" /></a> <a href="https://crates.io/categories/filesystem"><img src="https://badge-cache.kominick.com/badge/filesystem--x.svg?style=social" alt="cat-filesystem-badge" /></a></p>
+<p>Gets the current working directory by calling <a href="https://doc.rust-lang.org/std/env/fn.current_dir.html"><code>env::current_dir</code></a>,
+then for each entries in <a href="https://doc.rust-lang.org/std/fs/fn.read_dir.html"><code>fs::read_dir</code></a>, extracts the
+<a href="https://doc.rust-lang.org/std/fs/struct.DirEntry.html#method.path"><code>DirEntry::path</code></a> and gets the metadata via <a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html"><code>fs::Metadata</code></a>. The
+<a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html#method.modified"><code>Metadata::modified</code></a> returns the <a href="https://doc.rust-lang.org/std/time/struct.SystemTime.html#method.elapsed"><code>SystemTime::elapsed</code></a> time since
+last modification of the entry. It's converted into seconds with
+<a href="https://doc.rust-lang.org/std/time/struct.Duration.html#method.as_secs"><code>Duration::as_secs</code></a> and compared with 24 hours (24 * 60 * 60
+seconds). <a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html#method.is_file"><code>Metadata::is_file</code></a> is used to filter out directories.</p>
+<pre><pre class="playpen"><code class="language-rust"># #[macro_use]
+# extern crate error_chain;
+#
+use std::{env, fs};
+
+# error_chain! {
+#     foreign_links {
+#         Io(std::io::Error);
+#         SystemTimeError(std::time::SystemTimeError);
+#     }
+# }
+#
+fn run() -&gt; Result&lt;()&gt; {
+    let current_dir = env::current_dir()?;
+    println!(
+        &quot;Entries modified in the last 24 hours in {:?}:&quot;,
+        current_dir
+    );
+
+    for entry in fs::read_dir(current_dir)? {
+        let entry = entry?;
+        let path = entry.path();
+
+        let metadata = fs::metadata(&amp;path)?;
+        let last_modified = metadata.modified()?.elapsed()?.as_secs();
+
+        if last_modified &lt; 24 * 3600 &amp;&amp; metadata.is_file() {
+            println!(
+                &quot;Last modified: {:?} seconds, is read only: {:?}, size: {:?} bytes, filename: {:?}&quot;,
+                last_modified,
+                metadata.permissions().readonly(),
+                metadata.len(),
+                path.file_name().ok_or(&quot;No filename&quot;)?
+            );
+        }
+    }
+
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre></pre>
+<!--
+Links, in a few categories. Follow the existing structure.
+Keep lines sorted.
+-->
+<!-- Categories -->
+<!-- Crates -->
+<!-- API Reference -->
+<!-- Other Reference -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="about.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="encoding.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="about.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="encoding.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>

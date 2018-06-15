@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Build Time Tooling - Rust Cookbook</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Collection of useful Rust code examples">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+        <link rel="stylesheet" href="theme/custom.css">
+        
+
+        
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="intro.html">Table of Contents</a></li><li class="affix"><a href="about.html">About</a></li><li><a href="basics.html"><strong aria-hidden="true">1.</strong> Basics</a></li><li><a href="encoding.html"><strong aria-hidden="true">2.</strong> Encoding</a></li><li><a href="concurrency.html"><strong aria-hidden="true">3.</strong> Concurrency</a></li><li><a href="net.html"><strong aria-hidden="true">4.</strong> Networking</a></li><li><a href="app.html"><strong aria-hidden="true">5.</strong> Application development</a></li><li><a href="logging.html"><strong aria-hidden="true">6.</strong> Logging</a></li><li><a href="build_tools.html" class="active"><strong aria-hidden="true">7.</strong> Build Time Tooling</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <!-- START - Rust Cookbook customization -->
+                            <button id="edit-button" class="icon-button" type="button" title="Fork and edit" aria-label="Fork and edit" aria-haspopup="true" aria-expanded="false" aria-controls="edit">
+                                <i class="fa fa-edit">Edit</i>
+                            </button>
+                            <!-- END - Rust Cookbook customization -->
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Rust Cookbook</h1> 
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+
+                   // START - Rust Cookbook customization
+                   document.getElementById("edit-button").addEventListener("click", function(){
+                       var editWindow = window.open("https://github.com/rust-lang-nursery/rust-cookbook/edit/master/src/build_tools.md");
+                   });
+                   // END - Rust Cookbook customization
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="build_tools.html#build-time-tooling" id="build-time-tooling"><h1>Build Time Tooling</h1></a>
+<p>This section covers &quot;build-time&quot; tooling, or code that is run prior to compiling a crate's source code.
+Conventionally, build-time code lives in a <strong>build.rs</strong> file and is commonly referred to as a &quot;build script&quot;.
+Common use cases include rust code generation and compilation of bundled C/C++/asm code.
+See crates.io's <a href="http://doc.crates.io/build-script.html">documentation on the matter</a> for more information.</p>
+<table><thead><tr><th> Recipe </th><th> Crates </th><th> Categories </th></tr></thead><tbody>
+<tr><td> <a href="build_tools.html#ex-cc-static-bundled">Compile and link statically to a bundled C library</a> </td><td> <a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> </td><td> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a> </td></tr>
+<tr><td> <a href="build_tools.html#ex-cc-static-bundled-cpp">Compile and link statically to a bundled C++ library</a> </td><td> <a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> </td><td> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a> </td></tr>
+<tr><td> <a href="build_tools.html#ex-cc-custom-defines">Compile a C library while setting custom defines</a> </td><td> <a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> </td><td> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a> </td></tr>
+</tbody></table>
+<p><a name="ex-cc-static-bundled"></a></p>
+<a class="header" href="build_tools.html#compile-and-link-statically-to-a-bundled-c-library" id="compile-and-link-statically-to-a-bundled-c-library"><h2>Compile and link statically to a bundled C library</h2></a>
+<p><a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a></p>
+<p>To accommodate scenarios where additional C, C++, or assembly is required in a project, the <a href="https://docs.rs/cc"><strong>cc</strong></a> crate
+offers a simple api for compiling bundled C/C++/asm code into static libraries (<strong>.a</strong>) that can be statically linked to by <strong>rustc</strong>.</p>
+<p>The following example has some bundled C code (<strong>src/hello.c</strong>) that will be used from rust.
+Before compiling our rust source code, the &quot;build&quot; file (<strong>build.rs</strong>) specified in <strong>Cargo.toml</strong> will run.
+Using the <a href="https://docs.rs/cc"><strong>cc</strong></a> crate, a static library file will be produced (in this case, <strong>libhello.a</strong>, see
+<a href="https://docs.rs/cc/*/cc/struct.Build.html#method.compile"><code>compile</code> docs</a>) which can then be used from rust by declaring the external function signatures in an <code>extern</code> block.</p>
+<p>Since the bundled C is very simple, only a single source file needs to be passed to <a href="https://docs.rs/cc/*/cc/struct.Build.html"><code>cc::Build</code></a>.
+For more complex build requirements, <a href="https://docs.rs/cc/*/cc/struct.Build.html"><code>cc::Build</code></a> offers a full suite of builder methods for specifying
+<a href="https://docs.rs/cc/*/cc/struct.Build.html#method.include"><code>include</code></a> paths and extra compiler <a href="https://docs.rs/cc/*/cc/struct.Build.html#method.flag"><code>flag</code></a>s.</p>
+<a class="header" href="build_tools.html#cargotoml" id="cargotoml"><h3><code>Cargo.toml</code></h3></a>
+<pre><code class="language-toml">[package]
+...
+build = &quot;build.rs&quot;
+
+[build-dependencies]
+cc = &quot;1&quot;
+
+[dependencies]
+error-chain = &quot;0.11&quot;
+</code></pre>
+<a class="header" href="build_tools.html#buildrs" id="buildrs"><h3><code>build.rs</code></h3></a>
+<pre><pre class="playpen"><code class="language-rust no_run">extern crate cc;
+
+fn main() {
+    cc::Build::new()
+        .file(&quot;src/hello.c&quot;)
+        .compile(&quot;hello&quot;);   // outputs `libhello.a`
+}
+</code></pre></pre>
+<a class="header" href="build_tools.html#srchelloc" id="srchelloc"><h3><code>src/hello.c</code></h3></a>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+
+void hello() {
+    printf(&quot;Hello from C!\n&quot;);
+}
+
+void greet(const char* name) {
+    printf(&quot;Hello, %s!\n&quot;, name);
+}
+</code></pre>
+<a class="header" href="build_tools.html#srcmainrs" id="srcmainrs"><h3><code>src/main.rs</code></h3></a>
+<pre><code class="language-rust ignore"># #[macro_use] extern crate error_chain;
+use std::ffi::CString;
+use std::os::raw::c_char;
+#
+# error_chain! {
+#     foreign_links {
+#         NulError(::std::ffi::NulError);
+#         Io(::std::io::Error);
+#     }
+# }
+#
+# fn prompt(s: &amp;str) -&gt; Result&lt;String&gt; {
+#     use std::io::Write;
+#     print!(&quot;{}&quot;, s);
+#     std::io::stdout().flush()?;
+#     let mut input = String::new();
+#     std::io::stdin().read_line(&amp;mut input)?;
+#     Ok(input.trim().to_string())
+# }
+
+extern {
+    fn hello();
+    fn greet(name: *const c_char);
+}
+
+fn run() -&gt; Result&lt;()&gt; {
+    unsafe { hello() }
+    let name = prompt(&quot;What's your name? &quot;)?;
+    let c_name = CString::new(name)?;
+    unsafe { greet(c_name.as_ptr()) }
+    Ok(())
+}
+#
+# quick_main!(run);
+</code></pre>
+<p><a name="ex-cc-static-bundled-cpp"></a></p>
+<a class="header" href="build_tools.html#compile-and-link-statically-to-a-bundled-c-library-1" id="compile-and-link-statically-to-a-bundled-c-library-1"><h2>Compile and link statically to a bundled C++ library</h2></a>
+<p><a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a></p>
+<p>Linking a bundled C++ library is very similar to linking a bundled C library. The two core differences when compiling and statically linking a bundled C++ library are specifying a C++ compiler via the builder method <a href="https://docs.rs/cc/*/cc/struct.Build.html#method.cpp"><code>cpp(true)</code></a> and preventing name mangling by the C++ compiler by adding the <code>extern &quot;C&quot;</code> section at the top of our C++ source file.</p>
+<a class="header" href="build_tools.html#cargotoml-1" id="cargotoml-1"><h3><code>Cargo.toml</code></h3></a>
+<pre><code class="language-toml">[package]
+...
+build = &quot;build.rs&quot;
+
+[build-dependencies]
+cc = &quot;1&quot;
+</code></pre>
+<a class="header" href="build_tools.html#buildrs-1" id="buildrs-1"><h3><code>build.rs</code></h3></a>
+<pre><pre class="playpen"><code class="language-rust no_run">extern crate cc;
+
+fn main() {
+    cc::Build::new()
+        .cpp(true)
+        .file(&quot;src/foo.cpp&quot;)
+        .compile(&quot;foo&quot;);   
+}
+</code></pre></pre>
+<a class="header" href="build_tools.html#srcfoocpp" id="srcfoocpp"><h3><code>src/foo.cpp</code></h3></a>
+<pre><code class="language-cpp">extern &quot;C&quot; {
+    int multiply(int x, int y);
+}
+
+int multiply(int x, int y) {
+    return x*y;
+}
+</code></pre>
+<a class="header" href="build_tools.html#srcmainrs-1" id="srcmainrs-1"><h3><code>src/main.rs</code></h3></a>
+<pre><code class="language-rust ignore">extern {
+    fn multiply(x : i32, y : i32) -&gt; i32;
+}
+
+fn main(){
+    unsafe {
+        println!(&quot;{}&quot;, multiply(5,7));
+    }   
+}
+</code></pre>
+<p><a name="ex-cc-custom-defines"></a></p>
+<a class="header" href="build_tools.html#compile-a-c-library-while-setting-custom-defines" id="compile-a-c-library-while-setting-custom-defines"><h2>Compile a C library while setting custom defines</h2></a>
+<p><a href="https://docs.rs/cc"><img src="https://badge-cache.kominick.com/crates/v/cc.svg?label=cc" alt="cc-badge" /></a> <a href="https://crates.io/categories/development-tools"><img src="https://badge-cache.kominick.com/badge/development_tools--x.svg?style=social" alt="cat-development-tools-badge" /></a></p>
+<p>It is simple to build bundled C code with custom defines using <a href="https://docs.rs/cc/*/cc/struct.Build.html#method.define"><code>cc::Build::define</code></a>.
+It takes an <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a> value, so it is possible to create defines such as <code>#define APP_NAME &quot;foo&quot;</code>
+as well as <code>#define WELCOME</code> (pass <code>None</code> as the value for a value-less define). This example builds
+a bundled C file with dynamic defines set in <code>build.rs</code> and prints &quot;<strong>Welcome to foo - version 1.0.2</strong>&quot;
+when run. Cargo sets some <a href="http://doc.crates.io/environment-variables.html#environment-variables-cargo-sets-for-crates">environment variables</a> which may be useful for some custom defines.</p>
+<a class="header" href="build_tools.html#cargotoml-2" id="cargotoml-2"><h3><code>Cargo.toml</code></h3></a>
+<pre><code class="language-toml">[package]
+...
+version = &quot;1.0.2&quot;
+build = &quot;build.rs&quot;
+
+[build-dependencies]
+cc = &quot;1&quot;
+</code></pre>
+<a class="header" href="build_tools.html#buildrs-2" id="buildrs-2"><h3><code>build.rs</code></h3></a>
+<pre><pre class="playpen"><code class="language-rust no_run">extern crate cc;
+
+fn main() {
+    cc::Build::new()
+        .define(&quot;APP_NAME&quot;, &quot;\&quot;foo\&quot;&quot;)
+        .define(&quot;VERSION&quot;, format!(&quot;\&quot;{}\&quot;&quot;, env!(&quot;CARGO_PKG_VERSION&quot;)).as_str())
+        .define(&quot;WELCOME&quot;, None)
+        .file(&quot;src/foo.c&quot;)
+        .compile(&quot;foo&quot;);
+}
+</code></pre></pre>
+<a class="header" href="build_tools.html#srcfooc" id="srcfooc"><h3><code>src/foo.c</code></h3></a>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void print_app_info() {
+#ifdef WELCOME
+    printf(&quot;Welcome to &quot;);
+#endif
+    printf(&quot;%s - version %s\n&quot;, APP_NAME, VERSION);
+}
+</code></pre>
+<a class="header" href="build_tools.html#srcmainrs-2" id="srcmainrs-2"><h3><code>src/main.rs</code></h3></a>
+<pre><code class="language-rust ignore">extern {
+    fn print_app_info();
+}
+
+fn main(){
+    unsafe {
+        print_app_info();
+    }   
+}
+</code></pre>
+<!--
+Links, in a few categories. Follow the existing structure.
+Keep lines sorted.
+-->
+<!-- Categories -->
+<!-- Crates -->
+<!-- Other Reference -->
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="logging.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="logging.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        
+        <script src="searchindex.js" type="text/javascript" charset="utf-8"></script>
+        
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+    </body>
+</html>
